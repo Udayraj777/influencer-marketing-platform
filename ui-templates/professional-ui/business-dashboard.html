@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Dashboard - Influencer Marketing Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: #1e3a8a;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #93c5fd;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            grid-column: 1 / -1;
+        }
+
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .card-action {
+            color: #3b82f6;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Overview Cards */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .overview-card {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .overview-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .overview-change {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .change-positive {
+            color: #10b981;
+        }
+
+        .change-negative {
+            color: #ef4444;
+        }
+
+        /* Recommended Influencers */
+        .influencer-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .influencer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .influencer-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .influencer-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .influencer-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .influencer-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .influencer-info h3 {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.25rem;
+        }
+
+        .influencer-niche {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .influencer-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .stat-text {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .match-score {
+            background: #10b981;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .influencer-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #d1d5db;
+            color: #6b7280;
+        }
+
+        .btn-outline:hover {
+            background: #f3f4f6;
+        }
+
+        /* Active Campaigns */
+        .campaign-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .campaign-item {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .campaign-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .campaign-name {
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .campaign-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            transition: width 0.3s ease;
+        }
+
+        /* Recent Messages */
+        .message-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .message-item:hover {
+            background: #f1f5f9;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-sender {
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.25rem;
+        }
+
+        .message-preview {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .message-time {
+            color: #9ca3af;
+            font-size: 0.75rem;
+        }
+
+        .unread-badge {
+            background: #ef4444;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Performance Chart */
+        .chart-container {
+            height: 200px;
+            background: #f8fafc;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 6px;
+        }
+
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .sidebar-item {
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-item:hover {
+            background: #f1f5f9;
+        }
+
+        .notification-count {
+            background: #ef4444;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .quick-action {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .quick-action:hover {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .quick-action-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-action-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .welcome-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .influencer-filters {
+                flex-direction: column;
+            }
+
+            .influencer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .performance-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">InfluencerHub</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#campaigns">Campaigns</a></li>
+                    <li><a href="#influencers">Influencers</a></li>
+                    <li><a href="#messages">Messages</a></li>
+                    <li><a href="#analytics">Analytics</a></li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">JD</div>
+                <span>John Doe</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Content -->
+        <div>
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-header">
+                    <div>
+                        <h1 class="welcome-title">Welcome back, John!</h1>
+                        <p>Here's what's happening with your campaigns today.</p>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">+ Create Campaign</button>
+                        <button class="btn btn-secondary">📊 View Reports</button>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Active Campaigns</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">247</div>
+                        <div class="stat-label">Total Messages</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$24,580</div>
+                        <div class="stat-label">Budget Spent</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">89%</div>
+                        <div class="stat-label">Campaign Success</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Overview Cards -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Overview</h2>
+                        <a href="#" class="card-action">View All</a>
+                    </div>
+                    <div class="overview-grid">
+                        <div class="overview-card">
+                            <div class="overview-value">45</div>
+                            <div class="overview-label">Total Campaigns</div>
+                            <div class="overview-change change-positive">+12% from last month</div>
+                        </div>
+                        <div class="overview-card">
+                            <div class="overview-value">1,247</div>
+                            <div class="overview-label">Influencers Worked With</div>
+                            <div class="overview-change change-positive">+8% from last month</div>
+                        </div>
+                        <div class="overview-card">
+                            <div class="overview-value">2.4M</div>
+                            <div class="overview-label">Total Reach</div>
+                            <div class="overview-change change-positive">+15% from last month</div>
+                        </div>
+                        <div class="overview-card">
+                            <div class="overview-value">4.2x</div>
+                            <div class="overview-label">Average ROI</div>
+                            <div class="overview-change change-positive">+0.3x from last month</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommended Influencers -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recommended Influencers</h2>
+                        <a href="#" class="card-action">View All</a>
+                    </div>
+                    <div class="influencer-filters">
+                        <select class="filter-select" id="nicheFilter">
+                            <option value="">All Niches</option>
+                            <option value="fashion">Fashion</option>
+                            <option value="tech">Technology</option>
+                            <option value="food">Food & Lifestyle</option>
+                            <option value="fitness">Fitness</option>
+                        </select>
+                        <select class="filter-select" id="followersFilter">
+                            <option value="">All Followers</option>
+                            <option value="micro">1K-10K</option>
+                            <option value="mid">10K-100K</option>
+                            <option value="macro">100K-1M</option>
+                            <option value="mega">1M+</option>
+                        </select>
+                        <select class="filter-select" id="engagementFilter">
+                            <option value="">All Engagement</option>
+                            <option value="high">High (5%+)</option>
+                            <option value="medium">Medium (2-5%)</option>
+                            <option value="low">Low (<2%)</option>
+                        </select>
+                    </div>
+                    <div class="influencer-grid" id="influencerGrid">
+                        <!-- Influencer cards will be dynamically generated -->
+                    </div>
+                </div>
+
+                <!-- Active Campaigns -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Active Campaigns</h2>
+                        <a href="#" class="card-action">Manage All</a>
+                    </div>
+                    <div class="campaign-list">
+                        <div class="campaign-item">
+                            <div class="campaign-header">
+                                <div class="campaign-name">Summer Fashion Collection</div>
+                                <div class="campaign-status status-active">Active</div>
+                            </div>
+                            <div>15 influencers • $12,000 budget</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="campaign-item">
+                            <div class="campaign-header">
+                                <div class="campaign-name">Tech Product Launch</div>
+                                <div class="campaign-status status-pending">Pending</div>
+                            </div>
+                            <div>8 influencers • $8,500 budget</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <div class="campaign-item">
+                            <div class="campaign-header">
+                                <div class="campaign-name">Holiday Special</div>
+                                <div class="campaign-status status-active">Active</div>
+                            </div>
+                            <div>22 influencers • $18,000 budget</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Messages -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recent Messages</h2>
+                        <a href="#" class="card-action">View All</a>
+                    </div>
+                    <div class="message-list">
+                        <div class="message-item">
+                            <div class="message-avatar">SA</div>
+                            <div class="message-content">
+                                <div class="message-sender">Sarah Anderson</div>
+                                <div class="message-preview">Thanks for the campaign details. I'm interested in...</div>
+                            </div>
+                            <div class="message-time">2h ago</div>
+                            <div class="unread-badge">2</div>
+                        </div>
+                        <div class="message-item">
+                            <div class="message-avatar">MJ</div>
+                            <div class="message-content">
+                                <div class="message-sender">Mike Johnson</div>
+                                <div class="message-preview">Can we schedule a call to discuss the rates?</div>
+                            </div>
+                            <div class="message-time">4h ago</div>
+                        </div>
+                        <div class="message-item">
+                            <div class="message-avatar">EL</div>
+                            <div class="message-content">
+                                <div class="message-sender">Emma Lee</div>
+                                <div class="message-preview">I've completed the content review. Ready to post!</div>
+                            </div>
+                            <div class="message-time">6h ago</div>
+                            <div class="unread-badge">1</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campaign Performance -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Campaign Performance</h2>
+                        <a href="#" class="card-action">Detailed Analytics</a>
+                    </div>
+                    <div class="chart-container">
+                        <div>📈 Performance Chart - Coming Soon</div>
+                    </div>
+                    <div class="performance-metrics">
+                        <div class="metric-card">
+                            <div class="metric-value">2.4M</div>
+                            <div class="metric-label">Total Reach</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">156K</div>
+                            <div class="metric-label">Engagement</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">6.5%</div>
+                            <div class="metric-label">Avg. Engagement</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">$0.12</div>
+                            <div class="metric-label">Cost per Click</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Quick Actions</h2>
+                    </div>
+                    <div class="quick-actions">
+                        <div class="quick-action">
+                            <div class="quick-action-icon">📝</div>
+                            <div class="quick-action-label">Create Campaign</div>
+                        </div>
+                        <div class="quick-action">
+                            <div class="quick-action-icon">👥</div>
+                            <div class="quick-action-label">Browse Influencers</div>
+                        </div>
+                        <div class="quick-action">
+                            <div class="quick-action-icon">💬</div>
+                            <div class="quick-action-label">Send Message</div>
+                        </div>
+                        <div class="quick-action">
+                            <div class="quick-action-icon">📊</div>
+                            <div class="quick-action-label">View Reports</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Campaign Tools -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Campaign Tools</h3>
+                <ul class="sidebar-list">
+                    <li class="sidebar-item">
+                        <span>Campaign Builder</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <span>Budget Tracker</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <span>Content Calendar</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <span>Performance Analytics</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Saved Influencers -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Saved Influencers</h3>
+                <ul class="sidebar-list">
+                    <li class="sidebar-item">
+                        <span>Fashion Influencers</span>
+                        <span>24</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <span>Tech Reviewers</span>
+                        <span>18</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <span>Lifestyle Creators</span>
+                        <span>31</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <span>Fitness Experts</span>
+                        <span>12</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Notifications -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Notifications</h3>
+                <ul class="sidebar-list">
+                    <li class="sidebar-item">
+                        <span>New Messages</span>
+                        <span class="notification-count">5</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <span>Campaign Updates</span>
+                        <span class="notification-count">3</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <span>Payment Pending</span>
+                        <span class="notification-count">2</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <span>New Matches</span>
+                        <span class="notification-count">8</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Account Settings -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Account</h3>
+                <ul class="sidebar-list">
+                    <li class="sidebar-item">
+                        <span>Profile Settings</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <span>Billing & Payments</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <span>Team Management</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <span>API Settings</span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        // Sample influencer data
+        const influencers = [
+            {
+                id: 1,
+                name: "Sarah Anderson",
+                niche: "fashion",
+                followers: "125K",
+                engagement: "7.2%",
+                matchScore: 95,
+                avatar: "SA",
+                verified: true
+            },
+            {
+                id: 2,
+                name: "Mike Johnson",
+                niche: "tech",
+                followers: "89K",
+                engagement: "5.8%",
+                matchScore: 88,
+                avatar: "MJ",
+                verified: true
+            },
+            {
+                id: 3,
+                name: "Emma Lee",
+                niche: "food",
+                followers: "210K",
+                engagement: "6.4%",
+                matchScore: 92,
+                avatar: "EL",
+                verified: true
+            },
+            {
+                id: 4,
+                name: "David Chen",
+                niche: "fitness",
+                followers: "67K",
+                engagement: "8.1%",
+                matchScore: 87,
+                avatar: "DC",
+                verified: false
+            },
+            {
+                id: 5,
+                name: "Lisa Rodriguez",
+                niche: "fashion",
+                followers: "156K",
+                engagement: "5.9%",
+                matchScore: 90,
+                avatar: "LR",
+                verified: true
+            },
+            {
+                id: 6,
+                name: "Alex Thompson",
+                niche: "tech",
+                followers: "94K",
+                engagement: "7.5%",
+                matchScore: 85,
+                avatar: "AT",
+                verified: true
+            }
+        ];
+
+        // Function to render influencer cards
+        function renderInfluencers(influencerList) {
+            const grid = document.getElementById('influencerGrid');
+            grid.innerHTML = '';
+
+            influencerList.forEach(influencer => {
+                const card = document.createElement('div');
+                card.className = 'influencer-card';
+                card.innerHTML = `
+                    <div class="influencer-header">
+                        <div class="influencer-avatar">${influencer.avatar}</div>
+                        <div class="influencer-info">
+                            <h3>${influencer.name} ${influencer.verified ? '✓' : ''}</h3>
+                            <div class="influencer-niche">${influencer.niche.charAt(0).toUpperCase() + influencer.niche.slice(1)}</div>
+                        </div>
+                    </div>
+                    <div class="influencer-stats">
+                        <div class="stat">
+                            <div class="stat-number">${influencer.followers}</div>
+                            <div class="stat-text">Followers</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">${influencer.engagement}</div>
+                            <div class="stat-text">Engagement</div>
+                        </div>
+                    </div>
+                    <div class="match-score">${influencer.matchScore}% Match</div>
+                    <div class="influencer-actions">
+                        <button class="btn-small btn-primary">View Profile</button>
+                        <button class="btn-small btn-secondary">Message</button>
+                        <button class="btn-small btn-outline">Shortlist</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Function to filter influencers
+        function filterInfluencers() {
+            const nicheFilter = document.getElementById('nicheFilter').value;
+            const followersFilter = document.getElementById('followersFilter').value;
+            const engagementFilter = document.getElementById('engagementFilter').value;
+
+            let filtered = influencers;
+
+            if (nicheFilter) {
+                filtered = filtered.filter(inf => inf.niche === nicheFilter);
+            }
+
+            if (followersFilter) {
+                filtered = filtered.filter(inf => {
+                    const followers = parseInt(inf.followers.replace(/[K,M]/g, ''));
+                    switch(followersFilter) {
+                        case 'micro': return followers <= 10;
+                        case 'mid': return followers > 10 && followers <= 100;
+                        case 'macro': return followers > 100 && followers <= 1000;
+                        case 'mega': return followers > 1000;
+                        default: return true;
+                    }
+                });
+            }
+
+            if (engagementFilter) {
+                filtered = filtered.filter(inf => {
+                    const engagement = parseFloat(inf.engagement.replace('%', ''));
+                    switch(engagementFilter) {
+                        case 'high': return engagement >= 5;
+                        case 'medium': return engagement >= 2 && engagement < 5;
+                        case 'low': return engagement < 2;
+                        default: return true;
+                    }
+                });
+            }
+
+            renderInfluencers(filtered);
+        }
+
+        // Event listeners for filters
+        document.getElementById('nicheFilter').addEventListener('change', filterInfluencers);
+        document.getElementById('followersFilter').addEventListener('change', filterInfluencers);
+        document.getElementById('engagementFilter').addEventListener('change', filterInfluencers);
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderInfluencers(influencers);
+            
+            // Add click handlers for interactive elements
+            document.querySelectorAll('.quick-action').forEach(action => {
+                action.addEventListener('click', function() {
+                    const label = this.querySelector('.quick-action-label').textContent;
+                    alert(`${label} functionality coming soon!`);
+                });
+            });
+
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const text = this.querySelector('span').textContent;
+                    alert(`${text} functionality coming soon!`);
+                });
+            });
+
+            document.querySelectorAll('.message-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const sender = this.querySelector('.message-sender').textContent;
+                    alert(`Opening conversation with ${sender}...`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

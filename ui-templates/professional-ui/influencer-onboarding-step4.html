@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Influencer Onboarding - Step 4: Preferences & Completion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: #93c5fd;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 0;
+        }
+
+        .onboarding-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 700px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .onboarding-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .onboarding-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .onboarding-subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            margin-bottom: 2rem;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .progress-step::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            right: -50%;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .progress-step:last-child::before {
+            display: none;
+        }
+
+        .progress-step.active::before,
+        .progress-step.completed::before {
+            background: #1e3a8a;
+        }
+
+        .progress-step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin: 0 auto 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-step.active .progress-step-number {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .progress-step.completed .progress-step-number {
+            background: #10b981;
+            color: white;
+        }
+
+        .progress-step-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .progress-step.active .progress-step-label {
+            color: #1e3a8a;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Collaboration Types */
+        .collaboration-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .collaboration-type {
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .collaboration-type:hover {
+            border-color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        .collaboration-type.selected {
+            border-color: #1e3a8a;
+            background: #f0f9ff;
+        }
+
+        .collaboration-type-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .collaboration-type-name {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .collaboration-type.selected .collaboration-type-name {
+            color: #1e3a8a;
+        }
+
+        .collaboration-type-description {
+            color: #6b7280;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-group {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .pricing-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+
+        /* Communication Preferences */
+        .communication-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .communication-option {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .communication-option:hover {
+            border-color: #1e3a8a;
+        }
+
+        .communication-option.selected {
+            border-color: #1e3a8a;
+            background: #f0f9ff;
+            color: #1e3a8a;
+        }
+
+        .communication-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .communication-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Profile Summary */
+        .profile-summary {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .summary-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .summary-section {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .summary-section-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .summary-value {
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .summary-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .summary-tag {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .input-prefix {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #1e3a8a;
+            border: 2px solid #1e3a8a;
+        }
+
+        .btn-secondary:hover {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+            font-size: 1.1rem;
+            padding: 1.25rem 2.5rem;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .success-message h3 {
+            color: #166534;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-message p {
+            color: #16a34a;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #374151;
+            color: white;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #f59e0b;
+        }
+
+        .footer-text {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 2rem 0;
+            }
+
+            .onboarding-container {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+
+            .onboarding-title {
+                font-size: 1.75rem;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .progress-step::before {
+                display: none;
+            }
+
+            .pricing-grid,
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">ConnectSphere</a>
+                <nav class="header-nav">
+                    <a href="../landing-professional.html">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="onboarding-container">
+                <div class="onboarding-header">
+                    <h1 class="onboarding-title">Final Preferences</h1>
+                    <p class="onboarding-subtitle">Set your collaboration preferences and complete your profile</p>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div class="progress-indicator">
+                    <div class="progress-steps">
+                        <div class="progress-step completed">
+                            <div class="progress-step-number">✓</div>
+                            <div class="progress-step-label">Basic Info</div>
+                        </div>
+                        <div class="progress-step completed">
+                            <div class="progress-step-number">✓</div>
+                            <div class="progress-step-label">Social Media</div>
+                        </div>
+                        <div class="progress-step completed">
+                            <div class="progress-step-number">✓</div>
+                            <div class="progress-step-label">Content & Audience</div>
+                        </div>
+                        <div class="progress-step active">
+                            <div class="progress-step-number">4</div>
+                            <div class="progress-step-label">Preferences</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences Form -->
+                <form id="onboardingForm">
+                    <!-- Collaboration Preferences -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <span class="section-icon">🤝</span>
+                            Collaboration Preferences (Select all that apply)
+                        </h3>
+                        <div class="collaboration-types">
+                            <div class="collaboration-type" data-type="sponsored-posts">
+                                <span class="collaboration-type-icon">📝</span>
+                                <div class="collaboration-type-name">Sponsored Posts</div>
+                                <div class="collaboration-type-description">Paid social media posts featuring products or services</div>
+                            </div>
+                            <div class="collaboration-type" data-type="product-reviews">
+                                <span class="collaboration-type-icon">⭐</span>
+                                <div class="collaboration-type-name">Product Reviews</div>
+                                <div class="collaboration-type-description">Honest reviews of products or services</div>
+                            </div>
+                            <div class="collaboration-type" data-type="brand-ambassadorship">
+                                <span class="collaboration-type-icon">🏆</span>
+                                <div class="collaboration-type-name">Brand Ambassadorship</div>
+                                <div class="collaboration-type-description">Long-term partnerships with brands</div>
+                            </div>
+                            <div class="collaboration-type" data-type="event-coverage">
+                                <span class="collaboration-type-icon">📅</span>
+                                <div class="collaboration-type-name">Event Coverage</div>
+                                <div class="collaboration-type-description">Coverage of events, launches, or experiences</div>
+                            </div>
+                            <div class="collaboration-type" data-type="content-creation">
+                                <span class="collaboration-type-icon">🎨</span>
+                                <div class="collaboration-type-name">Content Creation</div>
+                                <div class="collaboration-type-description">Creating custom content for brand use</div>
+                            </div>
+                            <div class="collaboration-type" data-type="affiliate-marketing">
+                                <span class="collaboration-type-icon">💰</span>
+                                <div class="collaboration-type-name">Affiliate Marketing</div>
+                                <div class="collaboration-type-description">Earn commissions through affiliate links</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pricing Expectations -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <span class="section-icon">💳</span>
+                            Pricing Expectations
+                        </h3>
+                        <div class="pricing-grid">
+                            <div class="pricing-group">
+                                <div class="pricing-title">Per Post Pricing</div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="instagramPrice" class="form-label">Instagram Post</label>
+                                        <div class="input-group">
+                                            <span class="input-prefix">$</span>
+                                            <input type="number" id="instagramPrice" class="form-input" placeholder="500">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tiktokPrice" class="form-label">TikTok Video</label>
+                                        <div class="input-group">
+                                            <span class="input-prefix">$</span>
+                                            <input type="number" id="tiktokPrice" class="form-input" placeholder="300">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pricing-group">
+                                <div class="pricing-title">Additional Services</div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="storyPrice" class="form-label">Instagram Story</label>
+                                        <div class="input-group">
+                                            <span class="input-prefix">$</span>
+                                            <input type="number" id="storyPrice" class="form-input" placeholder="150">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="youtubePrice" class="form-label">YouTube Video</label>
+                                        <div class="input-group">
+                                            <span class="input-prefix">$</span>
+                                            <input type="number" id="youtubePrice" class="form-input" placeholder="1000">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Communication Preferences -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <span class="section-icon">💬</span>
+                            Communication Preferences
+                        </h3>
+                        <div class="communication-options">
+                            <div class="communication-option" data-comm="email">
+                                <span class="communication-icon">📧</span>
+                                <div class="communication-name">Email</div>
+                            </div>
+                            <div class="communication-option" data-comm="phone">
+                                <span class="communication-icon">📞</span>
+                                <div class="communication-name">Phone</div>
+                            </div>
+                            <div class="communication-option" data-comm="instagram">
+                                <span class="communication-icon">📸</span>
+                                <div class="communication-name">Instagram DM</div>
+                            </div>
+                            <div class="communication-option" data-comm="platform">
+                                <span class="communication-icon">💻</span>
+                                <div class="communication-name">Platform Messaging</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Summary -->
+                    <div class="profile-summary">
+                        <h3 class="summary-title">Profile Summary</h3>
+                        <div class="summary-grid">
+                            <div class="summary-section">
+                                <div class="summary-section-title">
+                                    <span>👤</span>
+                                    Basic Information
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Full Name</span>
+                                    <span class="summary-value" id="summaryName">-</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Content Niches</span>
+                                    <div class="summary-tags" id="summaryNiches"></div>
+                                </div>
+                            </div>
+                            <div class="summary-section">
+                                <div class="summary-section-title">
+                                    <span>📱</span>
+                                    Social Media
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Active Platforms</span>
+                                    <span class="summary-value" id="summaryPlatforms">-</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Total Followers</span>
+                                    <span class="summary-value" id="summaryFollowers">-</span>
+                                </div>
+                            </div>
+                            <div class="summary-section">
+                                <div class="summary-section-title">
+                                    <span>🎯</span>
+                                    Audience
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Primary Age Range</span>
+                                    <span class="summary-value" id="summaryAge">-</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Gender Distribution</span>
+                                    <span class="summary-value" id="summaryGender">-</span>
+                                </div>
+                            </div>
+                            <div class="summary-section">
+                                <div class="summary-section-title">
+                                    <span>💰</span>
+                                    Pricing
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Instagram Post</span>
+                                    <span class="summary-value" id="summaryInstagramPrice">-</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">TikTok Video</span>
+                                    <span class="summary-value" id="summaryTiktokPrice">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+                        <button type="submit" class="btn btn-primary">Complete Profile</button>
+                    </div>
+                </form>
+
+                <!-- Success Message (Hidden by default) -->
+                <div id="successMessage" class="success-message" style="display: none;">
+                    <h3>🎉 Profile Created Successfully!</h3>
+                    <p>Your influencer profile has been created and is now live. Brands can now discover and connect with you for collaboration opportunities.</p>
+                    <div class="completion-actions">
+                        <button type="button" class="btn btn-success" onclick="goToDashboard()">Go to Dashboard</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    © 2024 ConnectSphere. Professional influencer marketing platform.
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Security</a>
+                    <a href="#">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Collaboration type selection
+        document.querySelectorAll('.collaboration-type').forEach(type => {
+            type.addEventListener('click', function() {
+                this.classList.toggle('selected');
+            });
+        });
+
+        // Communication preference selection
+        document.querySelectorAll('.communication-option').forEach(option => {
+            option.addEventListener('click', function() {
+                this.classList.toggle('selected');
+            });
+        });
+
+        // Go back to previous step
+        function goBack() {
+            window.location.href = 'influencer-onboarding-step3.html';
+        }
+
+        // Go to dashboard
+        function goToDashboard() {
+            alert('Dashboard functionality would be implemented here. Profile creation completed!');
+            // In a real application, this would redirect to the influencer dashboard
+        }
+
+        // Load and display profile summary
+        function loadProfileSummary() {
+            // Load data from previous steps
+            const step1Data = JSON.parse(localStorage.getItem('onboarding_step1') || '{}');
+            const step2Data = JSON.parse(localStorage.getItem('onboarding_step2') || '{}');
+            const step3Data = JSON.parse(localStorage.getItem('onboarding_step3') || '{}');
+
+            // Display basic information
+            document.getElementById('summaryName').textContent = step1Data.fullName || '-';
+
+            // Display niches
+            if (step3Data.niches && step3Data.niches.length > 0) {
+                const nichesContainer = document.getElementById('summaryNiches');
+                nichesContainer.innerHTML = '';
+                step3Data.niches.forEach(niche => {
+                    const tag = document.createElement('span');
+                    tag.className = 'summary-tag';
+                    tag.textContent = niche.charAt(0).toUpperCase() + niche.slice(1);
+                    nichesContainer.appendChild(tag);
+                });
+            }
+
+            // Display platforms
+            if (step2Data.activePlatforms && step2Data.activePlatforms.length > 0) {
+                document.getElementById('summaryPlatforms').textContent = step2Data.activePlatforms.join(', ');
+                
+                // Calculate total followers
+                let totalFollowers = 0;
+                step2Data.activePlatforms.forEach(platform => {
+                    const followers = parseInt(step2Data.platformData[platform]?.followers || 0);
+                    totalFollowers += followers;
+                });
+                document.getElementById('summaryFollowers').textContent = totalFollowers.toLocaleString();
+            }
+
+            // Display audience info
+            document.getElementById('summaryAge').textContent = step3Data.ageRange || '-';
+            document.getElementById('summaryGender').textContent = step3Data.gender || '-';
+        }
+
+        // Update pricing summary
+        function updatePricingSummary() {
+            const instagramPrice = document.getElementById('instagramPrice').value;
+            const tiktokPrice = document.getElementById('tiktokPrice').value;
+            
+            document.getElementById('summaryInstagramPrice').textContent = 
+                instagramPrice ? `$${parseInt(instagramPrice).toLocaleString()}` : '-';
+            document.getElementById('summaryTiktokPrice').textContent = 
+                tiktokPrice ? `$${parseInt(tiktokPrice).toLocaleString()}` : '-';
+        }
+
+        // Add event listeners for pricing inputs
+        document.getElementById('instagramPrice').addEventListener('input', updatePricingSummary);
+        document.getElementById('tiktokPrice').addEventListener('input', updatePricingSummary);
+
+        // Form submission
+        document.getElementById('onboardingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect collaboration preferences
+            const selectedCollaborations = Array.from(document.querySelectorAll('.collaboration-type.selected'))
+                .map(type => type.dataset.type);
+            
+            // Collect communication preferences
+            const selectedCommunications = Array.from(document.querySelectorAll('.communication-option.selected'))
+                .map(option => option.dataset.comm);
+            
+            // Collect pricing data
+            const pricingData = {
+                instagramPost: document.getElementById('instagramPrice').value,
+                tiktokVideo: document.getElementById('tiktokPrice').value,
+                instagramStory: document.getElementById('storyPrice').value,
+                youtubeVideo: document.getElementById('youtubePrice').value
+            };
+            
+            // Validation
+            if (selectedCollaborations.length === 0) {
+                alert('Please select at least one collaboration preference');
+                return;
+            }
+            
+            if (selectedCommunications.length === 0) {
+                alert('Please select at least one communication preference');
+                return;
+            }
+            
+            // Store final step data
+            localStorage.setItem('onboarding_step4', JSON.stringify({
+                collaborations: selectedCollaborations,
+                communications: selectedCommunications,
+                pricing: pricingData
+            }));
+            
+            // Show success message
+            document.getElementById('onboardingForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // In a real application, this would send all data to the server
+            console.log('Complete profile data:', {
+                step1: JSON.parse(localStorage.getItem('onboarding_step1') || '{}'),
+                step2: JSON.parse(localStorage.getItem('onboarding_step2') || '{}'),
+                step3: JSON.parse(localStorage.getItem('onboarding_step3') || '{}'),
+                step4: JSON.parse(localStorage.getItem('onboarding_step4') || '{}')
+            });
+        });
+
+        // Load previous data if available
+        window.addEventListener('load', function() {
+            loadProfileSummary();
+            
+            const savedData = localStorage.getItem('onboarding_step4');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                
+                // Restore collaboration selections
+                if (data.collaborations) {
+                    data.collaborations.forEach(collaboration => {
+                        const element = document.querySelector(`[data-type="${collaboration}"]`);
+                        if (element) element.classList.add('selected');
+                    });
+                }
+                
+                // Restore communication selections
+                if (data.communications) {
+                    data.communications.forEach(communication => {
+                        const element = document.querySelector(`[data-comm="${communication}"]`);
+                        if (element) element.classList.add('selected');
+                    });
+                }
+                
+                // Restore pricing data
+                if (data.pricing) {
+                    document.getElementById('instagramPrice').value = data.pricing.instagramPost || '';
+                    document.getElementById('tiktokPrice').value = data.pricing.tiktokVideo || '';
+                    document.getElementById('storyPrice').value = data.pricing.instagramStory || '';
+                    document.getElementById('youtubePrice').value = data.pricing.youtubeVideo || '';
+                    updatePricingSummary();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

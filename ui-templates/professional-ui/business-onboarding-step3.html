@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Onboarding - Campaign Preferences | Professional Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 30px;
+        }
+
+        .logo {
+            color: #1e3a8a;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .progress-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-step.active {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: #10b981;
+            color: white;
+        }
+
+        .progress-step.inactive {
+            background: #e2e8f0;
+            color: #6b7280;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 40px;
+            right: 40px;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .progress-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 66.66%;
+            background: #10b981;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .progress-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+            width: 80px;
+        }
+
+        .progress-label.active {
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .progress-label.completed {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            color: #1e3a8a;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .form-description {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked + label {
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .checkbox-item.checked {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-item:hover {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .radio-item input[type="radio"] {
+            margin-right: 12px;
+            margin-top: 2px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .radio-item.checked {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .radio-content {
+            flex: 1;
+        }
+
+        .radio-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        .radio-description {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: #1e3a8a;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .budget-info {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .budget-info h4 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .budget-info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .budget-info li {
+            padding: 5px 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .budget-info li:before {
+            content: "•";
+            color: #1e3a8a;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .form-title {
+                font-size: 1.75rem;
+            }
+
+            .progress-labels {
+                font-size: 10px;
+            }
+
+            .progress-label {
+                width: 60px;
+            }
+
+            .checkbox-group,
+            .radio-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Professional Platform</div>
+            <div class="subtitle">Enterprise Influencer Marketing Solutions</div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-line"></div>
+                <div class="progress-step completed">✓</div>
+                <div class="progress-step completed">✓</div>
+                <div class="progress-step active">3</div>
+                <div class="progress-step inactive">4</div>
+            </div>
+            <div class="progress-labels">
+                <div class="progress-label completed">Company Info</div>
+                <div class="progress-label completed">Target Audience</div>
+                <div class="progress-label active">Campaign Prefs</div>
+                <div class="progress-label">Goals & Setup</div>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="form-header">
+                <h1 class="form-title">Campaign Preferences</h1>
+                <p class="form-description">Configure your campaign preferences to help us recommend the best influencer partnerships for your business.</p>
+            </div>
+
+            <form id="campaignForm">
+                <div class="section-title">Campaign Types</div>
+                
+                <div class="form-group">
+                    <label>Select your preferred campaign types *</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="product-reviews" name="campaignTypes" value="product-reviews">
+                            <label for="product-reviews">Product Reviews</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="brand-awareness" name="campaignTypes" value="brand-awareness">
+                            <label for="brand-awareness">Brand Awareness</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="sponsored-content" name="campaignTypes" value="sponsored-content">
+                            <label for="sponsored-content">Sponsored Content</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="giveaways" name="campaignTypes" value="giveaways">
+                            <label for="giveaways">Giveaways & Contests</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="unboxing" name="campaignTypes" value="unboxing">
+                            <label for="unboxing">Unboxing Videos</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tutorials" name="campaignTypes" value="tutorials">
+                            <label for="tutorials">Tutorials & How-to</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ambassador" name="campaignTypes" value="ambassador">
+                            <label for="ambassador">Brand Ambassador</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="event-coverage" name="campaignTypes" value="event-coverage">
+                            <label for="event-coverage">Event Coverage</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">Platform Preferences</div>
+                
+                <div class="form-group">
+                    <label>Preferred social media platforms *</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="instagram" name="platforms" value="instagram">
+                            <label for="instagram">Instagram</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tiktok" name="platforms" value="tiktok">
+                            <label for="tiktok">TikTok</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="youtube" name="platforms" value="youtube">
+                            <label for="youtube">YouTube</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="facebook" name="platforms" value="facebook">
+                            <label for="facebook">Facebook</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="twitter" name="platforms" value="twitter">
+                            <label for="twitter">Twitter/X</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="pinterest" name="platforms" value="pinterest">
+                            <label for="pinterest">Pinterest</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="linkedin" name="platforms" value="linkedin">
+                            <label for="linkedin">LinkedIn</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="snapchat" name="platforms" value="snapchat">
+                            <label for="snapchat">Snapchat</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">Budget & Investment</div>
+                
+                <div class="form-group">
+                    <label>Monthly marketing budget range *</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="budget-startup" name="budget" value="startup">
+                            <div class="radio-content">
+                                <div class="radio-title">Startup ($1,000 - $5,000)</div>
+                                <div class="radio-description">Perfect for testing waters and small campaigns</div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="budget-growth" name="budget" value="growth">
+                            <div class="radio-content">
+                                <div class="radio-title">Growth ($5,000 - $15,000)</div>
+                                <div class="radio-description">Ideal for scaling and regular campaigns</div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="budget-established" name="budget" value="established">
+                            <div class="radio-content">
+                                <div class="radio-title">Established ($15,000 - $50,000)</div>
+                                <div class="radio-description">Comprehensive campaigns with multiple influencers</div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="budget-enterprise" name="budget" value="enterprise">
+                            <div class="radio-content">
+                                <div class="radio-title">Enterprise ($50,000+)</div>
+                                <div class="radio-description">Large-scale campaigns with premium influencers</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="budget-info">
+                    <h4>Budget Allocation Includes:</h4>
+                    <ul>
+                        <li>Influencer compensation</li>
+                        <li>Content creation costs</li>
+                        <li>Platform management fees</li>
+                        <li>Campaign analytics and reporting</li>
+                        <li>Optional: Product/service samples</li>
+                    </ul>
+                </div>
+
+                <div class="section-title">Campaign Duration & Timing</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="campaignDuration">Preferred campaign duration *</label>
+                        <select id="campaignDuration" name="campaignDuration" required>
+                            <option value="">Select duration</option>
+                            <option value="1-week">1 Week (Quick boost)</option>
+                            <option value="2-weeks">2 Weeks (Standard)</option>
+                            <option value="1-month">1 Month (Extended reach)</option>
+                            <option value="3-months">3 Months (Long-term)</option>
+                            <option value="6-months">6 Months (Brand building)</option>
+                            <option value="ongoing">Ongoing (Ambassador program)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="campaignFrequency">Campaign frequency</label>
+                        <select id="campaignFrequency" name="campaignFrequency">
+                            <option value="">Select frequency</option>
+                            <option value="one-time">One-time project</option>
+                            <option value="monthly">Monthly campaigns</option>
+                            <option value="quarterly">Quarterly campaigns</option>
+                            <option value="seasonal">Seasonal campaigns</option>
+                            <option value="ongoing">Ongoing partnership</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contentRequirements">Content requirements & expectations</label>
+                    <textarea id="contentRequirements" name="contentRequirements" rows="4" placeholder="Describe your content requirements, brand guidelines, key messages, deliverables, etc..."></textarea>
+                    <div class="help-text">Include any specific requirements for content creation, brand guidelines, or messaging</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="industryCompliance">Industry compliance requirements</label>
+                    <textarea id="industryCompliance" name="industryCompliance" rows="3" placeholder="Any specific industry regulations, disclosure requirements, or compliance standards that must be followed..."></textarea>
+                    <div class="help-text">E.g., FDA regulations, FTC disclosure requirements, financial services compliance, etc.</div>
+                </div>
+
+                <div class="navigation">
+                    <button type="button" class="btn btn-secondary" onclick="previousStep()">
+                        ← Back to Target Audience
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">
+                        Continue to Goals & Setup →
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function previousStep() {
+            window.location.href = 'business-onboarding-step2.html';
+        }
+
+        function nextStep() {
+            const campaignTypes = document.querySelectorAll('input[name="campaignTypes"]:checked');
+            const platforms = document.querySelectorAll('input[name="platforms"]:checked');
+            const budget = document.querySelector('input[name="budget"]:checked');
+            const duration = document.getElementById('campaignDuration').value;
+
+            if (campaignTypes.length === 0) {
+                alert('Please select at least one campaign type');
+                return;
+            }
+
+            if (platforms.length === 0) {
+                alert('Please select at least one preferred platform');
+                return;
+            }
+
+            if (!budget) {
+                alert('Please select a budget range');
+                return;
+            }
+
+            if (!duration) {
+                alert('Please select a campaign duration');
+                return;
+            }
+
+            // Store form data
+            const form = document.getElementById('campaignForm');
+            const formData = new FormData(form);
+            const data = {};
+            
+            // Handle regular form fields
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+
+            // Get existing data and merge
+            const existingData = JSON.parse(localStorage.getItem('businessOnboarding') || '{}');
+            const mergedData = { ...existingData, ...data };
+            localStorage.setItem('businessOnboarding', JSON.stringify(mergedData));
+
+            // Navigate to next step
+            window.location.href = 'business-onboarding-step4.html';
+        }
+
+        // Handle checkbox and radio styling
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const checkboxItem = this.closest('.checkbox-item');
+                if (this.checked) {
+                    checkboxItem.classList.add('checked');
+                } else {
+                    checkboxItem.classList.remove('checked');
+                }
+            });
+        });
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Remove checked class from all radio items in the same group
+                document.querySelectorAll(`input[name="${this.name}"]`).forEach(r => {
+                    r.closest('.radio-item').classList.remove('checked');
+                });
+                
+                // Add checked class to selected item
+                if (this.checked) {
+                    this.closest('.radio-item').classList.add('checked');
+                }
+            });
+        });
+
+        // Load existing data if available
+        window.addEventListener('load', function() {
+            const existingData = JSON.parse(localStorage.getItem('businessOnboarding') || '{}');
+            
+            // Populate form fields
+            Object.keys(existingData).forEach(key => {
+                const field = document.getElementById(key);
+                if (field) {
+                    if (field.type === 'checkbox' || field.type === 'radio') {
+                        const values = Array.isArray(existingData[key]) ? existingData[key] : [existingData[key]];
+                        values.forEach(value => {
+                            const input = document.querySelector(`input[name="${key}"][value="${value}"]`);
+                            if (input) {
+                                input.checked = true;
+                                const item = input.closest('.checkbox-item') || input.closest('.radio-item');
+                                if (item) {
+                                    item.classList.add('checked');
+                                }
+                            }
+                        });
+                    } else {
+                        field.value = existingData[key];
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

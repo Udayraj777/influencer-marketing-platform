@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Influencer Onboarding - Step 2: Social Media Links</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: #93c5fd;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 0;
+        }
+
+        .onboarding-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .onboarding-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .onboarding-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .onboarding-subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            margin-bottom: 2rem;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .progress-step::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            right: -50%;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .progress-step:last-child::before {
+            display: none;
+        }
+
+        .progress-step.active::before,
+        .progress-step.completed::before {
+            background: #1e3a8a;
+        }
+
+        .progress-step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin: 0 auto 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-step.active .progress-step-number {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .progress-step.completed .progress-step-number {
+            background: #10b981;
+            color: white;
+        }
+
+        .progress-step-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .progress-step.active .progress-step-label {
+            color: #1e3a8a;
+        }
+
+        /* Platform Cards */
+        .platform-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .platform-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .platform-card:hover {
+            border-color: #1e3a8a;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.1);
+        }
+
+        .platform-card.active {
+            border-color: #1e3a8a;
+            background: #f0f9ff;
+        }
+
+        .platform-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .platform-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .platform-icon.instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+
+        .platform-icon.tiktok {
+            background: #000000;
+            color: white;
+        }
+
+        .platform-icon.youtube {
+            background: #ff0000;
+            color: white;
+        }
+
+        .platform-icon.twitter {
+            background: #1da1f2;
+            color: white;
+        }
+
+        .platform-name {
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 0.25rem;
+        }
+
+        .platform-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .platform-toggle {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #e5e7eb;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #1e3a8a;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        .platform-fields {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .platform-fields.active {
+            display: block;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .verification-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 6px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            color: #1e3a8a;
+            margin-top: 0.5rem;
+        }
+
+        .verification-badge.verified {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+            color: #166534;
+        }
+
+        .verification-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #1e3a8a;
+            border: 2px solid #1e3a8a;
+        }
+
+        .btn-secondary:hover {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #374151;
+            color: white;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #f59e0b;
+        }
+
+        .footer-text {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 2rem 0;
+            }
+
+            .onboarding-container {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+
+            .onboarding-title {
+                font-size: 1.75rem;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .progress-step::before {
+                display: none;
+            }
+
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">ConnectSphere</a>
+                <nav class="header-nav">
+                    <a href="../landing-professional.html">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="onboarding-container">
+                <div class="onboarding-header">
+                    <h1 class="onboarding-title">Social Media Platforms</h1>
+                    <p class="onboarding-subtitle">Connect your social media accounts to showcase your reach</p>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div class="progress-indicator">
+                    <div class="progress-steps">
+                        <div class="progress-step completed">
+                            <div class="progress-step-number">✓</div>
+                            <div class="progress-step-label">Basic Info</div>
+                        </div>
+                        <div class="progress-step active">
+                            <div class="progress-step-number">2</div>
+                            <div class="progress-step-label">Social Media</div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-step-number">3</div>
+                            <div class="progress-step-label">Content & Audience</div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-step-number">4</div>
+                            <div class="progress-step-label">Preferences</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Platform Selection -->
+                <form id="onboardingForm">
+                    <div class="platform-grid">
+                        <!-- Instagram -->
+                        <div class="platform-card" data-platform="instagram">
+                            <div class="platform-header">
+                                <div class="platform-icon instagram">📷</div>
+                                <div>
+                                    <div class="platform-name">Instagram</div>
+                                    <div class="platform-description">Share photos and stories</div>
+                                </div>
+                                <div class="platform-toggle">
+                                    <div class="toggle-switch" onclick="togglePlatform('instagram')">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="platform-fields" id="instagram-fields">
+                                <div class="form-group">
+                                    <label for="instagram-url" class="form-label">Instagram Profile URL</label>
+                                    <input type="url" id="instagram-url" class="form-input" placeholder="https://instagram.com/yourusername">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="instagram-followers" class="form-label">Followers</label>
+                                        <input type="number" id="instagram-followers" class="form-input" placeholder="10,000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="instagram-engagement" class="form-label">Avg. Engagement Rate</label>
+                                        <input type="text" id="instagram-engagement" class="form-input" placeholder="3.5%">
+                                    </div>
+                                </div>
+                                <div class="verification-badge">
+                                    <div class="verification-icon">🔍</div>
+                                    <span>Verification pending</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TikTok -->
+                        <div class="platform-card" data-platform="tiktok">
+                            <div class="platform-header">
+                                <div class="platform-icon tiktok">🎵</div>
+                                <div>
+                                    <div class="platform-name">TikTok</div>
+                                    <div class="platform-description">Create short-form videos</div>
+                                </div>
+                                <div class="platform-toggle">
+                                    <div class="toggle-switch" onclick="togglePlatform('tiktok')">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="platform-fields" id="tiktok-fields">
+                                <div class="form-group">
+                                    <label for="tiktok-url" class="form-label">TikTok Profile URL</label>
+                                    <input type="url" id="tiktok-url" class="form-input" placeholder="https://tiktok.com/@yourusername">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="tiktok-followers" class="form-label">Followers</label>
+                                        <input type="number" id="tiktok-followers" class="form-input" placeholder="50,000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tiktok-views" class="form-label">Avg. Views per Video</label>
+                                        <input type="number" id="tiktok-views" class="form-input" placeholder="25,000">
+                                    </div>
+                                </div>
+                                <div class="verification-badge">
+                                    <div class="verification-icon">🔍</div>
+                                    <span>Verification pending</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- YouTube -->
+                        <div class="platform-card" data-platform="youtube">
+                            <div class="platform-header">
+                                <div class="platform-icon youtube">▶️</div>
+                                <div>
+                                    <div class="platform-name">YouTube</div>
+                                    <div class="platform-description">Upload and share videos</div>
+                                </div>
+                                <div class="platform-toggle">
+                                    <div class="toggle-switch" onclick="togglePlatform('youtube')">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="platform-fields" id="youtube-fields">
+                                <div class="form-group">
+                                    <label for="youtube-url" class="form-label">YouTube Channel URL</label>
+                                    <input type="url" id="youtube-url" class="form-input" placeholder="https://youtube.com/c/yourchannel">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="youtube-subscribers" class="form-label">Subscribers</label>
+                                        <input type="number" id="youtube-subscribers" class="form-input" placeholder="5,000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="youtube-views" class="form-label">Monthly Views</label>
+                                        <input type="number" id="youtube-views" class="form-input" placeholder="100,000">
+                                    </div>
+                                </div>
+                                <div class="verification-badge">
+                                    <div class="verification-icon">🔍</div>
+                                    <span>Verification pending</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Twitter -->
+                        <div class="platform-card" data-platform="twitter">
+                            <div class="platform-header">
+                                <div class="platform-icon twitter">🐦</div>
+                                <div>
+                                    <div class="platform-name">Twitter</div>
+                                    <div class="platform-description">Share thoughts and updates</div>
+                                </div>
+                                <div class="platform-toggle">
+                                    <div class="toggle-switch" onclick="togglePlatform('twitter')">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="platform-fields" id="twitter-fields">
+                                <div class="form-group">
+                                    <label for="twitter-url" class="form-label">Twitter Profile URL</label>
+                                    <input type="url" id="twitter-url" class="form-input" placeholder="https://twitter.com/yourusername">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="twitter-followers" class="form-label">Followers</label>
+                                        <input type="number" id="twitter-followers" class="form-input" placeholder="2,500">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="twitter-engagement" class="form-label">Avg. Engagement Rate</label>
+                                        <input type="text" id="twitter-engagement" class="form-input" placeholder="5.2%">
+                                    </div>
+                                </div>
+                                <div class="verification-badge">
+                                    <div class="verification-icon">🔍</div>
+                                    <span>Verification pending</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+                        <button type="submit" class="btn btn-primary">Next Step</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    © 2024 ConnectSphere. Professional influencer marketing platform.
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Security</a>
+                    <a href="#">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Platform toggle functionality
+        function togglePlatform(platform) {
+            const platformCard = document.querySelector(`[data-platform="${platform}"]`);
+            const toggleSwitch = platformCard.querySelector('.toggle-switch');
+            const platformFields = document.getElementById(`${platform}-fields`);
+            
+            toggleSwitch.classList.toggle('active');
+            platformFields.classList.toggle('active');
+            platformCard.classList.toggle('active');
+        }
+
+        // Go back to previous step
+        function goBack() {
+            window.location.href = 'influencer-onboarding-step1.html';
+        }
+
+        // Form submission
+        document.getElementById('onboardingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const activePlatforms = [];
+            const platformData = {};
+            
+            // Check which platforms are active and collect their data
+            document.querySelectorAll('.platform-card').forEach(card => {
+                const platform = card.dataset.platform;
+                const isActive = card.classList.contains('active');
+                
+                if (isActive) {
+                    activePlatforms.push(platform);
+                    platformData[platform] = {
+                        url: document.getElementById(`${platform}-url`).value,
+                        followers: document.getElementById(`${platform}-followers`).value,
+                        // Additional metrics based on platform
+                    };
+                    
+                    // Add platform-specific metrics
+                    if (platform === 'instagram' || platform === 'twitter') {
+                        platformData[platform].engagement = document.getElementById(`${platform}-engagement`).value;
+                    } else if (platform === 'tiktok') {
+                        platformData[platform].avgViews = document.getElementById(`${platform}-views`).value;
+                    } else if (platform === 'youtube') {
+                        platformData[platform].monthlyViews = document.getElementById(`${platform}-views`).value;
+                    }
+                }
+            });
+            
+            // Validate at least one platform is selected
+            if (activePlatforms.length === 0) {
+                alert('Please select at least one social media platform');
+                return;
+            }
+            
+            // Validate required fields for active platforms
+            let hasError = false;
+            activePlatforms.forEach(platform => {
+                const url = platformData[platform].url;
+                const followers = platformData[platform].followers;
+                
+                if (!url || !followers) {
+                    hasError = true;
+                }
+            });
+            
+            if (hasError) {
+                alert('Please fill in all required fields for selected platforms');
+                return;
+            }
+            
+            // Store form data in localStorage
+            localStorage.setItem('onboarding_step2', JSON.stringify({
+                activePlatforms: activePlatforms,
+                platformData: platformData
+            }));
+            
+            // Navigate to step 3
+            window.location.href = 'influencer-onboarding-step3.html';
+        });
+
+        // Load previous data if available
+        window.addEventListener('load', function() {
+            const savedData = localStorage.getItem('onboarding_step2');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                
+                // Restore platform selections
+                data.activePlatforms.forEach(platform => {
+                    togglePlatform(platform);
+                    
+                    // Restore field values
+                    const platformInfo = data.platformData[platform];
+                    if (platformInfo) {
+                        document.getElementById(`${platform}-url`).value = platformInfo.url || '';
+                        document.getElementById(`${platform}-followers`).value = platformInfo.followers || '';
+                        
+                        // Restore platform-specific fields
+                        if (platformInfo.engagement) {
+                            document.getElementById(`${platform}-engagement`).value = platformInfo.engagement;
+                        }
+                        if (platformInfo.avgViews) {
+                            document.getElementById(`${platform}-views`).value = platformInfo.avgViews;
+                        }
+                        if (platformInfo.monthlyViews) {
+                            document.getElementById(`${platform}-views`).value = platformInfo.monthlyViews;
+                        }
+                    }
+                });
+            }
+        });
+
+        // Format number inputs with commas
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                let value = this.value.replace(/,/g, '');
+                if (value && !isNaN(value)) {
+                    this.value = parseInt(value).toLocaleString();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

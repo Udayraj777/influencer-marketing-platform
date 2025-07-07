@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Discovery - Influencer Marketing Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #60a5fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: white;
+            padding: 2rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .welcome-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-text h1 {
+            font-size: 2rem;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .search-bar {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+        }
+
+        /* Main Content Layout */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* Filter Sidebar */
+        .filter-sidebar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+
+        .filter-section h3 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .filter-checkbox {
+            margin-right: 0.5rem;
+        }
+
+        .budget-range {
+            margin-bottom: 1rem;
+        }
+
+        .range-input {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .select-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .clear-filters {
+            background: #f3f4f6;
+            color: #6b7280;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .clear-filters:hover {
+            background: #e5e7eb;
+        }
+
+        /* Campaign Grid */
+        .campaign-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #1e3a8a;
+            font-weight: bold;
+        }
+
+        .sort-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .sort-select {
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .campaign-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .campaign-card {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .campaign-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .company-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .campaign-info h3 {
+            color: #1e3a8a;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .company-name {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .campaign-title {
+            color: #1e3a8a;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .campaign-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .campaign-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .budget-amount {
+            color: #059669;
+            font-size: 1.1rem;
+        }
+
+        .platform-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .platform-tag {
+            background: #f0f9ff;
+            color: #0369a1;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            border: 1px solid #bae6fd;
+        }
+
+        .campaign-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-apply {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            flex: 1;
+        }
+
+        .btn-apply:hover {
+            background: #1e40af;
+        }
+
+        .btn-save {
+            background: white;
+            color: #6b7280;
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .btn-save.saved {
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #fcd34d;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .status-featured {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-urgent {
+            background: #fecaca;
+            color: #dc2626;
+        }
+
+        .status-new {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        /* Tabs */
+        .tab-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            color: #1e3a8a;
+            border-bottom-color: #1e3a8a;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #6b7280;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination button:hover {
+            background: #f9fafb;
+        }
+
+        .pagination button.active {
+            background: #1e3a8a;
+            color: white;
+            border-color: #1e3a8a;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .filter-sidebar {
+                position: static;
+                margin-bottom: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .welcome-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campaign-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campaign-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+
+        .loading-spinner {
+            border: 2px solid #f3f4f6;
+            border-top: 2px solid #3b82f6;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .close:hover {
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo">InfluenceHub</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#campaigns">Campaigns</a></li>
+                    <li><a href="#applications">Applications</a></li>
+                    <li><a href="#partnerships">Partnerships</a></li>
+                    <li><a href="#analytics">Analytics</a></li>
+                    <li><a href="#profile">Profile</a></li>
+                </ul>
+            </nav>
+            <div class="user-menu">
+                <span>Sarah Johnson</span>
+                <div class="user-avatar">SJ</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Welcome Section -->
+    <section class="welcome-section">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <div class="welcome-text">
+                    <h1>Discover Your Next Campaign</h1>
+                    <p>Find the perfect brand partnerships that match your influence and expertise</p>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">47</div>
+                    <div class="stat-label">Available Campaigns</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Applications Sent</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Active Partnerships</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Saved Campaigns</div>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Search campaigns by brand, industry, or keywords..." id="searchInput">
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Filter Sidebar -->
+        <aside class="filter-sidebar">
+            <div class="filter-section">
+                <h3>Budget Range</h3>
+                <div class="budget-range">
+                    <input type="range" class="range-input" id="budgetRange" min="0" max="10000" value="5000">
+                    <div class="range-values">
+                        <span>$0</span>
+                        <span id="budgetValue">$5,000+</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Campaign Type</h3>
+                <div class="filter-group">
+                    <label><input type="checkbox" class="filter-checkbox" value="product-review"> Product Review</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="brand-awareness"> Brand Awareness</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="sponsored-content"> Sponsored Content</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="giveaway"> Giveaway/Contest</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="ambassador"> Brand Ambassador</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Industry</h3>
+                <div class="filter-group">
+                    <label><input type="checkbox" class="filter-checkbox" value="fashion"> Fashion & Beauty</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="tech"> Technology</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="fitness"> Health & Fitness</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="food"> Food & Beverage</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="travel"> Travel & Lifestyle</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="home"> Home & Garden</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Platform</h3>
+                <div class="filter-group">
+                    <label><input type="checkbox" class="filter-checkbox" value="instagram"> Instagram</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="tiktok"> TikTok</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="youtube"> YouTube</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="twitter"> Twitter</label>
+                    <label><input type="checkbox" class="filter-checkbox" value="linkedin"> LinkedIn</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Campaign Duration</h3>
+                <select class="select-input" id="durationFilter">
+                    <option value="">Any Duration</option>
+                    <option value="1-week">1 Week</option>
+                    <option value="2-weeks">2 Weeks</option>
+                    <option value="1-month">1 Month</option>
+                    <option value="3-months">3+ Months</option>
+                </select>
+            </div>
+
+            <div class="filter-section">
+                <h3>Geographic Region</h3>
+                <select class="select-input" id="regionFilter">
+                    <option value="">Any Region</option>
+                    <option value="global">Global</option>
+                    <option value="north-america">North America</option>
+                    <option value="europe">Europe</option>
+                    <option value="asia">Asia</option>
+                    <option value="australia">Australia</option>
+                </select>
+            </div>
+
+            <button class="clear-filters" onclick="clearAllFilters()">Clear All Filters</button>
+        </aside>
+
+        <!-- Campaign Content -->
+        <div class="campaign-content">
+            <!-- Tab Navigation -->
+            <div class="tab-nav">
+                <button class="tab-button active" onclick="showTab('all-campaigns')">All Campaigns</button>
+                <button class="tab-button" onclick="showTab('featured')">Featured</button>
+                <button class="tab-button" onclick="showTab('applied')">Applied</button>
+                <button class="tab-button" onclick="showTab('saved')">Saved</button>
+            </div>
+
+            <!-- All Campaigns Tab -->
+            <div id="all-campaigns" class="tab-content active">
+                <div class="section-header">
+                    <h2 class="section-title">Available Campaigns</h2>
+                    <div class="sort-controls">
+                        <label>Sort by:</label>
+                        <select class="sort-select" id="sortSelect">
+                            <option value="newest">Newest First</option>
+                            <option value="budget-high">Highest Budget</option>
+                            <option value="budget-low">Lowest Budget</option>
+                            <option value="deadline">Deadline</option>
+                            <option value="relevance">Relevance</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="campaign-grid" id="campaignGrid">
+                    <!-- Campaign cards will be populated by JavaScript -->
+                </div>
+
+                <div class="pagination" id="pagination">
+                    <!-- Pagination will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Featured Campaigns Tab -->
+            <div id="featured" class="tab-content">
+                <div class="section-header">
+                    <h2 class="section-title">Featured Campaigns</h2>
+                    <p>High-value opportunities handpicked for you</p>
+                </div>
+                <div class="campaign-grid" id="featuredGrid">
+                    <!-- Featured campaigns will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Applied Campaigns Tab -->
+            <div id="applied" class="tab-content">
+                <div class="section-header">
+                    <h2 class="section-title">Your Applications</h2>
+                    <p>Track the status of your campaign applications</p>
+                </div>
+                <div class="campaign-grid" id="appliedGrid">
+                    <!-- Applied campaigns will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Saved Campaigns Tab -->
+            <div id="saved" class="tab-content">
+                <div class="section-header">
+                    <h2 class="section-title">Saved Campaigns</h2>
+                    <p>Campaigns you've bookmarked for later</p>
+                </div>
+                <div class="campaign-grid" id="savedGrid">
+                    <!-- Saved campaigns will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Application Modal -->
+    <div id="applicationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Apply to Campaign</h2>
+            <div id="modalContent">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample campaign data
+        const campaigns = [
+            {
+                id: 1,
+                company: "TechFlow",
+                logo: "TF",
+                title: "Smart Home Device Review",
+                description: "Looking for tech influencers to review our latest smart home automation system. Create authentic content showcasing real-world use cases.",
+                budget: "$2,500",
+                budgetValue: 2500,
+                followers: "50K+",
+                engagement: "3%+",
+                platforms: ["Instagram", "YouTube"],
+                deadline: "Dec 15, 2024",
+                spots: 3,
+                industry: "tech",
+                type: "product-review",
+                duration: "2-weeks",
+                region: "north-america",
+                status: "new",
+                featured: false
+            },
+            {
+                id: 2,
+                company: "GlowUp Beauty",
+                logo: "GB",
+                title: "Skincare Routine Campaign",
+                description: "Partner with beauty influencers to showcase our new organic skincare line. Share your transformation journey over 30 days.",
+                budget: "$1,800",
+                budgetValue: 1800,
+                followers: "25K+",
+                engagement: "4%+",
+                platforms: ["Instagram", "TikTok"],
+                deadline: "Dec 20, 2024",
+                spots: 8,
+                industry: "fashion",
+                type: "sponsored-content",
+                duration: "1-month",
+                region: "global",
+                status: "featured",
+                featured: true
+            },
+            {
+                id: 3,
+                company: "FitLife",
+                logo: "FL",
+                title: "Fitness Challenge Brand Ambassador",
+                description: "Become a brand ambassador for our fitness app. Create motivational content and lead workout challenges for your audience.",
+                budget: "$5,000",
+                budgetValue: 5000,
+                followers: "100K+",
+                engagement: "5%+",
+                platforms: ["Instagram", "YouTube", "TikTok"],
+                deadline: "Dec 10, 2024",
+                spots: 2,
+                industry: "fitness",
+                type: "ambassador",
+                duration: "3-months",
+                region: "global",
+                status: "urgent",
+                featured: true
+            },
+            {
+                id: 4,
+                company: "Wanderlust Travel",
+                logo: "WT",
+                title: "Destination Spotlight Series",
+                description: "Travel influencers wanted to showcase hidden gems in Southeast Asia. All expenses covered plus compensation for content creation.",
+                budget: "$4,200",
+                budgetValue: 4200,
+                followers: "75K+",
+                engagement: "6%+",
+                platforms: ["Instagram", "YouTube"],
+                deadline: "Jan 5, 2025",
+                spots: 4,
+                industry: "travel",
+                type: "sponsored-content",
+                duration: "2-weeks",
+                region: "asia",
+                status: "new",
+                featured: false
+            },
+            {
+                id: 5,
+                company: "EcoHome",
+                logo: "EH",
+                title: "Sustainable Living Product Review",
+                description: "Review our eco-friendly home products and share tips for sustainable living. Perfect for lifestyle and home improvement influencers.",
+                budget: "$1,500",
+                budgetValue: 1500,
+                followers: "30K+",
+                engagement: "4%+",
+                platforms: ["Instagram", "YouTube"],
+                deadline: "Dec 25, 2024",
+                spots: 6,
+                industry: "home",
+                type: "product-review",
+                duration: "1-month",
+                region: "north-america",
+                status: "new",
+                featured: false
+            },
+            {
+                id: 6,
+                company: "FlavorFusion",
+                logo: "FF",
+                title: "Recipe Creation Challenge",
+                description: "Food influencers create original recipes using our premium spice blends. Show cooking process and final dishes with engaging storytelling.",
+                budget: "$2,800",
+                budgetValue: 2800,
+                followers: "40K+",
+                engagement: "5%+",
+                platforms: ["Instagram", "TikTok", "YouTube"],
+                deadline: "Dec 18, 2024",
+                spots: 5,
+                industry: "food",
+                type: "sponsored-content",
+                duration: "1-month",
+                region: "global",
+                status: "new",
+                featured: false
+            },
+            {
+                id: 7,
+                company: "StyleStack",
+                logo: "SS",
+                title: "Fashion Week Coverage",
+                description: "Fashion influencers to cover our brand's presence at Fashion Week. Live content, behind-the-scenes, and outfit showcases required.",
+                budget: "$6,500",
+                budgetValue: 6500,
+                followers: "150K+",
+                engagement: "4%+",
+                platforms: ["Instagram", "TikTok"],
+                deadline: "Dec 8, 2024",
+                spots: 3,
+                industry: "fashion",
+                type: "brand-awareness",
+                duration: "1-week",
+                region: "north-america",
+                status: "urgent",
+                featured: true
+            },
+            {
+                id: 8,
+                company: "MindfulTech",
+                logo: "MT",
+                title: "Productivity App Launch",
+                description: "Tech and productivity influencers to launch our new mindfulness app. Create tutorials, reviews, and share personal productivity tips.",
+                budget: "$3,200",
+                budgetValue: 3200,
+                followers: "60K+",
+                engagement: "3%+",
+                platforms: ["YouTube", "LinkedIn"],
+                deadline: "Jan 15, 2025",
+                spots: 4,
+                industry: "tech",
+                type: "product-review",
+                duration: "1-month",
+                region: "global",
+                status: "new",
+                featured: false
+            },
+            {
+                id: 9,
+                company: "FreshBites",
+                logo: "FB",
+                title: "Healthy Meal Prep Series",
+                description: "Create a meal prep series featuring our organic ingredients. Show easy, healthy recipes that busy professionals can make at home.",
+                budget: "$2,100",
+                budgetValue: 2100,
+                followers: "35K+",
+                engagement: "4%+",
+                platforms: ["Instagram", "YouTube"],
+                deadline: "Dec 30, 2024",
+                spots: 7,
+                industry: "food",
+                type: "sponsored-content",
+                duration: "2-weeks",
+                region: "north-america",
+                status: "new",
+                featured: false
+            },
+            {
+                id: 10,
+                company: "AdventureGear",
+                logo: "AG",
+                title: "Outdoor Equipment Testing",
+                description: "Outdoor and adventure influencers to test our new hiking gear line. Take equipment on real adventures and share honest reviews.",
+                budget: "$3,800",
+                budgetValue: 3800,
+                followers: "80K+",
+                engagement: "5%+",
+                platforms: ["Instagram", "YouTube"],
+                deadline: "Jan 10, 2025",
+                spots: 3,
+                industry: "travel",
+                type: "product-review",
+                duration: "1-month",
+                region: "global",
+                status: "new",
+                featured: false
+            }
+        ];
+
+        let filteredCampaigns = [...campaigns];
+        let savedCampaigns = [2, 5, 8]; // IDs of saved campaigns
+        let appliedCampaigns = [1, 3, 7]; // IDs of applied campaigns
+        let currentPage = 1;
+        let campaignsPerPage = 6;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            renderCampaigns();
+            updateBudgetDisplay();
+        });
+
+        function setupEventListeners() {
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', filterCampaigns);
+            
+            // Budget range
+            document.getElementById('budgetRange').addEventListener('input', function() {
+                updateBudgetDisplay();
+                filterCampaigns();
+            });
+            
+            // Filter checkboxes
+            document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', filterCampaigns);
+            });
+            
+            // Filter selects
+            document.getElementById('durationFilter').addEventListener('change', filterCampaigns);
+            document.getElementById('regionFilter').addEventListener('change', filterCampaigns);
+            
+            // Sort select
+            document.getElementById('sortSelect').addEventListener('change', function() {
+                sortCampaigns(this.value);
+                renderCampaigns();
+            });
+        }
+
+        function updateBudgetDisplay() {
+            const budgetRange = document.getElementById('budgetRange');
+            const budgetValue = document.getElementById('budgetValue');
+            const value = parseInt(budgetRange.value);
+            budgetValue.textContent = value >= 10000 ? '$10,000+' : `$${value.toLocaleString()}+`;
+        }
+
+        function filterCampaigns() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const budgetMax = parseInt(document.getElementById('budgetRange').value);
+            const duration = document.getElementById('durationFilter').value;
+            const region = document.getElementById('regionFilter').value;
+            
+            // Get checked filters
+            const campaignTypes = Array.from(document.querySelectorAll('.filter-checkbox[value*="-"]')).filter(cb => cb.checked).map(cb => cb.value);
+            const industries = Array.from(document.querySelectorAll('.filter-checkbox[value="fashion"], .filter-checkbox[value="tech"], .filter-checkbox[value="fitness"], .filter-checkbox[value="food"], .filter-checkbox[value="travel"], .filter-checkbox[value="home"]')).filter(cb => cb.checked).map(cb => cb.value);
+            const platforms = Array.from(document.querySelectorAll('.filter-checkbox[value="instagram"], .filter-checkbox[value="tiktok"], .filter-checkbox[value="youtube"], .filter-checkbox[value="twitter"], .filter-checkbox[value="linkedin"]')).filter(cb => cb.checked).map(cb => cb.value);
+            
+            filteredCampaigns = campaigns.filter(campaign => {
+                // Search filter
+                if (searchTerm && !campaign.title.toLowerCase().includes(searchTerm) && 
+                    !campaign.company.toLowerCase().includes(searchTerm) && 
+                    !campaign.description.toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+                
+                // Budget filter
+                if (campaign.budgetValue > budgetMax && budgetMax < 10000) {
+                    return false;
+                }
+                
+                // Campaign type filter
+                if (campaignTypes.length > 0 && !campaignTypes.includes(campaign.type)) {
+                    return false;
+                }
+                
+                // Industry filter
+                if (industries.length > 0 && !industries.includes(campaign.industry)) {
+                    return false;
+                }
+                
+                // Platform filter
+                if (platforms.length > 0 && !platforms.some(platform => 
+                    campaign.platforms.some(cp => cp.toLowerCase() === platform))) {
+                    return false;
+                }
+                
+                // Duration filter
+                if (duration && campaign.duration !== duration) {
+                    return false;
+                }
+                
+                // Region filter
+                if (region && campaign.region !== region) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            currentPage = 1;
+            renderCampaigns();
+        }
+
+        function sortCampaigns(sortBy) {
+            switch(sortBy) {
+                case 'newest':
+                    filteredCampaigns.sort((a, b) => b.id - a.id);
+                    break;
+                case 'budget-high':
+                    filteredCampaigns.sort((a, b) => b.budgetValue - a.budgetValue);
+                    break;
+                case 'budget-low':
+                    filteredCampaigns.sort((a, b) => a.budgetValue - b.budgetValue);
+                    break;
+                case 'deadline':
+                    filteredCampaigns.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+                    break;
+                case 'relevance':
+                    filteredCampaigns.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+                    break;
+            }
+        }
+
+        function renderCampaigns() {
+            const grid = document.getElementById('campaignGrid');
+            const startIndex = (currentPage - 1) * campaignsPerPage;
+            const endIndex = startIndex + campaignsPerPage;
+            const campaignsToShow = filteredCampaigns.slice(startIndex, endIndex);
+            
+            if (campaignsToShow.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><h3>No campaigns found</h3><p>Try adjusting your filters or search terms.</p></div>';
+                return;
+            }
+            
+            grid.innerHTML = campaignsToShow.map(campaign => createCampaignCard(campaign)).join('');
+            renderPagination();
+        }
+
+        function createCampaignCard(campaign) {
+            const isApplied = appliedCampaigns.includes(campaign.id);
+            const isSaved = savedCampaigns.includes(campaign.id);
+            
+            return `
+                <div class="campaign-card" data-id="${campaign.id}">
+                    ${campaign.status !== 'new' ? `<div class="status-indicator status-${campaign.status}">${campaign.status.toUpperCase()}</div>` : ''}
+                    <div class="campaign-header">
+                        <div class="company-logo">${campaign.logo}</div>
+                        <div class="campaign-info">
+                            <h3>${campaign.company}</h3>
+                            <div class="company-name">${campaign.title}</div>
+                        </div>
+                    </div>
+                    <div class="campaign-description">${campaign.description}</div>
+                    <div class="campaign-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Budget</div>
+                            <div class="detail-value budget-amount">${campaign.budget}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Followers Required</div>
+                            <div class="detail-value">${campaign.followers}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Engagement Rate</div>
+                            <div class="detail-value">${campaign.engagement}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Deadline</div>
+                            <div class="detail-value">${campaign.deadline}</div>
+                        </div>
+                    </div>
+                    <div class="platform-tags">
+                        ${campaign.platforms.map(platform => `<span class="platform-tag">${platform}</span>`).join('')}
+                    </div>
+                    <div class="campaign-actions">
+                        <button class="btn-apply" onclick="applyCampaign(${campaign.id})" ${isApplied ? 'disabled' : ''}>
+                            ${isApplied ? 'Applied' : 'Apply Now'}
+                        </button>
+                        <button class="btn-save ${isSaved ? 'saved' : ''}" onclick="toggleSave(${campaign.id})">
+                            ${isSaved ? '⭐' : '☆'}
+                        </button>
+                    </div>
+                    <div style="text-align: center; margin-top: 0.5rem; font-size: 0.8rem; color: #6b7280;">
+                        ${campaign.spots} spots available
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredCampaigns.length / campaignsPerPage);
+            const pagination = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // Previous button
+            if (currentPage > 1) {
+                paginationHTML += `<button onclick="changePage(${currentPage - 1})">Previous</button>`;
+            }
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginationHTML += `<button class="active">${i}</button>`;
+                } else {
+                    paginationHTML += `<button onclick="changePage(${i})">${i}</button>`;
+                }
+            }
+            
+            // Next button
+            if (currentPage < totalPages) {
+                paginationHTML += `<button onclick="changePage(${currentPage + 1})">Next</button>`;
+            }
+            
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            renderCampaigns();
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Render appropriate content
+            switch(tabName) {
+                case 'featured':
+                    renderFeaturedCampaigns();
+                    break;
+                case 'applied':
+                    renderAppliedCampaigns();
+                    break;
+                case 'saved':
+                    renderSavedCampaigns();
+                    break;
+                default:
+                    renderCampaigns();
+            }
+        }
+
+        function renderFeaturedCampaigns() {
+            const grid = document.getElementById('featuredGrid');
+            const featuredCampaigns = campaigns.filter(campaign => campaign.featured);
+            grid.innerHTML = featuredCampaigns.map(campaign => createCampaignCard(campaign)).join('');
+        }
+
+        function renderAppliedCampaigns() {
+            const grid = document.getElementById('appliedGrid');
+            const appliedCampaignsList = campaigns.filter(campaign => appliedCampaigns.includes(campaign.id));
+            grid.innerHTML = appliedCampaignsList.map(campaign => createCampaignCard(campaign)).join('');
+        }
+
+        function renderSavedCampaigns() {
+            const grid = document.getElementById('savedGrid');
+            const savedCampaignsList = campaigns.filter(campaign => savedCampaigns.includes(campaign.id));
+            grid.innerHTML = savedCampaignsList.map(campaign => createCampaignCard(campaign)).join('');
+        }
+
+        function applyCampaign(campaignId) {
+            if (!appliedCampaigns.includes(campaignId)) {
+                appliedCampaigns.push(campaignId);
+                showApplicationModal(campaignId);
+            }
+        }
+
+        function showApplicationModal(campaignId) {
+            const campaign = campaigns.find(c => c.id === campaignId);
+            const modal = document.getElementById('applicationModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.innerHTML = `
+                <h3>Application Submitted!</h3>
+                <p>Your application for "${campaign.title}" at ${campaign.company} has been submitted successfully.</p>
+                <p>You'll receive a response within 3-5 business days.</p>
+                <button onclick="closeModal()" style="background: #1e3a8a; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; margin-top: 1rem; cursor: pointer;">Close</button>
+            `;
+            
+            modal.style.display = 'block';
+            
+            // Update button state
+            setTimeout(() => {
+                renderCampaigns();
+            }, 100);
+        }
+
+        function toggleSave(campaignId) {
+            const index = savedCampaigns.indexOf(campaignId);
+            if (index > -1) {
+                savedCampaigns.splice(index, 1);
+            } else {
+                savedCampaigns.push(campaignId);
+            }
+            
+            // Update button appearance
+            const card = document.querySelector(`[data-id="${campaignId}"]`);
+            const saveBtn = card.querySelector('.btn-save');
+            const isSaved = savedCampaigns.includes(campaignId);
+            
+            saveBtn.classList.toggle('saved', isSaved);
+            saveBtn.textContent = isSaved ? '⭐' : '☆';
+            
+            // Update saved campaigns count
+            const statCard = document.querySelector('.stat-card:last-child .stat-number');
+            statCard.textContent = savedCampaigns.length;
+        }
+
+        function closeModal() {
+            document.getElementById('applicationModal').style.display = 'none';
+        }
+
+        function clearAllFilters() {
+            // Reset all filter inputs
+            document.getElementById('searchInput').value = '';
+            document.getElementById('budgetRange').value = 5000;
+            document.getElementById('durationFilter').value = '';
+            document.getElementById('regionFilter').value = '';
+            document.getElementById('sortSelect').value = 'newest';
+            
+            // Uncheck all checkboxes
+            document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Update budget display
+            updateBudgetDisplay();
+            
+            // Reset filtered campaigns
+            filteredCampaigns = [...campaigns];
+            currentPage = 1;
+            renderCampaigns();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('applicationModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

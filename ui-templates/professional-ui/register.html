@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - ConnectSphere Professional Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: #93c5fd;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 0;
+        }
+
+        .register-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .register-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .register-subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        /* Role Selection */
+        .role-selection {
+            margin-bottom: 2rem;
+        }
+
+        .role-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+
+        .role-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .role-card {
+            padding: 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .role-card:hover {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .role-card.selected {
+            border-color: #1e3a8a;
+            background: #eff6ff;
+        }
+
+        .role-card-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-card-title {
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-card-description {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #1e3a8a;
+            margin-top: 0.25rem;
+        }
+
+        .checkbox-label {
+            font-size: 0.9rem;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .checkbox-label a {
+            color: #1e3a8a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dynamic Form Sections */
+        .conditional-section {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .conditional-section.active {
+            display: block;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+        }
+
+        .btn-primary:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Trust Indicators */
+        .trust-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .trust-badge-icon {
+            width: 20px;
+            height: 20px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .security-notice {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6b7280;
+        }
+
+        .login-link a {
+            color: #1e3a8a;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .login-link a:hover {
+            color: #3b82f6;
+        }
+
+        /* Footer */
+        footer {
+            background: #374151;
+            color: white;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #f59e0b;
+        }
+
+        .footer-text {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 2rem 0;
+            }
+
+            .register-container {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+
+            .register-title {
+                font-size: 1.75rem;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .role-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .trust-badges {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">ConnectSphere</a>
+                <nav class="header-nav">
+                    <a href="../landing-professional.html">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="register-container">
+                <div class="register-header">
+                    <h1 class="register-title">Join ConnectSphere</h1>
+                    <p class="register-subtitle">Create your professional account and start building meaningful partnerships</p>
+                </div>
+
+                <!-- Role Selection -->
+                <div class="role-selection">
+                    <h3 class="role-section-title">Choose Your Professional Role</h3>
+                    <div class="role-cards">
+                        <div class="role-card" data-role="brand">
+                            <div class="role-card-icon">🏢</div>
+                            <div class="role-card-title">Brand / Agency</div>
+                            <div class="role-card-description">Connect with premium influencers and manage campaigns</div>
+                        </div>
+                        <div class="role-card" data-role="influencer">
+                            <div class="role-card-icon">⭐</div>
+                            <div class="role-card-title">Content Creator</div>
+                            <div class="role-card-description">Partner with leading brands and grow your business</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <form id="registerForm">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" id="firstName" class="form-input" placeholder="Enter your first name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" id="lastName" class="form-input" placeholder="Enter your last name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Professional Email</label>
+                            <input type="email" id="email" class="form-input" placeholder="Enter your professional email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" class="form-input" placeholder="Create a secure password" required>
+                        </div>
+                    </div>
+
+                    <!-- Brand/Agency Specific Fields -->
+                    <div class="conditional-section" id="brandSection">
+                        <div class="form-section">
+                            <h3 class="form-section-title">Company Information</h3>
+                            <div class="form-group">
+                                <label for="companyName" class="form-label">Company Name</label>
+                                <input type="text" id="companyName" class="form-input" placeholder="Enter your company name">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="industry" class="form-label">Industry</label>
+                                    <select id="industry" class="form-select">
+                                        <option value="">Select your industry</option>
+                                        <option value="technology">Technology</option>
+                                        <option value="fashion">Fashion & Beauty</option>
+                                        <option value="fitness">Health & Fitness</option>
+                                        <option value="food">Food & Beverage</option>
+                                        <option value="travel">Travel & Lifestyle</option>
+                                        <option value="finance">Finance & Business</option>
+                                        <option value="automotive">Automotive</option>
+                                        <option value="entertainment">Entertainment</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="teamSize" class="form-label">Team Size</label>
+                                    <select id="teamSize" class="form-select">
+                                        <option value="">Select team size</option>
+                                        <option value="1-10">1-10 employees</option>
+                                        <option value="11-50">11-50 employees</option>
+                                        <option value="51-200">51-200 employees</option>
+                                        <option value="201-500">201-500 employees</option>
+                                        <option value="500+">500+ employees</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="website" class="form-label">Company Website</label>
+                                <input type="url" id="website" class="form-input" placeholder="https://www.yourcompany.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Influencer Specific Fields -->
+                    <div class="conditional-section" id="influencerSection">
+                        <div class="form-section">
+                            <h3 class="form-section-title">Creator Profile</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="primaryPlatform" class="form-label">Primary Platform</label>
+                                    <select id="primaryPlatform" class="form-select">
+                                        <option value="">Select primary platform</option>
+                                        <option value="instagram">Instagram</option>
+                                        <option value="youtube">YouTube</option>
+                                        <option value="tiktok">TikTok</option>
+                                        <option value="twitter">Twitter/X</option>
+                                        <option value="linkedin">LinkedIn</option>
+                                        <option value="twitch">Twitch</option>
+                                        <option value="podcast">Podcast</option>
+                                        <option value="blog">Blog/Website</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="followerCount" class="form-label">Follower Count</label>
+                                    <select id="followerCount" class="form-select">
+                                        <option value="">Select follower count</option>
+                                        <option value="1k-10k">1K - 10K</option>
+                                        <option value="10k-50k">10K - 50K</option>
+                                        <option value="50k-100k">50K - 100K</option>
+                                        <option value="100k-500k">100K - 500K</option>
+                                        <option value="500k-1m">500K - 1M</option>
+                                        <option value="1m+">1M+</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contentCategories" class="form-label">Content Categories</label>
+                                <select id="contentCategories" class="form-select">
+                                    <option value="">Select primary content category</option>
+                                    <option value="lifestyle">Lifestyle</option>
+                                    <option value="fashion">Fashion & Beauty</option>
+                                    <option value="fitness">Health & Fitness</option>
+                                    <option value="food">Food & Cooking</option>
+                                    <option value="travel">Travel</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="business">Business & Finance</option>
+                                    <option value="entertainment">Entertainment</option>
+                                    <option value="parenting">Parenting</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="bio" class="form-label">Professional Bio</label>
+                                <textarea id="bio" class="form-textarea" placeholder="Tell us about your content, audience, and what makes you unique as a creator..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms and Privacy -->
+                    <div class="form-section">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms" class="checkbox-label">
+                                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand that ConnectSphere is a professional platform for verified brands and content creators.
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="marketing">
+                            <label for="marketing" class="checkbox-label">
+                                I would like to receive professional insights, industry updates, and platform news via email.
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" disabled>Create Professional Account</button>
+                </form>
+
+                <!-- Trust Indicators -->
+                <div class="trust-section">
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <div class="trust-badge-icon">🔒</div>
+                            <span>Enterprise Security</span>
+                        </div>
+                        <div class="trust-badge">
+                            <div class="trust-badge-icon">🛡️</div>
+                            <span>Data Protected</span>
+                        </div>
+                        <div class="trust-badge">
+                            <div class="trust-badge-icon">✓</div>
+                            <span>Verified Platform</span>
+                        </div>
+                    </div>
+                    <div class="security-notice">
+                        Your information is protected with bank-level encryption. We verify all accounts to maintain platform quality and trust.
+                    </div>
+                </div>
+
+                <div class="login-link">
+                    Already have an account? <a href="login.html">Sign in here</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    © 2024 ConnectSphere. Professional influencer marketing platform.
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Security</a>
+                    <a href="#">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleCards = document.querySelectorAll('.role-card');
+            const brandSection = document.getElementById('brandSection');
+            const influencerSection = document.getElementById('influencerSection');
+            const termsCheckbox = document.getElementById('terms');
+            const submitButton = document.querySelector('.btn-primary');
+            let selectedRole = null;
+
+            // Role selection
+            roleCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    roleCards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedRole = this.dataset.role;
+                    
+                    // Show/hide conditional sections
+                    if (selectedRole === 'brand') {
+                        brandSection.classList.add('active');
+                        influencerSection.classList.remove('active');
+                    } else if (selectedRole === 'influencer') {
+                        influencerSection.classList.add('active');
+                        brandSection.classList.remove('active');
+                    }
+                    
+                    updateSubmitButton();
+                });
+            });
+
+            // Terms checkbox
+            termsCheckbox.addEventListener('change', updateSubmitButton);
+
+            function updateSubmitButton() {
+                const isRoleSelected = selectedRole !== null;
+                const isTermsAccepted = termsCheckbox.checked;
+                
+                submitButton.disabled = !(isRoleSelected && isTermsAccepted);
+            }
+
+            // Form submission
+            document.getElementById('registerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!selectedRole) {
+                    alert('Please select your professional role.');
+                    return;
+                }
+                
+                const formData = new FormData(this);
+                const data = {
+                    role: selectedRole,
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value
+                };
+                
+                // Add role-specific data
+                if (selectedRole === 'brand') {
+                    data.companyName = document.getElementById('companyName').value;
+                    data.industry = document.getElementById('industry').value;
+                    data.teamSize = document.getElementById('teamSize').value;
+                    data.website = document.getElementById('website').value;
+                } else if (selectedRole === 'influencer') {
+                    data.primaryPlatform = document.getElementById('primaryPlatform').value;
+                    data.followerCount = document.getElementById('followerCount').value;
+                    data.contentCategories = document.getElementById('contentCategories').value;
+                    data.bio = document.getElementById('bio').value;
+                }
+                
+                // Here you would typically send the data to your backend
+                console.log('Registration data:', data);
+                
+                // For demo purposes, show success message
+                alert('Account creation functionality would be implemented here. Role: ' + selectedRole);
+            });
+        });
+    </script>
+</body>
+</html>

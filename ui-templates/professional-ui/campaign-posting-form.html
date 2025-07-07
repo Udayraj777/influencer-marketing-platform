@@ -1,0 +1,2123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Campaign - Professional Influencer Marketing Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+
+        /* Header and Navigation */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Progress Indicator */
+        .progress-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .save-draft-btn {
+            background: #f3f4f6;
+            color: #374151;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .save-draft-btn:hover {
+            background: #e5e7eb;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .form-section {
+            padding: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-number {
+            background: #1e3a8a;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .section-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Form Fields */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .help-text {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: #6b7280;
+            margin-left: 0.5rem;
+        }
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+
+        /* Checkboxes and Radio Buttons */
+        .checkbox-group,
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .checkbox-item,
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checkbox-item:hover,
+        .radio-item:hover {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .checkbox-item input[type="checkbox"],
+        .radio-item input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .checkbox-item.selected,
+        .radio-item.selected {
+            border-color: #1e3a8a;
+            background: #f0f9ff;
+        }
+
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .file-upload.dragover {
+            border-color: #1e3a8a;
+            background: #f0f9ff;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #6b7280;
+        }
+
+        .upload-text {
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-formats {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        .uploaded-files {
+            margin-top: 1rem;
+        }
+
+        .uploaded-file {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem;
+            background: #f3f4f6;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remove-file {
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        /* Range Slider */
+        .range-slider {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .range-slider input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: #e5e7eb;
+            outline: none;
+        }
+
+        .range-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #1e3a8a;
+            cursor: pointer;
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        /* Navigation Buttons */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem;
+            background: #f8fafc;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 2px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-success {
+            background: #059669;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Error Messages */
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .form-group.error input,
+        .form-group.error select,
+        .form-group.error textarea {
+            border-color: #ef4444;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        /* Success Messages */
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #a7f3d0;
+        }
+
+        /* Preview Mode */
+        .preview-section {
+            background: #f8fafc;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .preview-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .preview-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .preview-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-group h4 {
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .preview-group p {
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-group,
+            .radio-group {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-content {
+                grid-template-columns: 1fr;
+            }
+
+            .form-navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            border: 2px solid #f3f4f6;
+            border-top: 2px solid #1e3a8a;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Step Navigation */
+        .step-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: #f3f4f6;
+            color: #6b7280;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .step-item.active {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .step-item.completed {
+            background: #059669;
+            color: white;
+        }
+
+        .step-number {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo">InfluencerPro</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#campaigns">Campaigns</a></li>
+                    <li><a href="#influencers">Influencers</a></li>
+                    <li><a href="#analytics">Analytics</a></li>
+                    <li><a href="#reports">Reports</a></li>
+                </ul>
+            </nav>
+            <div class="user-menu">
+                <span>Welcome, Business User</span>
+                <div class="user-avatar">B</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">Create New Campaign</h1>
+            <p class="page-subtitle">Launch your next successful influencer marketing campaign with our comprehensive campaign builder</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-info">
+                <span id="progressText">Step 1 of 7 - Basic Information</span>
+                <button class="save-draft-btn" id="saveDraftBtn">💾 Save Draft</button>
+            </div>
+        </div>
+
+        <div class="step-navigation" id="stepNavigation">
+            <div class="step-item active" data-step="1">
+                <div class="step-number">1</div>
+                <span>Basic Info</span>
+            </div>
+            <div class="step-item" data-step="2">
+                <div class="step-number">2</div>
+                <span>Details</span>
+            </div>
+            <div class="step-item" data-step="3">
+                <div class="step-number">3</div>
+                <span>Platforms</span>
+            </div>
+            <div class="step-item" data-step="4">
+                <div class="step-number">4</div>
+                <span>Requirements</span>
+            </div>
+            <div class="step-item" data-step="5">
+                <div class="step-number">5</div>
+                <span>Budget</span>
+            </div>
+            <div class="step-item" data-step="6">
+                <div class="step-number">6</div>
+                <span>Assets</span>
+            </div>
+            <div class="step-item" data-step="7">
+                <div class="step-number">7</div>
+                <span>Application</span>
+            </div>
+        </div>
+
+        <form class="form-container" id="campaignForm">
+            <!-- Section 1: Basic Campaign Information -->
+            <div class="form-section active" id="section1">
+                <div class="section-header">
+                    <div class="section-number">1</div>
+                    <div>
+                        <h2 class="section-title">Basic Campaign Information</h2>
+                        <p class="section-description">Start by defining the core details of your campaign</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="campaignTitle">Campaign Title <span class="required">*</span></label>
+                    <input type="text" id="campaignTitle" name="campaignTitle" required>
+                    <div class="help-text">Choose a clear, descriptive title for your campaign</div>
+                    <div class="error-message">Please enter a campaign title</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="campaignDescription">Campaign Description <span class="required">*</span></label>
+                    <textarea id="campaignDescription" name="campaignDescription" required placeholder="Describe your campaign goals, target audience, and key messaging..."></textarea>
+                    <div class="help-text">Provide a detailed description of your campaign objectives and what you're looking to achieve</div>
+                    <div class="error-message">Please enter a campaign description</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="campaignType">Campaign Type <span class="required">*</span> 
+                        <span class="tooltip" data-tooltip="Select the primary type of campaign you're running">?</span>
+                    </label>
+                    <select id="campaignType" name="campaignType" required>
+                        <option value="">Select campaign type</option>
+                        <option value="product-review">Product Review</option>
+                        <option value="brand-awareness">Brand Awareness</option>
+                        <option value="sponsored-content">Sponsored Content</option>
+                        <option value="giveaway">Giveaway</option>
+                        <option value="ambassador-program">Ambassador Program</option>
+                        <option value="event-promotion">Event Promotion</option>
+                        <option value="launch-campaign">Product Launch</option>
+                    </select>
+                    <div class="error-message">Please select a campaign type</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="industry">Industry/Category <span class="required">*</span></label>
+                        <select id="industry" name="industry" required>
+                            <option value="">Select industry</option>
+                            <option value="fashion">Fashion & Beauty</option>
+                            <option value="fitness">Fitness & Health</option>
+                            <option value="food">Food & Beverage</option>
+                            <option value="technology">Technology</option>
+                            <option value="travel">Travel & Tourism</option>
+                            <option value="lifestyle">Lifestyle</option>
+                            <option value="automotive">Automotive</option>
+                            <option value="finance">Finance</option>
+                            <option value="education">Education</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="home">Home & Garden</option>
+                            <option value="sports">Sports</option>
+                            <option value="gaming">Gaming</option>
+                            <option value="pets">Pets</option>
+                            <option value="parenting">Parenting</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="error-message">Please select an industry</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="campaignBudgetRange">Budget Range <span class="required">*</span></label>
+                        <select id="campaignBudgetRange" name="campaignBudgetRange" required>
+                            <option value="">Select budget range</option>
+                            <option value="under-1k">Under $1,000</option>
+                            <option value="1k-5k">$1,000 - $5,000</option>
+                            <option value="5k-10k">$5,000 - $10,000</option>
+                            <option value="10k-25k">$10,000 - $25,000</option>
+                            <option value="25k-50k">$25,000 - $50,000</option>
+                            <option value="50k-100k">$50,000 - $100,000</option>
+                            <option value="over-100k">Over $100,000</option>
+                        </select>
+                        <div class="error-message">Please select a budget range</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Campaign Objectives <span class="required">*</span>
+                        <span class="tooltip" data-tooltip="Select all objectives that apply to your campaign">?</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="obj-awareness" name="objectives" value="brand-awareness">
+                            <label for="obj-awareness">Brand Awareness</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="obj-leads" name="objectives" value="lead-generation">
+                            <label for="obj-leads">Lead Generation</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="obj-sales" name="objectives" value="sales">
+                            <label for="obj-sales">Sales & Conversions</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="obj-engagement" name="objectives" value="engagement">
+                            <label for="obj-engagement">Engagement</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="obj-reach" name="objectives" value="reach">
+                            <label for="obj-reach">Reach & Impressions</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="obj-ugc" name="objectives" value="user-generated-content">
+                            <label for="obj-ugc">User-Generated Content</label>
+                        </div>
+                    </div>
+                    <div class="error-message">Please select at least one objective</div>
+                </div>
+            </div>
+
+            <!-- Section 2: Campaign Details -->
+            <div class="form-section" id="section2">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <div>
+                        <h2 class="section-title">Campaign Details</h2>
+                        <p class="section-description">Set your campaign timeline and targeting parameters</p>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startDate">Campaign Start Date <span class="required">*</span></label>
+                        <input type="date" id="startDate" name="startDate" required>
+                        <div class="error-message">Please select a start date</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="endDate">Campaign End Date <span class="required">*</span></label>
+                        <input type="date" id="endDate" name="endDate" required>
+                        <div class="error-message">Please select an end date</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="applicationDeadline">Application Deadline <span class="required">*</span></label>
+                        <input type="date" id="applicationDeadline" name="applicationDeadline" required>
+                        <div class="help-text">When should influencers apply by?</div>
+                        <div class="error-message">Please select an application deadline</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="influencerCount">Number of Influencers Needed <span class="required">*</span></label>
+                        <input type="number" id="influencerCount" name="influencerCount" min="1" max="100" required>
+                        <div class="help-text">How many influencers do you want to work with?</div>
+                        <div class="error-message">Please enter the number of influencers needed</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Geographic Targeting <span class="required">*</span>
+                        <span class="tooltip" data-tooltip="Select the regions where you want your campaign to reach">?</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="geo-us" name="geography" value="united-states">
+                            <label for="geo-us">United States</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="geo-canada" name="geography" value="canada">
+                            <label for="geo-canada">Canada</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="geo-uk" name="geography" value="united-kingdom">
+                            <label for="geo-uk">United Kingdom</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="geo-europe" name="geography" value="europe">
+                            <label for="geo-europe">Europe</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="geo-asia" name="geography" value="asia-pacific">
+                            <label for="geo-asia">Asia Pacific</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="geo-global" name="geography" value="global">
+                            <label for="geo-global">Global</label>
+                        </div>
+                    </div>
+                    <div class="error-message">Please select at least one geographic region</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Age Group Targeting 
+                        <span class="tooltip" data-tooltip="Select the age groups you want to target">?</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="age-13-17" name="ageGroups" value="13-17">
+                            <label for="age-13-17">13-17 (Gen Z)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="age-18-24" name="ageGroups" value="18-24">
+                            <label for="age-18-24">18-24 (Young Adults)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="age-25-34" name="ageGroups" value="25-34">
+                            <label for="age-25-34">25-34 (Millennials)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="age-35-44" name="ageGroups" value="35-44">
+                            <label for="age-35-44">35-44 (Gen X)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="age-45-54" name="ageGroups" value="45-54">
+                            <label for="age-45-54">45-54 (Gen X)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="age-55-plus" name="ageGroups" value="55+">
+                            <label for="age-55-plus">55+ (Boomers)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Platform Requirements -->
+            <div class="form-section" id="section3">
+                <div class="section-header">
+                    <div class="section-number">3</div>
+                    <div>
+                        <h2 class="section-title">Platform Requirements</h2>
+                        <p class="section-description">Specify which platforms and content formats you need</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Social Media Platforms <span class="required">*</span>
+                        <span class="tooltip" data-tooltip="Select all platforms where you want content created">?</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-instagram" name="platforms" value="instagram">
+                            <label for="platform-instagram">📸 Instagram</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-tiktok" name="platforms" value="tiktok">
+                            <label for="platform-tiktok">🎵 TikTok</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-youtube" name="platforms" value="youtube">
+                            <label for="platform-youtube">📺 YouTube</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-twitter" name="platforms" value="twitter">
+                            <label for="platform-twitter">🐦 Twitter/X</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-linkedin" name="platforms" value="linkedin">
+                            <label for="platform-linkedin">💼 LinkedIn</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-facebook" name="platforms" value="facebook">
+                            <label for="platform-facebook">📘 Facebook</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-snapchat" name="platforms" value="snapchat">
+                            <label for="platform-snapchat">👻 Snapchat</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="platform-pinterest" name="platforms" value="pinterest">
+                            <label for="platform-pinterest">📌 Pinterest</label>
+                        </div>
+                    </div>
+                    <div class="error-message">Please select at least one platform</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Content Format Requirements <span class="required">*</span>
+                        <span class="tooltip" data-tooltip="What types of content do you need?">?</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="format-posts" name="contentFormats" value="posts">
+                            <label for="format-posts">📝 Posts</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="format-stories" name="contentFormats" value="stories">
+                            <label for="format-stories">📖 Stories</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="format-reels" name="contentFormats" value="reels">
+                            <label for="format-reels">🎬 Reels/Short Videos</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="format-videos" name="contentFormats" value="videos">
+                            <label for="format-videos">📹 Long-form Videos</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="format-live" name="contentFormats" value="live">
+                            <label for="format-live">🔴 Live Streams</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="format-igtv" name="contentFormats" value="igtv">
+                            <label for="format-igtv">📺 IGTV</label>
+                        </div>
+                    </div>
+                    <div class="error-message">Please select at least one content format</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="postingFrequency">Posting Frequency <span class="required">*</span></label>
+                        <select id="postingFrequency" name="postingFrequency" required>
+                            <option value="">Select frequency</option>
+                            <option value="once">One-time post</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="bi-weekly">Bi-weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="custom">Custom schedule</option>
+                        </select>
+                        <div class="error-message">Please select posting frequency</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postingTiming">Preferred Posting Times</label>
+                        <input type="text" id="postingTiming" name="postingTiming" placeholder="e.g., 9 AM - 12 PM EST">
+                        <div class="help-text">When should content be posted for maximum engagement?</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="platformRequirements">Platform-Specific Requirements</label>
+                    <textarea id="platformRequirements" name="platformRequirements" placeholder="Any specific requirements for different platforms (hashtags, tagging, etc.)"></textarea>
+                    <div class="help-text">Include any platform-specific guidelines or requirements</div>
+                </div>
+            </div>
+
+            <!-- Section 4: Influencer Requirements -->
+            <div class="form-section" id="section4">
+                <div class="section-header">
+                    <div class="section-number">4</div>
+                    <div>
+                        <h2 class="section-title">Influencer Requirements</h2>
+                        <p class="section-description">Define the criteria for influencers you want to work with</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="minFollowers">Minimum Follower Count <span class="required">*</span>
+                        <span class="tooltip" data-tooltip="Set the minimum number of followers required">?</span>
+                    </label>
+                    <select id="minFollowers" name="minFollowers" required>
+                        <option value="">Select minimum followers</option>
+                        <option value="1000">1,000+ (Nano-influencers)</option>
+                        <option value="10000">10,000+ (Micro-influencers)</option>
+                        <option value="100000">100,000+ (Macro-influencers)</option>
+                        <option value="1000000">1,000,000+ (Mega-influencers)</option>
+                        <option value="custom">Custom amount</option>
+                    </select>
+                    <div class="error-message">Please select minimum follower count</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="engagementRate">Minimum Engagement Rate <span class="required">*</span>
+                        <span class="tooltip" data-tooltip="Average engagement rate requirement (likes, comments, shares)">?</span>
+                    </label>
+                    <div class="range-slider">
+                        <input type="range" id="engagementRate" name="engagementRate" min="0" max="10" step="0.1" value="2">
+                        <div class="range-values">
+                            <span>0%</span>
+                            <span id="engagementValue">2%</span>
+                            <span>10%</span>
+                        </div>
+                    </div>
+                    <div class="help-text">Higher engagement rates typically indicate more active and engaged audiences</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Niche/Category Preferences <span class="required">*</span>
+                        <span class="tooltip" data-tooltip="What niches should the influencer focus on?">?</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="niche-fashion" name="niches" value="fashion">
+                            <label for="niche-fashion">Fashion & Style</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="niche-beauty" name="niches" value="beauty">
+                            <label for="niche-beauty">Beauty & Cosmetics</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="niche-fitness" name="niches" value="fitness">
+                            <label for="niche-fitness">Fitness & Health</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="niche-food" name="niches" value="food">
+                            <label for="niche-food">Food & Cooking</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="niche-travel" name="niches" value="travel">
+                            <label for="niche-travel">Travel & Adventure</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="niche-tech" name="niches" value="technology">
+                            <label for="niche-tech">Technology</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="niche-lifestyle" name="niches" value="lifestyle">
+                            <label for="niche-lifestyle">Lifestyle</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="niche-parenting" name="niches" value="parenting">
+                            <label for="niche-parenting">Parenting & Family</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="niche-business" name="niches" value="business">
+                            <label for="niche-business">Business & Finance</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="niche-entertainment" name="niches" value="entertainment">
+                            <label for="niche-entertainment">Entertainment</label>
+                        </div>
+                    </div>
+                    <div class="error-message">Please select at least one niche</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Content Style Preferences
+                        <span class="tooltip" data-tooltip="What style of content do you prefer?">?</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="style-professional" name="contentStyles" value="professional">
+                            <label for="style-professional">Professional</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="style-casual" name="contentStyles" value="casual">
+                            <label for="style-casual">Casual & Authentic</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="style-creative" name="contentStyles" value="creative">
+                            <label for="style-creative">Creative & Artistic</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="style-educational" name="contentStyles" value="educational">
+                            <label for="style-educational">Educational</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="style-humorous" name="contentStyles" value="humorous">
+                            <label for="style-humorous">Humorous & Fun</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="style-inspirational" name="contentStyles" value="inspirational">
+                            <label for="style-inspirational">Inspirational</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Language Requirements
+                        <span class="tooltip" data-tooltip="What languages should the influencer speak?">?</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-english" name="languages" value="english">
+                            <label for="lang-english">English</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-spanish" name="languages" value="spanish">
+                            <label for="lang-spanish">Spanish</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-french" name="languages" value="french">
+                            <label for="lang-french">French</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-german" name="languages" value="german">
+                            <label for="lang-german">German</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-italian" name="languages" value="italian">
+                            <label for="lang-italian">Italian</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-portuguese" name="languages" value="portuguese">
+                            <label for="lang-portuguese">Portuguese</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-other" name="languages" value="other">
+                            <label for="lang-other">Other</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="additionalRequirements">Additional Requirements</label>
+                    <textarea id="additionalRequirements" name="additionalRequirements" placeholder="Any other specific requirements for influencers (experience, demographics, etc.)"></textarea>
+                    <div class="help-text">Include any other criteria that are important for your campaign</div>
+                </div>
+            </div>
+
+            <!-- Section 5: Budget & Compensation -->
+            <div class="form-section" id="section5">
+                <div class="section-header">
+                    <div class="section-number">5</div>
+                    <div>
+                        <h2 class="section-title">Budget & Compensation</h2>
+                        <p class="section-description">Define your budget and compensation structure</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentStructure">Payment Structure <span class="required">*</span>
+                        <span class="tooltip" data-tooltip="How do you want to compensate influencers?">?</span>
+                    </label>
+                    <select id="paymentStructure" name="paymentStructure" required>
+                        <option value="">Select payment structure</option>
+                        <option value="per-post">Per Post</option>
+                        <option value="per-campaign">Per Campaign</option>
+                        <option value="performance-based">Performance-Based</option>
+                        <option value="flat-fee">Flat Fee</option>
+                        <option value="commission">Commission Only</option>
+                        <option value="hybrid">Hybrid (Base + Performance)</option>
+                    </select>
+                    <div class="error-message">Please select a payment structure</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="minBudget">Minimum Budget per Influencer <span class="required">*</span></label>
+                        <input type="number" id="minBudget" name="minBudget" min="0" step="50" required>
+                        <div class="help-text">Minimum amount you're willing to pay per influencer</div>
+                        <div class="error-message">Please enter minimum budget</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maxBudget">Maximum Budget per Influencer <span class="required">*</span></label>
+                        <input type="number" id="maxBudget" name="maxBudget" min="0" step="50" required>
+                        <div class="help-text">Maximum amount you're willing to pay per influencer</div>
+                        <div class="error-message">Please enter maximum budget</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Additional Perks & Benefits
+                        <span class="tooltip" data-tooltip="What additional benefits can you offer?">?</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="perk-products" name="perks" value="free-products">
+                            <label for="perk-products">Free Products</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="perk-exclusive" name="perks" value="exclusive-access">
+                            <label for="perk-exclusive">Exclusive Access</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="perk-events" name="perks" value="event-invitations">
+                            <label for="perk-events">Event Invitations</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="perk-discounts" name="perks" value="discount-codes">
+                            <label for="perk-discounts">Discount Codes</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="perk-collaboration" name="perks" value="long-term-collaboration">
+                            <label for="perk-collaboration">Long-term Collaboration</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="perk-testimonials" name="perks" value="testimonials">
+                            <label for="perk-testimonials">Testimonials & Reviews</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Usage Rights & Licensing <span class="required">*</span>
+                        <span class="tooltip" data-tooltip="What rights do you need for the content?">?</span>
+                    </label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="usage-basic" name="usageRights" value="basic" required>
+                            <label for="usage-basic">Basic Rights (Platform posting only)</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="usage-extended" name="usageRights" value="extended" required>
+                            <label for="usage-extended">Extended Rights (Reposting with credit)</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="usage-commercial" name="usageRights" value="commercial" required>
+                            <label for="usage-commercial">Commercial Rights (Ads, marketing materials)</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="usage-exclusive" name="usageRights" value="exclusive" required>
+                            <label for="usage-exclusive">Exclusive Rights (All usage rights)</label>
+                        </div>
+                    </div>
+                    <div class="error-message">Please select usage rights</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentTerms">Payment Terms</label>
+                    <textarea id="paymentTerms" name="paymentTerms" placeholder="Net 30, upon completion, milestones, etc."></textarea>
+                    <div class="help-text">Specify when and how payments will be made</div>
+                </div>
+            </div>
+
+            <!-- Section 6: Campaign Assets -->
+            <div class="form-section" id="section6">
+                <div class="section-header">
+                    <div class="section-number">6</div>
+                    <div>
+                        <h2 class="section-title">Campaign Assets</h2>
+                        <p class="section-description">Upload brand guidelines, images, and other campaign materials</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="brandGuidelines">Brand Guidelines</label>
+                    <div class="file-upload" data-target="brandGuidelines">
+                        <input type="file" id="brandGuidelines" name="brandGuidelines" accept=".pdf,.doc,.docx" multiple>
+                        <div class="upload-icon">📄</div>
+                        <div class="upload-text">Click to upload or drag and drop</div>
+                        <div class="upload-formats">PDF, DOC, DOCX (Max 10MB each)</div>
+                    </div>
+                    <div class="uploaded-files" id="brandGuidelinesFiles"></div>
+                    <div class="help-text">Upload your brand guidelines, style guide, and any visual identity documents</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="productImages">Product Images/Videos</label>
+                    <div class="file-upload" data-target="productImages">
+                        <input type="file" id="productImages" name="productImages" accept="image/*,video/*" multiple>
+                        <div class="upload-icon">🖼️</div>
+                        <div class="upload-text">Click to upload or drag and drop</div>
+                        <div class="upload-formats">JPG, PNG, MP4, MOV (Max 50MB each)</div>
+                    </div>
+                    <div class="uploaded-files" id="productImagesFiles"></div>
+                    <div class="help-text">Upload high-quality product images and videos for influencers to use</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="campaignBrief">Campaign Brief</label>
+                    <div class="file-upload" data-target="campaignBrief">
+                        <input type="file" id="campaignBrief" name="campaignBrief" accept=".pdf,.doc,.docx">
+                        <div class="upload-icon">📋</div>
+                        <div class="upload-text">Click to upload or drag and drop</div>
+                        <div class="upload-formats">PDF, DOC, DOCX (Max 10MB)</div>
+                    </div>
+                    <div class="uploaded-files" id="campaignBriefFiles"></div>
+                    <div class="help-text">Upload a detailed campaign brief with objectives, messaging, and requirements</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="requiredHashtags">Required Hashtags</label>
+                        <input type="text" id="requiredHashtags" name="requiredHashtags" placeholder="#brand #campaign #sponsored">
+                        <div class="help-text">Hashtags that must be included in all posts</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="requiredMentions">Required Mentions</label>
+                        <input type="text" id="requiredMentions" name="requiredMentions" placeholder="@brandname @campaign">
+                        <div class="help-text">Accounts that must be mentioned in posts</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contentGuidelines">Content Guidelines</label>
+                    <textarea id="contentGuidelines" name="contentGuidelines" placeholder="Key messages, tone of voice, dos and don'ts..."></textarea>
+                    <div class="help-text">Provide detailed guidelines for content creation</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleContent">Example Content Links</label>
+                    <textarea id="exampleContent" name="exampleContent" placeholder="Links to examples of content you like..."></textarea>
+                    <div class="help-text">Share links to content that represents your desired style and quality</div>
+                </div>
+            </div>
+
+            <!-- Section 7: Application Process -->
+            <div class="form-section" id="section7">
+                <div class="section-header">
+                    <div class="section-number">7</div>
+                    <div>
+                        <h2 class="section-title">Application Process</h2>
+                        <p class="section-description">Set up the application process and screening criteria</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="applicationQuestions">Application Questions</label>
+                    <textarea id="applicationQuestions" name="applicationQuestions" placeholder="1. Why are you interested in this campaign?&#10;2. What's your experience with similar brands?&#10;3. How would you promote our product?"></textarea>
+                    <div class="help-text">Questions influencers should answer when applying (one per line)</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Portfolio Requirements
+                        <span class="tooltip" data-tooltip="What should influencers include in their application?">?</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="portfolio-stats" name="portfolioRequirements" value="analytics">
+                            <label for="portfolio-stats">Analytics & Stats</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="portfolio-content" name="portfolioRequirements" value="content-samples">
+                            <label for="portfolio-content">Content Samples</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="portfolio-rates" name="portfolioRequirements" value="rate-card">
+                            <label for="portfolio-rates">Rate Card</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="portfolio-testimonials" name="portfolioRequirements" value="testimonials">
+                            <label for="portfolio-testimonials">Client Testimonials</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="portfolio-media-kit" name="portfolioRequirements" value="media-kit">
+                            <label for="portfolio-media-kit">Media Kit</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Screening Criteria
+                        <span class="tooltip" data-tooltip="How will you evaluate applications?">?</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="screening-engagement" name="screeningCriteria" value="engagement-quality">
+                            <label for="screening-engagement">Engagement Quality</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="screening-audience" name="screeningCriteria" value="audience-relevance">
+                            <label for="screening-audience">Audience Relevance</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="screening-content" name="screeningCriteria" value="content-quality">
+                            <label for="screening-content">Content Quality</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="screening-brand" name="screeningCriteria" value="brand-alignment">
+                            <label for="screening-brand">Brand Alignment</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="screening-experience" name="screeningCriteria" value="experience">
+                            <label for="screening-experience">Previous Experience</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="screening-professionalism" name="screeningCriteria" value="professionalism">
+                            <label for="screening-professionalism">Professionalism</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="responseTimeline">Response Timeline</label>
+                        <select id="responseTimeline" name="responseTimeline">
+                            <option value="">Select timeline</option>
+                            <option value="24-hours">Within 24 hours</option>
+                            <option value="48-hours">Within 48 hours</option>
+                            <option value="1-week">Within 1 week</option>
+                            <option value="2-weeks">Within 2 weeks</option>
+                            <option value="1-month">Within 1 month</option>
+                        </select>
+                        <div class="help-text">How quickly will you respond to applications?</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectionProcess">Selection Process</label>
+                        <select id="selectionProcess" name="selectionProcess">
+                            <option value="">Select process</option>
+                            <option value="first-come">First Come, First Served</option>
+                            <option value="best-fit">Best Fit Selection</option>
+                            <option value="application-review">Application Review</option>
+                            <option value="interview">Interview Process</option>
+                            <option value="portfolio-review">Portfolio Review</option>
+                        </select>
+                        <div class="help-text">How will you select influencers?</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactInformation">Contact Information</label>
+                    <textarea id="contactInformation" name="contactInformation" placeholder="How should influencers contact you? Email, phone, etc."></textarea>
+                    <div class="help-text">Provide contact details for influencers to reach out</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="additionalNotes">Additional Notes</label>
+                    <textarea id="additionalNotes" name="additionalNotes" placeholder="Any additional information or requirements..."></textarea>
+                    <div class="help-text">Include any other important information for potential applicants</div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="form-navigation">
+                <button type="button" class="nav-btn btn-secondary" id="prevBtn" disabled>
+                    ← Previous
+                </button>
+                <div style="display: flex; gap: 1rem;">
+                    <button type="button" class="nav-btn btn-secondary" id="previewBtn">
+                        👁️ Preview
+                    </button>
+                    <button type="button" class="nav-btn btn-primary" id="nextBtn">
+                        Next →
+                    </button>
+                    <button type="submit" class="nav-btn btn-success" id="submitBtn" style="display: none;">
+                        🚀 Launch Campaign
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Preview Modal -->
+        <div id="previewModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; padding: 2rem; overflow-y: auto;">
+            <div style="background: white; border-radius: 12px; max-width: 1000px; margin: 0 auto; padding: 2rem; position: relative;">
+                <button id="closePreview" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
+                <h2 style="color: #1e3a8a; margin-bottom: 2rem;">Campaign Preview</h2>
+                <div id="previewContent" class="preview-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form state management
+        let currentStep = 1;
+        const totalSteps = 7;
+        let formData = {};
+        let completedSteps = new Set();
+
+        // DOM elements
+        const form = document.getElementById('campaignForm');
+        const sections = document.querySelectorAll('.form-section');
+        const stepItems = document.querySelectorAll('.step-item');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const saveDraftBtn = document.getElementById('saveDraftBtn');
+        const previewBtn = document.getElementById('previewBtn');
+        const previewModal = document.getElementById('previewModal');
+        const closePreview = document.getElementById('closePreview');
+        const previewContent = document.getElementById('previewContent');
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            initializeFileUploads();
+            initializeFormValidation();
+            initializeEventListeners();
+            loadDraftData();
+        });
+
+        // Navigation functions
+        function showStep(step) {
+            // Hide all sections
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Show current section
+            const currentSection = document.getElementById(`section${step}`);
+            if (currentSection) {
+                currentSection.classList.add('active');
+            }
+
+            // Update step navigation
+            stepItems.forEach((item, index) => {
+                item.classList.remove('active');
+                if (index + 1 === step) {
+                    item.classList.add('active');
+                }
+                if (completedSteps.has(index + 1)) {
+                    item.classList.add('completed');
+                }
+            });
+
+            // Update navigation buttons
+            prevBtn.disabled = step === 1;
+            if (step === totalSteps) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'inline-flex';
+            } else {
+                nextBtn.style.display = 'inline-flex';
+                submitBtn.style.display = 'none';
+            }
+
+            currentStep = step;
+            updateProgress();
+        }
+
+        function nextStep() {
+            if (validateCurrentStep()) {
+                completedSteps.add(currentStep);
+                if (currentStep < totalSteps) {
+                    showStep(currentStep + 1);
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                showStep(currentStep - 1);
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            progressFill.style.width = progress + '%';
+            
+            const stepTitles = [
+                'Basic Information',
+                'Campaign Details', 
+                'Platform Requirements',
+                'Influencer Requirements',
+                'Budget & Compensation',
+                'Campaign Assets',
+                'Application Process'
+            ];
+            
+            progressText.textContent = `Step ${currentStep} of ${totalSteps} - ${stepTitles[currentStep - 1]}`;
+        }
+
+        // Form validation
+        function validateCurrentStep() {
+            const currentSection = document.getElementById(`section${currentStep}`);
+            const requiredFields = currentSection.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!validateField(field)) {
+                    isValid = false;
+                }
+            });
+
+            // Custom validation for specific steps
+            if (currentStep === 1) {
+                // Validate objectives
+                const objectives = document.querySelectorAll('input[name="objectives"]:checked');
+                if (objectives.length === 0) {
+                    showError('Please select at least one objective');
+                    isValid = false;
+                }
+            }
+
+            if (currentStep === 2) {
+                // Validate dates
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                const appDeadline = document.getElementById('applicationDeadline').value;
+                
+                if (startDate && endDate && startDate >= endDate) {
+                    showError('End date must be after start date');
+                    isValid = false;
+                }
+                
+                if (appDeadline && startDate && appDeadline >= startDate) {
+                    showError('Application deadline must be before campaign start date');
+                    isValid = false;
+                }
+
+                // Validate geography
+                const geography = document.querySelectorAll('input[name="geography"]:checked');
+                if (geography.length === 0) {
+                    showError('Please select at least one geographic region');
+                    isValid = false;
+                }
+            }
+
+            if (currentStep === 3) {
+                // Validate platforms
+                const platforms = document.querySelectorAll('input[name="platforms"]:checked');
+                if (platforms.length === 0) {
+                    showError('Please select at least one platform');
+                    isValid = false;
+                }
+
+                // Validate content formats
+                const formats = document.querySelectorAll('input[name="contentFormats"]:checked');
+                if (formats.length === 0) {
+                    showError('Please select at least one content format');
+                    isValid = false;
+                }
+            }
+
+            if (currentStep === 4) {
+                // Validate niches
+                const niches = document.querySelectorAll('input[name="niches"]:checked');
+                if (niches.length === 0) {
+                    showError('Please select at least one niche');
+                    isValid = false;
+                }
+            }
+
+            if (currentStep === 5) {
+                // Validate budget range
+                const minBudget = parseFloat(document.getElementById('minBudget').value);
+                const maxBudget = parseFloat(document.getElementById('maxBudget').value);
+                
+                if (minBudget && maxBudget && minBudget >= maxBudget) {
+                    showError('Maximum budget must be greater than minimum budget');
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+
+        function validateField(field) {
+            const group = field.closest('.form-group');
+            const errorMsg = group.querySelector('.error-message');
+            
+            if (field.hasAttribute('required')) {
+                if (field.type === 'checkbox' || field.type === 'radio') {
+                    const name = field.name;
+                    const checkedBoxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+                    if (checkedBoxes.length === 0) {
+                        group.classList.add('error');
+                        return false;
+                    }
+                } else if (!field.value.trim()) {
+                    group.classList.add('error');
+                    return false;
+                }
+            }
+            
+            group.classList.remove('error');
+            return true;
+        }
+
+        function showError(message) {
+            // Create a temporary error message
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            errorDiv.style.background = '#fee2e2';
+            errorDiv.style.color = '#dc2626';
+            errorDiv.style.padding = '1rem';
+            errorDiv.style.borderRadius = '8px';
+            errorDiv.style.marginBottom = '1rem';
+            
+            const currentSection = document.getElementById(`section${currentStep}`);
+            currentSection.insertBefore(errorDiv, currentSection.firstChild);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+
+        // File upload handling
+        function initializeFileUploads() {
+            const fileUploads = document.querySelectorAll('.file-upload');
+            
+            fileUploads.forEach(upload => {
+                const input = upload.querySelector('input[type="file"]');
+                const target = upload.dataset.target;
+                
+                upload.addEventListener('click', () => input.click());
+                upload.addEventListener('dragover', handleDragOver);
+                upload.addEventListener('dragleave', handleDragLeave);
+                upload.addEventListener('drop', handleDrop);
+                
+                input.addEventListener('change', (e) => handleFileSelect(e, target));
+            });
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            const target = e.currentTarget.dataset.target;
+            const input = e.currentTarget.querySelector('input[type="file"]');
+            
+            input.files = files;
+            handleFileSelect({ target: input }, target);
+        }
+
+        function handleFileSelect(e, target) {
+            const files = e.target.files;
+            const container = document.getElementById(target + 'Files');
+            
+            container.innerHTML = '';
+            
+            Array.from(files).forEach(file => {
+                const fileDiv = document.createElement('div');
+                fileDiv.className = 'uploaded-file';
+                fileDiv.innerHTML = `
+                    <div class="file-info">
+                        <span>📎 ${file.name}</span>
+                        <span style="color: #6b7280; font-size: 0.875rem;">(${formatFileSize(file.size)})</span>
+                    </div>
+                    <span class="remove-file" onclick="removeFile(this, '${target}')">Remove</span>
+                `;
+                container.appendChild(fileDiv);
+            });
+        }
+
+        function removeFile(element, target) {
+            element.closest('.uploaded-file').remove();
+            const input = document.getElementById(target);
+            input.value = '';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Form validation and event listeners
+        function initializeFormValidation() {
+            // Real-time validation
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('blur', () => validateField(input));
+                input.addEventListener('input', () => {
+                    const group = input.closest('.form-group');
+                    if (group.classList.contains('error')) {
+                        validateField(input);
+                    }
+                });
+            });
+
+            // Checkbox and radio selection highlighting
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const radios = document.querySelectorAll('input[type="radio"]');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const item = this.closest('.checkbox-item');
+                    if (this.checked) {
+                        item.classList.add('selected');
+                    } else {
+                        item.classList.remove('selected');
+                    }
+                });
+            });
+
+            radios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const group = document.querySelectorAll(`input[name="${this.name}"]`);
+                    group.forEach(r => {
+                        const item = r.closest('.radio-item');
+                        if (r.checked) {
+                            item.classList.add('selected');
+                        } else {
+                            item.classList.remove('selected');
+                        }
+                    });
+                });
+            });
+
+            // Range slider update
+            const engagementSlider = document.getElementById('engagementRate');
+            const engagementValue = document.getElementById('engagementValue');
+            
+            engagementSlider.addEventListener('input', function() {
+                engagementValue.textContent = this.value + '%';
+            });
+        }
+
+        function initializeEventListeners() {
+            // Navigation buttons
+            nextBtn.addEventListener('click', nextStep);
+            prevBtn.addEventListener('click', prevStep);
+            
+            // Step navigation
+            stepItems.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    if (index + 1 <= currentStep || completedSteps.has(index + 1)) {
+                        showStep(index + 1);
+                    }
+                });
+            });
+
+            // Form submission
+            form.addEventListener('submit', handleSubmit);
+            
+            // Save draft
+            saveDraftBtn.addEventListener('click', saveDraft);
+            
+            // Preview
+            previewBtn.addEventListener('click', showPreview);
+            closePreview.addEventListener('click', hidePreview);
+            
+            // Auto-save
+            setInterval(autoSave, 30000); // Auto-save every 30 seconds
+        }
+
+        // Data management
+        function collectFormData() {
+            const data = {};
+            const formElements = form.querySelectorAll('input, select, textarea');
+            
+            formElements.forEach(element => {
+                if (element.type === 'checkbox') {
+                    if (!data[element.name]) data[element.name] = [];
+                    if (element.checked) data[element.name].push(element.value);
+                } else if (element.type === 'radio') {
+                    if (element.checked) data[element.name] = element.value;
+                } else if (element.type === 'file') {
+                    if (element.files.length > 0) {
+                        data[element.name] = Array.from(element.files).map(file => file.name);
+                    }
+                } else {
+                    data[element.name] = element.value;
+                }
+            });
+            
+            return data;
+        }
+
+        function saveDraft() {
+            const data = collectFormData();
+            localStorage.setItem('campaignDraft', JSON.stringify({
+                data: data,
+                currentStep: currentStep,
+                completedSteps: Array.from(completedSteps),
+                timestamp: new Date().toISOString()
+            }));
+            
+            // Show success message
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = 'Draft saved successfully!';
+            document.querySelector('.progress-container').appendChild(successDiv);
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+
+        function loadDraftData() {
+            const draft = localStorage.getItem('campaignDraft');
+            if (draft) {
+                const draftData = JSON.parse(draft);
+                
+                // Ask user if they want to load the draft
+                if (confirm(`Found a saved draft from ${new Date(draftData.timestamp).toLocaleDateString()}. Would you like to continue where you left off?`)) {
+                    // Load form data
+                    Object.keys(draftData.data).forEach(key => {
+                        const elements = document.querySelectorAll(`[name="${key}"]`);
+                        elements.forEach(element => {
+                            if (element.type === 'checkbox') {
+                                element.checked = draftData.data[key].includes(element.value);
+                                if (element.checked) {
+                                    element.closest('.checkbox-item').classList.add('selected');
+                                }
+                            } else if (element.type === 'radio') {
+                                element.checked = element.value === draftData.data[key];
+                                if (element.checked) {
+                                    element.closest('.radio-item').classList.add('selected');
+                                }
+                            } else {
+                                element.value = draftData.data[key];
+                            }
+                        });
+                    });
+                    
+                    // Load step state
+                    currentStep = draftData.currentStep;
+                    completedSteps = new Set(draftData.completedSteps);
+                    showStep(currentStep);
+                }
+            }
+        }
+
+        function autoSave() {
+            if (Object.keys(collectFormData()).length > 0) {
+                saveDraft();
+            }
+        }
+
+        // Preview functionality
+        function showPreview() {
+            const data = collectFormData();
+            let previewHTML = '';
+            
+            // Basic Information
+            previewHTML += '<div class="preview-group">';
+            previewHTML += '<h4>Campaign Overview</h4>';
+            previewHTML += `<p><strong>Title:</strong> ${data.campaignTitle || 'Not specified'}</p>`;
+            previewHTML += `<p><strong>Type:</strong> ${data.campaignType || 'Not specified'}</p>`;
+            previewHTML += `<p><strong>Industry:</strong> ${data.industry || 'Not specified'}</p>`;
+            previewHTML += `<p><strong>Description:</strong> ${data.campaignDescription || 'Not specified'}</p>`;
+            previewHTML += '</div>';
+            
+            // Campaign Details
+            previewHTML += '<div class="preview-group">';
+            previewHTML += '<h4>Campaign Timeline</h4>';
+            previewHTML += `<p><strong>Start Date:</strong> ${data.startDate || 'Not specified'}</p>`;
+            previewHTML += `<p><strong>End Date:</strong> ${data.endDate || 'Not specified'}</p>`;
+            previewHTML += `<p><strong>Application Deadline:</strong> ${data.applicationDeadline || 'Not specified'}</p>`;
+            previewHTML += `<p><strong>Influencers Needed:</strong> ${data.influencerCount || 'Not specified'}</p>`;
+            previewHTML += '</div>';
+            
+            // Platform Requirements
+            previewHTML += '<div class="preview-group">';
+            previewHTML += '<h4>Platform & Content</h4>';
+            previewHTML += `<p><strong>Platforms:</strong> ${data.platforms ? data.platforms.join(', ') : 'Not specified'}</p>`;
+            previewHTML += `<p><strong>Content Formats:</strong> ${data.contentFormats ? data.contentFormats.join(', ') : 'Not specified'}</p>`;
+            previewHTML += `<p><strong>Posting Frequency:</strong> ${data.postingFrequency || 'Not specified'}</p>`;
+            previewHTML += '</div>';
+            
+            // Budget
+            previewHTML += '<div class="preview-group">';
+            previewHTML += '<h4>Budget & Compensation</h4>';
+            previewHTML += `<p><strong>Payment Structure:</strong> ${data.paymentStructure || 'Not specified'}</p>`;
+            previewHTML += `<p><strong>Budget Range:</strong> $${data.minBudget || '0'} - $${data.maxBudget || '0'}</p>`;
+            previewHTML += `<p><strong>Usage Rights:</strong> ${data.usageRights || 'Not specified'}</p>`;
+            previewHTML += '</div>';
+            
+            previewContent.innerHTML = previewHTML;
+            previewModal.style.display = 'block';
+        }
+
+        function hidePreview() {
+            previewModal.style.display = 'none';
+        }
+
+        // Form submission
+        function handleSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateCurrentStep()) {
+                return;
+            }
+            
+            const formData = collectFormData();
+            
+            // Show loading state
+            submitBtn.innerHTML = '<div class="spinner"></div> Launching Campaign...';
+            submitBtn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Success message
+                const successDiv = document.createElement('div');
+                successDiv.className = 'success-message';
+                successDiv.innerHTML = `
+                    <h3>🎉 Campaign Created Successfully!</h3>
+                    <p>Your campaign "${formData.campaignTitle}" has been created and is now live for influencer applications.</p>
+                    <p>You can view and manage your campaign from the dashboard.</p>
+                `;
+                
+                document.querySelector('.main-container').prepend(successDiv);
+                
+                // Clear draft
+                localStorage.removeItem('campaignDraft');
+                
+                // Reset form
+                form.reset();
+                currentStep = 1;
+                completedSteps.clear();
+                showStep(1);
+                
+                // Reset button
+                submitBtn.innerHTML = '🚀 Launch Campaign';
+                submitBtn.disabled = false;
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            }, 2000);
+        }
+
+        // Utility functions
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
+                prevStep();
+            } else if (e.key === 'ArrowRight' && currentStep < totalSteps) {
+                nextStep();
+            }
+        });
+    </script>
+</body>
+</html>

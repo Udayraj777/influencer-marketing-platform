@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Onboarding - Goals & Completion | Professional Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 30px;
+        }
+
+        .logo {
+            color: #1e3a8a;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .progress-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-step.active {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: #10b981;
+            color: white;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 40px;
+            right: 40px;
+            height: 2px;
+            background: #10b981;
+            z-index: 1;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .progress-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+            width: 80px;
+        }
+
+        .progress-label.active {
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .progress-label.completed {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            color: #1e3a8a;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .form-description {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked + label {
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .checkbox-item.checked {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .team-member {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .team-member .form-group {
+            margin-bottom: 0;
+        }
+
+        .team-member button {
+            padding: 8px 12px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            height: 42px;
+        }
+
+        .team-member button:hover {
+            background: #b91c1c;
+        }
+
+        .add-team-member {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .add-team-member:hover {
+            background: #059669;
+        }
+
+        .summary-section {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .summary-title {
+            font-size: 1.1rem;
+            color: #1e3a8a;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .summary-value {
+            color: #6b7280;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+            font-size: 18px;
+            padding: 15px 40px;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: #1e3a8a;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-message h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .success-message p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .team-member {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .form-title {
+                font-size: 1.75rem;
+            }
+
+            .progress-labels {
+                font-size: 10px;
+            }
+
+            .progress-label {
+                width: 60px;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Professional Platform</div>
+            <div class="subtitle">Enterprise Influencer Marketing Solutions</div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-line"></div>
+                <div class="progress-step completed">✓</div>
+                <div class="progress-step completed">✓</div>
+                <div class="progress-step completed">✓</div>
+                <div class="progress-step active">4</div>
+            </div>
+            <div class="progress-labels">
+                <div class="progress-label completed">Company Info</div>
+                <div class="progress-label completed">Target Audience</div>
+                <div class="progress-label completed">Campaign Prefs</div>
+                <div class="progress-label active">Goals & Setup</div>
+            </div>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <h2>🎉 Welcome to Professional Platform!</h2>
+            <p>Your business profile has been successfully created. You're ready to start your influencer marketing journey!</p>
+        </div>
+
+        <div class="form-container" id="formContainer">
+            <div class="form-header">
+                <h1 class="form-title">Goals & Final Setup</h1>
+                <p class="form-description">Complete your profile by setting your marketing goals and configuring your team access.</p>
+            </div>
+
+            <form id="goalsForm">
+                <div class="section-title">Marketing Goals & KPIs</div>
+                
+                <div class="form-group">
+                    <label>Primary marketing objectives *</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="brand-awareness-goal" name="marketingGoals" value="brand-awareness">
+                            <label for="brand-awareness-goal">Increase Brand Awareness</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lead-generation" name="marketingGoals" value="lead-generation">
+                            <label for="lead-generation">Generate Leads</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="sales-conversion" name="marketingGoals" value="sales-conversion">
+                            <label for="sales-conversion">Drive Sales Conversions</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="customer-acquisition" name="marketingGoals" value="customer-acquisition">
+                            <label for="customer-acquisition">Customer Acquisition</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="engagement" name="marketingGoals" value="engagement">
+                            <label for="engagement">Boost Social Engagement</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="website-traffic" name="marketingGoals" value="website-traffic">
+                            <label for="website-traffic">Increase Website Traffic</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="product-launch" name="marketingGoals" value="product-launch">
+                            <label for="product-launch">Product Launch Support</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="reputation-management" name="marketingGoals" value="reputation-management">
+                            <label for="reputation-management">Brand Reputation Management</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expectedROI">Expected ROI timeframe</label>
+                        <select id="expectedROI" name="expectedROI">
+                            <option value="">Select timeframe</option>
+                            <option value="immediate">Immediate (1-3 months)</option>
+                            <option value="short-term">Short-term (3-6 months)</option>
+                            <option value="medium-term">Medium-term (6-12 months)</option>
+                            <option value="long-term">Long-term (12+ months)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="successMetrics">Primary success metric</label>
+                        <select id="successMetrics" name="successMetrics">
+                            <option value="">Select metric</option>
+                            <option value="reach">Reach & Impressions</option>
+                            <option value="engagement">Engagement Rate</option>
+                            <option value="clicks">Click-through Rate</option>
+                            <option value="conversions">Conversion Rate</option>
+                            <option value="sales">Sales Revenue</option>
+                            <option value="brand-mentions">Brand Mentions</option>
+                            <option value="followers">Follower Growth</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-title">Team Setup</div>
+                
+                <div class="form-group">
+                    <label>Team members to invite (optional)</label>
+                    <div class="help-text">Add team members who will help manage your influencer campaigns</div>
+                    <div id="teamMembers">
+                        <div class="team-member">
+                            <div class="form-group">
+                                <label for="member1-name">Name</label>
+                                <input type="text" id="member1-name" name="teamMember1Name" placeholder="Team member name">
+                            </div>
+                            <div class="form-group">
+                                <label for="member1-email">Email</label>
+                                <input type="email" id="member1-email" name="teamMember1Email" placeholder="team@company.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="member1-role">Role</label>
+                                <select id="member1-role" name="teamMember1Role">
+                                    <option value="">Select role</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="manager">Campaign Manager</option>
+                                    <option value="creator">Content Creator</option>
+                                    <option value="analyst">Analytics Viewer</option>
+                                </select>
+                            </div>
+                            <button type="button" onclick="removeTeamMember(this)">Remove</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-team-member" onclick="addTeamMember()">+ Add Another Team Member</button>
+                </div>
+
+                <div class="section-title">Billing & Payment</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="billingEmail">Billing email *</label>
+                        <input type="email" id="billingEmail" name="billingEmail" required placeholder="billing@company.com">
+                        <div class="help-text">Invoices and payment notifications will be sent here</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentMethod">Preferred payment method</label>
+                        <select id="paymentMethod" name="paymentMethod">
+                            <option value="">Select method</option>
+                            <option value="credit-card">Credit Card</option>
+                            <option value="bank-transfer">Bank Transfer</option>
+                            <option value="invoice">Net 30 Invoice</option>
+                            <option value="paypal">PayPal</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-title">Profile Summary</div>
+                
+                <div class="summary-section">
+                    <div class="summary-title">Your Business Profile</div>
+                    <div id="profileSummary">
+                        <!-- Profile summary will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="additionalNotes">Additional notes or special requirements</label>
+                    <textarea id="additionalNotes" name="additionalNotes" rows="3" placeholder="Any additional information, special requirements, or questions for our team..."></textarea>
+                </div>
+
+                <div class="navigation">
+                    <button type="button" class="btn btn-secondary" onclick="previousStep()">
+                        ← Back to Campaign Preferences
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="completeSetup()">
+                        Complete Setup & Launch Profile 🚀
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let teamMemberCount = 1;
+
+        function previousStep() {
+            window.location.href = 'business-onboarding-step3.html';
+        }
+
+        function addTeamMember() {
+            teamMemberCount++;
+            const teamMembersDiv = document.getElementById('teamMembers');
+            const memberDiv = document.createElement('div');
+            memberDiv.className = 'team-member';
+            memberDiv.innerHTML = `
+                <div class="form-group">
+                    <label for="member${teamMemberCount}-name">Name</label>
+                    <input type="text" id="member${teamMemberCount}-name" name="teamMember${teamMemberCount}Name" placeholder="Team member name">
+                </div>
+                <div class="form-group">
+                    <label for="member${teamMemberCount}-email">Email</label>
+                    <input type="email" id="member${teamMemberCount}-email" name="teamMember${teamMemberCount}Email" placeholder="team@company.com">
+                </div>
+                <div class="form-group">
+                    <label for="member${teamMemberCount}-role">Role</label>
+                    <select id="member${teamMemberCount}-role" name="teamMember${teamMemberCount}Role">
+                        <option value="">Select role</option>
+                        <option value="admin">Admin</option>
+                        <option value="manager">Campaign Manager</option>
+                        <option value="creator">Content Creator</option>
+                        <option value="analyst">Analytics Viewer</option>
+                    </select>
+                </div>
+                <button type="button" onclick="removeTeamMember(this)">Remove</button>
+            `;
+            teamMembersDiv.appendChild(memberDiv);
+        }
+
+        function removeTeamMember(button) {
+            const memberDiv = button.closest('.team-member');
+            memberDiv.remove();
+        }
+
+        function completeSetup() {
+            const marketingGoals = document.querySelectorAll('input[name="marketingGoals"]:checked');
+            const billingEmail = document.getElementById('billingEmail').value;
+
+            if (marketingGoals.length === 0) {
+                alert('Please select at least one marketing objective');
+                return;
+            }
+
+            if (!billingEmail) {
+                alert('Please provide a billing email address');
+                return;
+            }
+
+            // Store final form data
+            const form = document.getElementById('goalsForm');
+            const formData = new FormData(form);
+            const data = {};
+            
+            // Handle regular form fields
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+
+            // Get existing data and merge
+            const existingData = JSON.parse(localStorage.getItem('businessOnboarding') || '{}');
+            const mergedData = { ...existingData, ...data };
+            localStorage.setItem('businessOnboarding', JSON.stringify(mergedData));
+
+            // Show success message
+            document.getElementById('formContainer').style.display = 'none';
+            document.getElementById('successMessage').classList.add('show');
+
+            // Simulate API call and redirect after 3 seconds
+            setTimeout(() => {
+                alert('Profile setup complete! You would normally be redirected to your dashboard.');
+                // In a real app, this would redirect to the dashboard
+                // window.location.href = 'dashboard.html';
+            }, 3000);
+        }
+
+        // Handle checkbox styling
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const checkboxItem = this.closest('.checkbox-item');
+                if (this.checked) {
+                    checkboxItem.classList.add('checked');
+                } else {
+                    checkboxItem.classList.remove('checked');
+                }
+            });
+        });
+
+        // Load existing data and populate summary
+        window.addEventListener('load', function() {
+            const existingData = JSON.parse(localStorage.getItem('businessOnboarding') || '{}');
+            
+            // Populate form fields
+            Object.keys(existingData).forEach(key => {
+                const field = document.getElementById(key);
+                if (field) {
+                    if (field.type === 'checkbox') {
+                        const values = Array.isArray(existingData[key]) ? existingData[key] : [existingData[key]];
+                        values.forEach(value => {
+                            const checkbox = document.querySelector(`input[name="${key}"][value="${value}"]`);
+                            if (checkbox) {
+                                checkbox.checked = true;
+                                checkbox.closest('.checkbox-item').classList.add('checked');
+                            }
+                        });
+                    } else {
+                        field.value = existingData[key];
+                    }
+                }
+            });
+
+            // Populate profile summary
+            const summaryDiv = document.getElementById('profileSummary');
+            const summaryItems = [
+                { label: 'Company Name', value: existingData.companyName || 'Not specified' },
+                { label: 'Industry', value: existingData.industry || 'Not specified' },
+                { label: 'Company Size', value: existingData.companySize || 'Not specified' },
+                { label: 'Primary Age Range', value: existingData.ageRange || 'Not specified' },
+                { label: 'Budget Range', value: existingData.budget || 'Not specified' },
+                { label: 'Campaign Duration', value: existingData.campaignDuration || 'Not specified' }
+            ];
+
+            summaryDiv.innerHTML = summaryItems.map(item => `
+                <div class="summary-item">
+                    <span class="summary-label">${item.label}:</span>
+                    <span class="summary-value">${item.value}</span>
+                </div>
+            `).join('');
+        });
+    </script>
+</body>
+</html>

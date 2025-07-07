@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Onboarding - Company Information | Professional Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 30px;
+        }
+
+        .logo {
+            color: #1e3a8a;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .progress-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-step.active {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .progress-step.inactive {
+            background: #e2e8f0;
+            color: #6b7280;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 40px;
+            right: 40px;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .progress-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+            width: 80px;
+        }
+
+        .progress-label.active {
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            color: #1e3a8a;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .form-description {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="url"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 12px 16px;
+            border: 2px dashed #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .form-title {
+                font-size: 1.75rem;
+            }
+
+            .progress-labels {
+                font-size: 10px;
+            }
+
+            .progress-label {
+                width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Professional Platform</div>
+            <div class="subtitle">Enterprise Influencer Marketing Solutions</div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-line"></div>
+                <div class="progress-step active">1</div>
+                <div class="progress-step inactive">2</div>
+                <div class="progress-step inactive">3</div>
+                <div class="progress-step inactive">4</div>
+            </div>
+            <div class="progress-labels">
+                <div class="progress-label active">Company Info</div>
+                <div class="progress-label">Target Audience</div>
+                <div class="progress-label">Campaign Prefs</div>
+                <div class="progress-label">Goals & Setup</div>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="form-header">
+                <h1 class="form-title">Welcome to Our Platform</h1>
+                <p class="form-description">Let's start by gathering some basic information about your company to create your business profile.</p>
+            </div>
+
+            <form id="companyForm">
+                <div class="form-group">
+                    <label for="companyName">Company Name *</label>
+                    <input type="text" id="companyName" name="companyName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="companyLogo">Company Logo</label>
+                    <div class="file-upload">
+                        <input type="file" id="companyLogo" name="companyLogo" accept="image/*">
+                        <label for="companyLogo" class="file-upload-label">
+                            Click to upload your company logo (PNG, JPG, or SVG)
+                        </label>
+                    </div>
+                    <div class="help-text">Recommended size: 300x300 pixels or larger</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="industry">Industry *</label>
+                        <select id="industry" name="industry" required>
+                            <option value="">Select your industry</option>
+                            <option value="technology">Technology</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="finance">Finance</option>
+                            <option value="retail">Retail & E-commerce</option>
+                            <option value="fashion">Fashion & Beauty</option>
+                            <option value="food">Food & Beverage</option>
+                            <option value="travel">Travel & Hospitality</option>
+                            <option value="automotive">Automotive</option>
+                            <option value="real-estate">Real Estate</option>
+                            <option value="education">Education</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="sports">Sports & Fitness</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="companySize">Company Size *</label>
+                        <select id="companySize" name="companySize" required>
+                            <option value="">Select company size</option>
+                            <option value="startup">Startup (1-10 employees)</option>
+                            <option value="small">Small Business (11-50 employees)</option>
+                            <option value="medium">Medium Business (51-200 employees)</option>
+                            <option value="large">Large Business (201-1000 employees)</option>
+                            <option value="enterprise">Enterprise (1000+ employees)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="website">Company Website</label>
+                    <input type="url" id="website" name="website" placeholder="https://www.yourcompany.com">
+                    <div class="help-text">Optional: Your company's main website URL</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Company Description</label>
+                    <textarea id="description" name="description" rows="4" placeholder="Brief description of your company and what you do..."></textarea>
+                    <div class="help-text">This will help us better understand your business and match you with relevant influencers</div>
+                </div>
+
+                <div class="navigation">
+                    <div></div>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">
+                        Continue to Target Audience →
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function nextStep() {
+            const form = document.getElementById('companyForm');
+            const companyName = document.getElementById('companyName').value;
+            const industry = document.getElementById('industry').value;
+            const companySize = document.getElementById('companySize').value;
+
+            if (!companyName || !industry || !companySize) {
+                alert('Please fill in all required fields (marked with *)');
+                return;
+            }
+
+            // Store form data in localStorage for the demo
+            const formData = new FormData(form);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            localStorage.setItem('businessOnboarding', JSON.stringify(data));
+
+            // Navigate to next step
+            window.location.href = 'business-onboarding-step2.html';
+        }
+
+        // Handle file upload display
+        document.getElementById('companyLogo').addEventListener('change', function(e) {
+            const label = document.querySelector('.file-upload-label');
+            if (e.target.files.length > 0) {
+                label.textContent = `Selected: ${e.target.files[0].name}`;
+            } else {
+                label.textContent = 'Click to upload your company logo (PNG, JPG, or SVG)';
+            }
+        });
+    </script>
+</body>
+</html>

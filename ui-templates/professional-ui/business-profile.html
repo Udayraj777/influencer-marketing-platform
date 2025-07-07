@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechCorp Industries - Business Profile | ConnectSphere Professional</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: #93c5fd;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            flex-shrink: 0;
+        }
+
+        .company-details h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .company-industry {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .hero-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .metric-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #f59e0b;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .collaboration-card {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .collaboration-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .collaboration-card p {
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #1e3a8a;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #f8fafc;
+            padding: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .section-content {
+            padding: 2rem;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+        }
+
+        .about-text {
+            line-height: 1.8;
+            color: #374151;
+        }
+
+        .about-text h3 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        .about-text h3:first-child {
+            margin-top: 0;
+        }
+
+        .company-stats {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        /* Campaign Portfolio */
+        .campaign-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .campaign-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .campaign-image {
+            height: 200px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .campaign-details {
+            padding: 1.5rem;
+        }
+
+        .campaign-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e3a8a;
+        }
+
+        .campaign-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .campaign-metrics {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .campaign-metric {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .campaign-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .campaign-tag {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Brand Guidelines */
+        .guidelines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .guideline-card {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .guideline-icon {
+            width: 60px;
+            height: 60px;
+            background: #1e3a8a;
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .guideline-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e3a8a;
+        }
+
+        .color-palette {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .brand-requirements {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .brand-requirements h4 {
+            color: #92400e;
+            margin-bottom: 1rem;
+        }
+
+        .requirements-list {
+            list-style: none;
+            color: #92400e;
+        }
+
+        .requirements-list li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .requirements-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        /* Active Campaigns */
+        .active-campaigns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .active-campaign-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            border: 2px solid #e5e7eb;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .active-campaign-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1);
+        }
+
+        .campaign-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .status-active {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .status-upcoming {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .campaign-requirements {
+            margin-top: 1.5rem;
+        }
+
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .requirement-item {
+            background: white;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .requirement-icon {
+            width: 16px;
+            height: 16px;
+            background: #10b981;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        .apply-btn {
+            width: 100%;
+            margin-top: 1.5rem;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .apply-btn:hover {
+            background: #059669;
+        }
+
+        /* Collaboration Process */
+        .process-timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+
+        .process-step {
+            position: relative;
+            margin-bottom: 2rem;
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-left: 2rem;
+        }
+
+        .process-step::before {
+            content: '';
+            position: absolute;
+            left: -3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background: #1e3a8a;
+            border-radius: 50%;
+            border: 4px solid white;
+        }
+
+        .process-number {
+            position: absolute;
+            left: -2.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: #1e3a8a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .process-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .process-description {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .process-duration {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        /* Reviews Section */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .review-card {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .reviewer-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .reviewer-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .reviewer-handle {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .review-rating {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .star {
+            color: #f59e0b;
+            font-size: 1.2rem;
+        }
+
+        .review-text {
+            color: #374151;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .review-campaign {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .review-campaign strong {
+            color: #1e3a8a;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-input,
+        .form-textarea {
+            padding: 0.875rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #1e3a8a;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #1e40af;
+        }
+
+        /* Footer */
+        footer {
+            background: #374151;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #f59e0b;
+        }
+
+        .footer-text {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campaign-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .guidelines-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .active-campaigns-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .company-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">ConnectSphere</a>
+                <nav class="header-nav">
+                    <a href="../landing-professional.html">Home</a>
+                    <a href="#campaigns">Campaigns</a>
+                    <a href="#brands">Brands</a>
+                    <a href="#influencers">Influencers</a>
+                    <a href="login.html">Login</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <div>
+                    <div class="company-info">
+                        <div class="company-logo">TC</div>
+                        <div class="company-details">
+                            <h1>TechCorp Industries</h1>
+                            <div class="company-industry">Technology & Innovation</div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-metrics">
+                        <div class="metric-card">
+                            <div class="metric-number">127</div>
+                            <div class="metric-label">Campaigns Launched</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">2.8K</div>
+                            <div class="metric-label">Influencers Worked With</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">45M</div>
+                            <div class="metric-label">Total Reach</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collaboration-card">
+                    <h3>Ready to Collaborate?</h3>
+                    <p>Join our network of premium influencers and access exclusive campaign opportunities.</p>
+                    <a href="#contact" class="btn btn-primary">Apply for Partnership</a>
+                    <a href="#campaigns" class="btn btn-secondary mt-2">View Active Campaigns</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- About Company Section -->
+            <section class="section" id="about">
+                <div class="section-header">
+                    <h2 class="section-title">About TechCorp Industries</h2>
+                    <p class="section-subtitle">Innovation-driven technology company transforming digital experiences</p>
+                </div>
+                <div class="section-content">
+                    <div class="about-grid">
+                        <div class="about-text">
+                            <p>TechCorp Industries is a leading technology company specializing in innovative software solutions and digital transformation services. Founded in 2015, we've grown from a startup to a global enterprise serving Fortune 500 companies worldwide.</p>
+                            
+                            <h3>Our Mission</h3>
+                            <p>To empower businesses with cutting-edge technology solutions that drive growth, efficiency, and innovation. We believe in the power of technology to transform how companies operate and connect with their customers.</p>
+                            
+                            <h3>Our Values</h3>
+                            <p>Innovation, integrity, collaboration, and excellence form the foundation of everything we do. We foster a culture of continuous learning and embrace emerging technologies to stay ahead of industry trends.</p>
+                            
+                            <h3>Target Audience</h3>
+                            <p>Our primary audience includes tech-savvy professionals, business leaders, and companies seeking digital transformation solutions. We particularly focus on reaching decision-makers in enterprise technology, startup founders, and technology enthusiasts.</p>
+                        </div>
+                        
+                        <div class="company-stats">
+                            <h3 class="mb-2">Company Statistics</h3>
+                            <div class="stat-item">
+                                <span>Founded</span>
+                                <span class="stat-value">2015</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Global Offices</span>
+                                <span class="stat-value">12</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Team Members</span>
+                                <span class="stat-value">850+</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Countries Served</span>
+                                <span class="stat-value">35</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Client Satisfaction</span>
+                                <span class="stat-value">98%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Annual Revenue</span>
+                                <span class="stat-value">$150M+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Campaign Portfolio Section -->
+            <section class="section" id="portfolio">
+                <div class="section-header">
+                    <h2 class="section-title">Campaign Portfolio</h2>
+                    <p class="section-subtitle">Successful influencer partnerships that delivered exceptional results</p>
+                </div>
+                <div class="section-content">
+                    <div class="campaign-grid">
+                        <div class="campaign-card">
+                            <div class="campaign-image">TechLaunch 2024</div>
+                            <div class="campaign-details">
+                                <h3 class="campaign-title">TechLaunch 2024 Product Release</h3>
+                                <p class="campaign-description">Major product launch campaign featuring tech reviewers and industry experts showcasing our latest AI-powered software suite.</p>
+                                <div class="campaign-metrics">
+                                    <div class="campaign-metric">
+                                        <div class="metric-value">12.5M</div>
+                                        <div>Impressions</div>
+                                    </div>
+                                    <div class="campaign-metric">
+                                        <div class="metric-value">285K</div>
+                                        <div>Engagements</div>
+                                    </div>
+                                    <div class="campaign-metric">
+                                        <div class="metric-value">4.2%</div>
+                                        <div>CTR</div>
+                                    </div>
+                                </div>
+                                <div class="campaign-tags">
+                                    <span class="campaign-tag">Technology</span>
+                                    <span class="campaign-tag">AI</span>
+                                    <span class="campaign-tag">Software</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="campaign-card">
+                            <div class="campaign-image">DevCon Series</div>
+                            <div class="campaign-details">
+                                <h3 class="campaign-title">Developer Conference Series</h3>
+                                <p class="campaign-description">Educational campaign with coding influencers and developer advocates promoting our developer tools and APIs.</p>
+                                <div class="campaign-metrics">
+                                    <div class="campaign-metric">
+                                        <div class="metric-value">8.7M</div>
+                                        <div>Reach</div>
+                                    </div>
+                                    <div class="campaign-metric">
+                                        <div class="metric-value">192K</div>
+                                        <div>Clicks</div>
+                                    </div>
+                                    <div class="campaign-metric">
+                                        <div class="metric-value">3.8%</div>
+                                        <div>Conv. Rate</div>
+                                    </div>
+                                </div>
+                                <div class="campaign-tags">
+                                    <span class="campaign-tag">Developer Tools</span>
+                                    <span class="campaign-tag">APIs</span>
+                                    <span class="campaign-tag">Education</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="campaign-card">
+                            <div class="campaign-image">Future Tech</div>
+                            <div class="campaign-details">
+                                <h3 class="campaign-title">Future of Technology Campaign</h3>
+                                <p class="campaign-description">Thought leadership campaign featuring industry experts discussing emerging technologies and innovation trends.</p>
+                                <div class="campaign-metrics">
+                                    <div class="campaign-metric">
+                                        <div class="metric-value">15.2M</div>
+                                        <div>Views</div>
+                                    </div>
+                                    <div class="campaign-metric">
+                                        <div class="metric-value">420K</div>
+                                        <div>Shares</div>
+                                    </div>
+                                    <div class="campaign-metric">
+                                        <div class="metric-value">6.1%</div>
+                                        <div>Engagement</div>
+                                    </div>
+                                </div>
+                                <div class="campaign-tags">
+                                    <span class="campaign-tag">Innovation</span>
+                                    <span class="campaign-tag">Future Tech</span>
+                                    <span class="campaign-tag">Leadership</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Brand Guidelines Section -->
+            <section class="section" id="guidelines">
+                <div class="section-header">
+                    <h2 class="section-title">Brand Guidelines</h2>
+                    <p class="section-subtitle">Essential brand standards and collaboration requirements</p>
+                </div>
+                <div class="section-content">
+                    <div class="guidelines-grid">
+                        <div class="guideline-card">
+                            <div class="guideline-icon">🎨</div>
+                            <h3 class="guideline-title">Visual Identity</h3>
+                            <p>Clean, modern design aesthetic with professional typography and consistent color usage.</p>
+                            <div class="color-palette">
+                                <div class="color-swatch" style="background: #1e3a8a;"></div>
+                                <div class="color-swatch" style="background: #f59e0b;"></div>
+                                <div class="color-swatch" style="background: #6b7280;"></div>
+                                <div class="color-swatch" style="background: #ffffff; border-color: #e5e7eb;"></div>
+                            </div>
+                        </div>
+
+                        <div class="guideline-card">
+                            <div class="guideline-icon">🗣️</div>
+                            <h3 class="guideline-title">Brand Voice</h3>
+                            <p>Professional yet approachable, knowledgeable, innovative, and trustworthy. Avoid overly technical jargon.</p>
+                        </div>
+
+                        <div class="guideline-card">
+                            <div class="guideline-icon">📝</div>
+                            <h3 class="guideline-title">Content Style</h3>
+                            <p>Educational, value-driven content that positions TechCorp as a thought leader in technology innovation.</p>
+                        </div>
+
+                        <div class="guideline-card">
+                            <div class="guideline-icon">🚫</div>
+                            <h3 class="guideline-title">Brand Don'ts</h3>
+                            <p>Avoid controversial topics, competitor mentions, or content that conflicts with our professional image.</p>
+                        </div>
+                    </div>
+
+                    <div class="brand-requirements">
+                        <h4>Collaboration Requirements</h4>
+                        <ul class="requirements-list">
+                            <li>All content must be pre-approved by our brand team</li>
+                            <li>Use official brand assets and approved messaging</li>
+                            <li>Include proper hashtags and brand mentions</li>
+                            <li>Maintain professional tone and visual consistency</li>
+                            <li>Provide content drafts 48 hours before posting</li>
+                            <li>Follow FTC disclosure guidelines for sponsored content</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Active Campaigns Section -->
+            <section class="section" id="campaigns">
+                <div class="section-header">
+                    <h2 class="section-title">Active Campaigns</h2>
+                    <p class="section-subtitle">Current opportunities available for influencer partnerships</p>
+                </div>
+                <div class="section-content">
+                    <div class="active-campaigns-grid">
+                        <div class="active-campaign-card">
+                            <div class="campaign-status status-active">Active - Recruiting</div>
+                            <h3 class="campaign-title">Q1 2024 Product Showcase</h3>
+                            <p class="campaign-description">Showcase our latest enterprise software suite to business and technology audiences. Looking for B2B tech influencers with engaged professional audiences.</p>
+                            
+                            <div class="campaign-requirements">
+                                <h4>Requirements:</h4>
+                                <div class="requirements-grid">
+                                    <div class="requirement-item">
+                                        <div class="requirement-icon">👥</div>
+                                        <span>50K+ followers</span>
+                                    </div>
+                                    <div class="requirement-item">
+                                        <div class="requirement-icon">💼</div>
+                                        <span>B2B audience</span>
+                                    </div>
+                                    <div class="requirement-item">
+                                        <div class="requirement-icon">📊</div>
+                                        <span>Tech niche</span>
+                                    </div>
+                                    <div class="requirement-item">
+                                        <div class="requirement-icon">🎯</div>
+                                        <span>3%+ engagement</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="campaign-details">
+                                <p><strong>Budget:</strong> $2,000 - $5,000 per post</p>
+                                <p><strong>Timeline:</strong> March 1 - March 31, 2024</p>
+                                <p><strong>Deliverables:</strong> 2 posts + 1 story + 1 video review</p>
+                            </div>
+                            
+                            <button class="apply-btn">Apply for Campaign</button>
+                        </div>
+
+                        <div class="active-campaign-card">
+                            <div class="campaign-status status-upcoming">Upcoming - Applications Open</div>
+                            <h3 class="campaign-title">AI Innovation Series</h3>
+                            <p class="campaign-description">Educational content series about AI and machine learning applications in business. Seeking tech educators and AI enthusiasts.</p>
+                            
+                            <div class="campaign-requirements">
+                                <h4>Requirements:</h4>
+                                <div class="requirements-grid">
+                                    <div class="requirement-item">
+                                        <div class="requirement-icon">🧠</div>
+                                        <span>AI expertise</span>
+                                    </div>
+                                    <div class="requirement-item">
+                                        <div class="requirement-icon">📚</div>
+                                        <span>Educational content</span>
+                                    </div>
+                                    <div class="requirement-item">
+                                        <div class="requirement-icon">💡</div>
+                                        <span>Innovation focused</span>
+                                    </div>
+                                    <div class="requirement-item">
+                                        <div class="requirement-icon">🎥</div>
+                                        <span>Video content</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="campaign-details">
+                                <p><strong>Budget:</strong> $1,500 - $3,000 per video</p>
+                                <p><strong>Timeline:</strong> April 15 - May 30, 2024</p>
+                                <p><strong>Deliverables:</strong> 3 educational videos + social promotion</p>
+                            </div>
+                            
+                            <button class="apply-btn">Apply for Campaign</button>
+                        </div>
+
+                        <div class="active-campaign-card">
+                            <div class="campaign-status status-active">Active - Limited Spots</div>
+                            <h3 class="campaign-title">Developer Community Partnership</h3>
+                            <p class="campaign-description">Long-term partnership with developer advocates to create technical content and tutorials featuring our development tools.</p>
+                            
+                            <div class="campaign-requirements">
+                                <h4>Requirements:</h4>
+                                <div class="requirements-grid">
+                                    <div class="requirement-item">
+                                        <div class="requirement-icon">💻</div>
+                                        <span>Developer background</span>
+                                    </div>
+                                    <div class="requirement-item">
+                                        <div class="requirement-icon">📖</div>
+                                        <span>Tutorial creation</span>
+                                    </div>
+                                    <div class="requirement-item">
+                                        <div class="requirement-icon">🏆</div>
+                                        <span>Community influence</span>
+                                    </div>
+                                    <div class="requirement-item">
+                                        <div class="requirement-icon">🔧</div>
+                                        <span>Technical expertise</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="campaign-details">
+                                <p><strong>Budget:</strong> $3,000 - $7,000 per month</p>
+                                <p><strong>Timeline:</strong> 6-month partnership</p>
+                                <p><strong>Deliverables:</strong> Monthly tutorial series + community engagement</p>
+                            </div>
+                            
+                            <button class="apply-btn">Apply for Partnership</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Collaboration Process Section -->
+            <section class="section" id="process">
+                <div class="section-header">
+                    <h2 class="section-title">Collaboration Process</h2>
+                    <p class="section-subtitle">How we work with influencers from application to campaign completion</p>
+                </div>
+                <div class="section-content">
+                    <div class="process-timeline">
+                        <div class="process-step">
+                            <div class="process-number">1</div>
+                            <h3 class="process-title">Application & Review</h3>
+                            <p class="process-description">Submit your application through our platform with your media kit, audience demographics, and relevant work samples. Our team reviews applications within 48 hours.</p>
+                            <div class="process-duration">1-2 Days</div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="process-number">2</div>
+                            <h3 class="process-title">Initial Screening</h3>
+                            <p class="process-description">Qualified candidates undergo audience verification and content quality assessment. We evaluate alignment with our brand values and campaign objectives.</p>
+                            <div class="process-duration">2-3 Days</div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="process-number">3</div>
+                            <h3 class="process-title">Strategy Session</h3>
+                            <p class="process-description">Selected influencers join a briefing session to discuss campaign goals, content requirements, timelines, and compensation details.</p>
+                            <div class="process-duration">1 Day</div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="process-number">4</div>
+                            <h3 class="process-title">Contract & Onboarding</h3>
+                            <p class="process-description">Finalize partnership agreement, provide brand assets, and complete onboarding process including access to our creator portal and resources.</p>
+                            <div class="process-duration">2-3 Days</div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="process-number">5</div>
+                            <h3 class="process-title">Content Creation</h3>
+                            <p class="process-description">Create content according to brief specifications. All content goes through our approval process before publication to ensure brand consistency.</p>
+                            <div class="process-duration">5-7 Days</div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="process-number">6</div>
+                            <h3 class="process-title">Campaign Launch</h3>
+                            <p class="process-description">Coordinated content publication across all channels with real-time performance monitoring and optimization support.</p>
+                            <div class="process-duration">Campaign Duration</div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="process-number">7</div>
+                            <h3 class="process-title">Performance Review</h3>
+                            <p class="process-description">Comprehensive campaign analysis with detailed performance metrics, insights, and recommendations for future collaborations.</p>
+                            <div class="process-duration">1 Week Post-Campaign</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reviews & Testimonials Section -->
+            <section class="section" id="reviews">
+                <div class="section-header">
+                    <h2 class="section-title">Reviews & Testimonials</h2>
+                    <p class="section-subtitle">What influencers say about partnering with TechCorp Industries</p>
+                </div>
+                <div class="section-content">
+                    <div class="reviews-grid">
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer-avatar">SK</div>
+                                <div class="reviewer-info">
+                                    <h4>Sarah Kim</h4>
+                                    <div class="reviewer-handle">@TechWithSarah</div>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <p class="review-text">"TechCorp has been an absolute pleasure to work with. Their team is professional, responsive, and genuinely cares about creating authentic content that resonates with my audience. The campaign brief was clear, and they gave me creative freedom while maintaining brand consistency."</p>
+                            <div class="review-campaign">
+                                <strong>Campaign:</strong> TechLaunch 2024 Product Release
+                            </div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer-avatar">MJ</div>
+                                <div class="reviewer-info">
+                                    <h4>Marcus Johnson</h4>
+                                    <div class="reviewer-handle">@DevMarcus</div>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <p class="review-text">"Working with TechCorp on their developer tools campaign was fantastic. They understood the developer community and allowed me to create technical content that was both educational and engaging. Payment was prompt and the whole process was seamless."</p>
+                            <div class="review-campaign">
+                                <strong>Campaign:</strong> Developer Conference Series
+                            </div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer-avatar">AB</div>
+                                <div class="reviewer-info">
+                                    <h4>Alex Brown</h4>
+                                    <div class="reviewer-handle">@TechFuturist</div>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <p class="review-text">"TechCorp's approach to influencer partnerships is refreshingly professional. They treat creators as true partners and value our expertise. The collaboration on the Future Tech campaign was incredibly rewarding both creatively and financially."</p>
+                            <div class="review-campaign">
+                                <strong>Campaign:</strong> Future of Technology Campaign
+                            </div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer-avatar">LM</div>
+                                <div class="reviewer-info">
+                                    <h4>Lisa Martinez</h4>
+                                    <div class="reviewer-handle">@BusinessTechLisa</div>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">☆</span>
+                            </div>
+                            <p class="review-text">"Great experience overall! TechCorp's team was very supportive throughout the campaign. The only minor issue was some delay in the approval process, but they made up for it with excellent communication and fair compensation."</p>
+                            <div class="review-campaign">
+                                <strong>Campaign:</strong> Enterprise Solutions Showcase
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="section" id="contact">
+                <div class="section-header">
+                    <h2 class="section-title">Get in Touch</h2>
+                    <p class="section-subtitle">Ready to collaborate? Send us your partnership inquiry</p>
+                </div>
+                <div class="section-content">
+                    <div class="contact-form">
+                        <form>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-input" placeholder="Enter your full name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-input" placeholder="Enter your email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Social Media Handle</label>
+                                    <input type="text" class="form-input" placeholder="@yourhandle" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Follower Count</label>
+                                    <input type="text" class="form-input" placeholder="e.g., 100K" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Primary Platform</label>
+                                    <select class="form-input" required>
+                                        <option value="">Select platform</option>
+                                        <option value="instagram">Instagram</option>
+                                        <option value="tiktok">TikTok</option>
+                                        <option value="youtube">YouTube</option>
+                                        <option value="linkedin">LinkedIn</option>
+                                        <option value="twitter">Twitter</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Content Niche</label>
+                                    <select class="form-input" required>
+                                        <option value="">Select niche</option>
+                                        <option value="technology">Technology</option>
+                                        <option value="business">Business</option>
+                                        <option value="developer">Developer/Programming</option>
+                                        <option value="ai">AI/Machine Learning</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label class="form-label">Campaign Interest</label>
+                                    <select class="form-input" required>
+                                        <option value="">Select campaign</option>
+                                        <option value="product-showcase">Q1 2024 Product Showcase</option>
+                                        <option value="ai-series">AI Innovation Series</option>
+                                        <option value="developer-partnership">Developer Community Partnership</option>
+                                        <option value="general">General Partnership Inquiry</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label class="form-label">Message</label>
+                                    <textarea class="form-textarea" placeholder="Tell us about your audience, content style, and why you'd like to partner with TechCorp Industries..." required></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="submit-btn">Submit Partnership Application</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    © 2024 TechCorp Industries. Professional influencer marketing partnerships.
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Brand Guidelines</a>
+                    <a href="#">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle apply button clicks
+            const applyButtons = document.querySelectorAll('.apply-btn');
+            applyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const campaignTitle = this.closest('.active-campaign-card').querySelector('.campaign-title').textContent;
+                    alert(`Application submitted for: ${campaignTitle}\n\nOur team will review your application and get back to you within 48 hours.`);
+                });
+            });
+
+            // Handle form submission
+            const contactForm = document.querySelector('.contact-form form');
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = new FormData(this);
+                const name = this.querySelector('input[type="text"]').value;
+                const email = this.querySelector('input[type="email"]').value;
+                
+                // Show success message
+                alert(`Thank you, ${name}! Your partnership application has been submitted successfully.\n\nWe'll review your application and respond to ${email} within 48 hours.`);
+                
+                // Reset form
+                this.reset();
+            });
+
+            // Add smooth scrolling to anchor links
+            const anchorLinks = document.querySelectorAll('a[href^="#"]');
+            anchorLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Add hover effects for campaign cards
+            const campaignCards = document.querySelectorAll('.campaign-card, .active-campaign-card');
+            campaignCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

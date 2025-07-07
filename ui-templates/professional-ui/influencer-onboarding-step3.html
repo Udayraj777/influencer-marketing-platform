@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Influencer Onboarding - Step 3: Content & Audience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: #93c5fd;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 0;
+        }
+
+        .onboarding-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 700px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .onboarding-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .onboarding-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .onboarding-subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            margin-bottom: 2rem;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .progress-step::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            right: -50%;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .progress-step:last-child::before {
+            display: none;
+        }
+
+        .progress-step.active::before,
+        .progress-step.completed::before {
+            background: #1e3a8a;
+        }
+
+        .progress-step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin: 0 auto 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-step.active .progress-step-number {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .progress-step.completed .progress-step-number {
+            background: #10b981;
+            color: white;
+        }
+
+        .progress-step-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .progress-step.active .progress-step-label {
+            color: #1e3a8a;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Niche Selection */
+        .niche-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .niche-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .niche-card:hover {
+            border-color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        .niche-card.selected {
+            border-color: #1e3a8a;
+            background: #f0f9ff;
+        }
+
+        .niche-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .niche-name {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .niche-card.selected .niche-name {
+            color: #1e3a8a;
+        }
+
+        /* Demographics */
+        .demographics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .demographic-group {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .demographic-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .age-ranges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .age-range {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .age-range:hover {
+            border-color: #1e3a8a;
+        }
+
+        .age-range.selected {
+            border-color: #1e3a8a;
+            background: #f0f9ff;
+            color: #1e3a8a;
+        }
+
+        .gender-options {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .gender-option {
+            flex: 1;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .gender-option:hover {
+            border-color: #1e3a8a;
+        }
+
+        .gender-option.selected {
+            border-color: #1e3a8a;
+            background: #f0f9ff;
+            color: #1e3a8a;
+        }
+
+        /* Content Style */
+        .content-styles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-style {
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .content-style:hover {
+            border-color: #1e3a8a;
+        }
+
+        .content-style.selected {
+            border-color: #1e3a8a;
+            background: #f0f9ff;
+        }
+
+        .content-style-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .content-style-name {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-style.selected .content-style-name {
+            color: #1e3a8a;
+        }
+
+        .content-style-description {
+            color: #6b7280;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .engagement-info {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .engagement-info h4 {
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .engagement-info p {
+            color: #6b7280;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #1e3a8a;
+            border: 2px solid #1e3a8a;
+        }
+
+        .btn-secondary:hover {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #374151;
+            color: white;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #f59e0b;
+        }
+
+        .footer-text {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 2rem 0;
+            }
+
+            .onboarding-container {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+
+            .onboarding-title {
+                font-size: 1.75rem;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .progress-step::before {
+                display: none;
+            }
+
+            .demographics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .niche-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">ConnectSphere</a>
+                <nav class="header-nav">
+                    <a href="../landing-professional.html">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="onboarding-container">
+                <div class="onboarding-header">
+                    <h1 class="onboarding-title">Content & Audience</h1>
+                    <p class="onboarding-subtitle">Help us understand your content style and audience</p>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div class="progress-indicator">
+                    <div class="progress-steps">
+                        <div class="progress-step completed">
+                            <div class="progress-step-number">✓</div>
+                            <div class="progress-step-label">Basic Info</div>
+                        </div>
+                        <div class="progress-step completed">
+                            <div class="progress-step-number">✓</div>
+                            <div class="progress-step-label">Social Media</div>
+                        </div>
+                        <div class="progress-step active">
+                            <div class="progress-step-number">3</div>
+                            <div class="progress-step-label">Content & Audience</div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-step-number">4</div>
+                            <div class="progress-step-label">Preferences</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content & Audience Form -->
+                <form id="onboardingForm">
+                    <!-- Content Niche Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <span class="section-icon">🎯</span>
+                            Content Niche (Select up to 3)
+                        </h3>
+                        <div class="niche-grid">
+                            <div class="niche-card" data-niche="fashion">
+                                <span class="niche-icon">👗</span>
+                                <div class="niche-name">Fashion</div>
+                            </div>
+                            <div class="niche-card" data-niche="beauty">
+                                <span class="niche-icon">💄</span>
+                                <div class="niche-name">Beauty</div>
+                            </div>
+                            <div class="niche-card" data-niche="tech">
+                                <span class="niche-icon">📱</span>
+                                <div class="niche-name">Tech</div>
+                            </div>
+                            <div class="niche-card" data-niche="food">
+                                <span class="niche-icon">🍕</span>
+                                <div class="niche-name">Food</div>
+                            </div>
+                            <div class="niche-card" data-niche="travel">
+                                <span class="niche-icon">✈️</span>
+                                <div class="niche-name">Travel</div>
+                            </div>
+                            <div class="niche-card" data-niche="fitness">
+                                <span class="niche-icon">💪</span>
+                                <div class="niche-name">Fitness</div>
+                            </div>
+                            <div class="niche-card" data-niche="lifestyle">
+                                <span class="niche-icon">🌟</span>
+                                <div class="niche-name">Lifestyle</div>
+                            </div>
+                            <div class="niche-card" data-niche="gaming">
+                                <span class="niche-icon">🎮</span>
+                                <div class="niche-name">Gaming</div>
+                            </div>
+                            <div class="niche-card" data-niche="music">
+                                <span class="niche-icon">🎵</span>
+                                <div class="niche-name">Music</div>
+                            </div>
+                            <div class="niche-card" data-niche="home">
+                                <span class="niche-icon">🏠</span>
+                                <div class="niche-name">Home & Decor</div>
+                            </div>
+                            <div class="niche-card" data-niche="pets">
+                                <span class="niche-icon">🐾</span>
+                                <div class="niche-name">Pets</div>
+                            </div>
+                            <div class="niche-card" data-niche="business">
+                                <span class="niche-icon">💼</span>
+                                <div class="niche-name">Business</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audience Demographics Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <span class="section-icon">👥</span>
+                            Audience Demographics
+                        </h3>
+                        <div class="demographics-grid">
+                            <div class="demographic-group">
+                                <div class="demographic-title">Primary Age Range</div>
+                                <div class="age-ranges">
+                                    <div class="age-range" data-age="13-17">13-17</div>
+                                    <div class="age-range" data-age="18-24">18-24</div>
+                                    <div class="age-range" data-age="25-34">25-34</div>
+                                    <div class="age-range" data-age="35-44">35-44</div>
+                                    <div class="age-range" data-age="45-54">45-54</div>
+                                    <div class="age-range" data-age="55+">55+</div>
+                                </div>
+                            </div>
+                            <div class="demographic-group">
+                                <div class="demographic-title">Gender Distribution</div>
+                                <div class="gender-options">
+                                    <div class="gender-option" data-gender="female">Female Majority</div>
+                                    <div class="gender-option" data-gender="male">Male Majority</div>
+                                    <div class="gender-option" data-gender="mixed">Mixed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Style Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <span class="section-icon">🎨</span>
+                            Content Style (Select up to 2)
+                        </h3>
+                        <div class="content-styles">
+                            <div class="content-style" data-style="educational">
+                                <span class="content-style-icon">📚</span>
+                                <div class="content-style-name">Educational</div>
+                                <div class="content-style-description">Informative content that teaches or explains</div>
+                            </div>
+                            <div class="content-style" data-style="entertainment">
+                                <span class="content-style-icon">🎭</span>
+                                <div class="content-style-name">Entertainment</div>
+                                <div class="content-style-description">Fun, engaging content that entertains</div>
+                            </div>
+                            <div class="content-style" data-style="inspirational">
+                                <span class="content-style-icon">✨</span>
+                                <div class="content-style-name">Inspirational</div>
+                                <div class="content-style-description">Motivational and uplifting content</div>
+                            </div>
+                            <div class="content-style" data-style="authentic">
+                                <span class="content-style-icon">🌱</span>
+                                <div class="content-style-name">Authentic</div>
+                                <div class="content-style-description">Real, behind-the-scenes content</div>
+                            </div>
+                            <div class="content-style" data-style="product-focused">
+                                <span class="content-style-icon">📦</span>
+                                <div class="content-style-name">Product-Focused</div>
+                                <div class="content-style-description">Reviews, unboxings, and demonstrations</div>
+                            </div>
+                            <div class="content-style" data-style="storytelling">
+                                <span class="content-style-icon">📖</span>
+                                <div class="content-style-name">Storytelling</div>
+                                <div class="content-style-description">Narrative-driven content</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Engagement Information Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <span class="section-icon">📊</span>
+                            Engagement Information
+                        </h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="avgLikes" class="form-label">Average Likes per Post</label>
+                                <input type="number" id="avgLikes" class="form-input" placeholder="5,000">
+                            </div>
+                            <div class="form-group">
+                                <label for="avgComments" class="form-label">Average Comments per Post</label>
+                                <input type="number" id="avgComments" class="form-input" placeholder="250">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="postFrequency" class="form-label">Posting Frequency</label>
+                                <select id="postFrequency" class="form-input">
+                                    <option value="">Select frequency</option>
+                                    <option value="daily">Daily</option>
+                                    <option value="few-times-week">Few times per week</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="bi-weekly">Bi-weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="bestPostTime" class="form-label">Best Posting Time</label>
+                                <select id="bestPostTime" class="form-input">
+                                    <option value="">Select time</option>
+                                    <option value="morning">Morning (6-12 PM)</option>
+                                    <option value="afternoon">Afternoon (12-6 PM)</option>
+                                    <option value="evening">Evening (6-10 PM)</option>
+                                    <option value="night">Night (10 PM-6 AM)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="engagement-info">
+                            <h4>💡 Pro Tip</h4>
+                            <p>Brands look for consistent engagement rates and authentic audience interaction. Be honest about your metrics - quality partnerships are built on trust!</p>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+                        <button type="submit" class="btn btn-primary">Next Step</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    © 2024 ConnectSphere. Professional influencer marketing platform.
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Security</a>
+                    <a href="#">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Niche selection functionality
+        document.querySelectorAll('.niche-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const selectedNiches = document.querySelectorAll('.niche-card.selected');
+                
+                if (this.classList.contains('selected')) {
+                    this.classList.remove('selected');
+                } else if (selectedNiches.length < 3) {
+                    this.classList.add('selected');
+                } else {
+                    alert('You can select up to 3 content niches');
+                }
+            });
+        });
+
+        // Age range selection
+        document.querySelectorAll('.age-range').forEach(range => {
+            range.addEventListener('click', function() {
+                document.querySelectorAll('.age-range').forEach(r => r.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Gender selection
+        document.querySelectorAll('.gender-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.gender-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Content style selection
+        document.querySelectorAll('.content-style').forEach(style => {
+            style.addEventListener('click', function() {
+                const selectedStyles = document.querySelectorAll('.content-style.selected');
+                
+                if (this.classList.contains('selected')) {
+                    this.classList.remove('selected');
+                } else if (selectedStyles.length < 2) {
+                    this.classList.add('selected');
+                } else {
+                    alert('You can select up to 2 content styles');
+                }
+            });
+        });
+
+        // Go back to previous step
+        function goBack() {
+            window.location.href = 'influencer-onboarding-step2.html';
+        }
+
+        // Form submission
+        document.getElementById('onboardingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect selected niches
+            const selectedNiches = Array.from(document.querySelectorAll('.niche-card.selected'))
+                .map(card => card.dataset.niche);
+            
+            // Collect selected age range
+            const selectedAgeRange = document.querySelector('.age-range.selected')?.dataset.age;
+            
+            // Collect selected gender
+            const selectedGender = document.querySelector('.gender-option.selected')?.dataset.gender;
+            
+            // Collect selected content styles
+            const selectedStyles = Array.from(document.querySelectorAll('.content-style.selected'))
+                .map(style => style.dataset.style);
+            
+            // Collect engagement data
+            const engagementData = {
+                avgLikes: document.getElementById('avgLikes').value,
+                avgComments: document.getElementById('avgComments').value,
+                postFrequency: document.getElementById('postFrequency').value,
+                bestPostTime: document.getElementById('bestPostTime').value
+            };
+            
+            // Validation
+            if (selectedNiches.length === 0) {
+                alert('Please select at least one content niche');
+                return;
+            }
+            
+            if (!selectedAgeRange) {
+                alert('Please select a primary age range for your audience');
+                return;
+            }
+            
+            if (!selectedGender) {
+                alert('Please select the gender distribution of your audience');
+                return;
+            }
+            
+            if (selectedStyles.length === 0) {
+                alert('Please select at least one content style');
+                return;
+            }
+            
+            // Store form data in localStorage
+            localStorage.setItem('onboarding_step3', JSON.stringify({
+                niches: selectedNiches,
+                ageRange: selectedAgeRange,
+                gender: selectedGender,
+                contentStyles: selectedStyles,
+                engagement: engagementData
+            }));
+            
+            // Navigate to step 4
+            window.location.href = 'influencer-onboarding-step4.html';
+        });
+
+        // Load previous data if available
+        window.addEventListener('load', function() {
+            const savedData = localStorage.getItem('onboarding_step3');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                
+                // Restore niche selections
+                if (data.niches) {
+                    data.niches.forEach(niche => {
+                        const card = document.querySelector(`[data-niche="${niche}"]`);
+                        if (card) card.classList.add('selected');
+                    });
+                }
+                
+                // Restore age range selection
+                if (data.ageRange) {
+                    const ageRange = document.querySelector(`[data-age="${data.ageRange}"]`);
+                    if (ageRange) ageRange.classList.add('selected');
+                }
+                
+                // Restore gender selection
+                if (data.gender) {
+                    const gender = document.querySelector(`[data-gender="${data.gender}"]`);
+                    if (gender) gender.classList.add('selected');
+                }
+                
+                // Restore content style selections
+                if (data.contentStyles) {
+                    data.contentStyles.forEach(style => {
+                        const styleCard = document.querySelector(`[data-style="${style}"]`);
+                        if (styleCard) styleCard.classList.add('selected');
+                    });
+                }
+                
+                // Restore engagement data
+                if (data.engagement) {
+                    document.getElementById('avgLikes').value = data.engagement.avgLikes || '';
+                    document.getElementById('avgComments').value = data.engagement.avgComments || '';
+                    document.getElementById('postFrequency').value = data.engagement.postFrequency || '';
+                    document.getElementById('bestPostTime').value = data.engagement.bestPostTime || '';
+                }
+            }
+        });
+
+        // Format number inputs
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                let value = this.value.replace(/,/g, '');
+                if (value && !isNaN(value)) {
+                    this.value = parseInt(value).toLocaleString();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
