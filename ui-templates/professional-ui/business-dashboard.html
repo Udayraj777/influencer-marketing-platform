@@ -76,11 +76,12 @@
 
         /* Main Content */
         .main-content {
-            max-width: 1200px;
+            width: 90%;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem 1rem;
             display: grid;
-            grid-template-columns: 1fr 300px;
+            grid-template-columns: 300px 1fr;
             gap: 2rem;
         }
 
@@ -173,6 +174,7 @@
         .dashboard-grid {
             display: grid;
             gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         }
 
         .dashboard-card {
@@ -652,6 +654,65 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* New styles for updated layout */
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .top-dashboard {
+            display: flex;
+            width: 100%;
+            gap: 2rem;
+        }
+        .top-dashboard > .welcome-section,
+        .top-dashboard > .overview-card-wrapper {
+            flex: 1;
+        }
+
+        /* Middle Dashboard styles */
+        .middle-dashboard {
+            display: flex;
+            width: 100%;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .middle-dashboard > .recommended-influencers {
+            flex: 2;
+        }
+
+        .middle-dashboard > .side-dashboard {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* New container for Active Campaigns and Recent Messages below Recommended Influencers */
+        .secondary-dashboard {
+            display: flex;
+            gap: 2rem;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        .secondary-dashboard > .active-campaigns,
+        .secondary-dashboard > .recent-messages {
+            flex: 1;
+        }
+
+        /* (Optional) Adjust spacing if needed on small screens */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .top-dashboard,
+            .secondary-dashboard {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -677,238 +738,7 @@
 
     <!-- Main Content -->
     <main class="main-content">
-        <!-- Dashboard Content -->
-        <div>
-            <!-- Welcome Section -->
-            <section class="welcome-section">
-                <div class="welcome-header">
-                    <div>
-                        <h1 class="welcome-title">Welcome back, John!</h1>
-                        <p>Here's what's happening with your campaigns today.</p>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary">+ Create Campaign</button>
-                        <button class="btn btn-secondary">📊 View Reports</button>
-                    </div>
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value">12</div>
-                        <div class="stat-label">Active Campaigns</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">247</div>
-                        <div class="stat-label">Total Messages</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">$24,580</div>
-                        <div class="stat-label">Budget Spent</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">89%</div>
-                        <div class="stat-label">Campaign Success</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Dashboard Grid -->
-            <div class="dashboard-grid">
-                <!-- Overview Cards -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h2 class="card-title">Overview</h2>
-                        <a href="#" class="card-action">View All</a>
-                    </div>
-                    <div class="overview-grid">
-                        <div class="overview-card">
-                            <div class="overview-value">45</div>
-                            <div class="overview-label">Total Campaigns</div>
-                            <div class="overview-change change-positive">+12% from last month</div>
-                        </div>
-                        <div class="overview-card">
-                            <div class="overview-value">1,247</div>
-                            <div class="overview-label">Influencers Worked With</div>
-                            <div class="overview-change change-positive">+8% from last month</div>
-                        </div>
-                        <div class="overview-card">
-                            <div class="overview-value">2.4M</div>
-                            <div class="overview-label">Total Reach</div>
-                            <div class="overview-change change-positive">+15% from last month</div>
-                        </div>
-                        <div class="overview-card">
-                            <div class="overview-value">4.2x</div>
-                            <div class="overview-label">Average ROI</div>
-                            <div class="overview-change change-positive">+0.3x from last month</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recommended Influencers -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h2 class="card-title">Recommended Influencers</h2>
-                        <a href="#" class="card-action">View All</a>
-                    </div>
-                    <div class="influencer-filters">
-                        <select class="filter-select" id="nicheFilter">
-                            <option value="">All Niches</option>
-                            <option value="fashion">Fashion</option>
-                            <option value="tech">Technology</option>
-                            <option value="food">Food & Lifestyle</option>
-                            <option value="fitness">Fitness</option>
-                        </select>
-                        <select class="filter-select" id="followersFilter">
-                            <option value="">All Followers</option>
-                            <option value="micro">1K-10K</option>
-                            <option value="mid">10K-100K</option>
-                            <option value="macro">100K-1M</option>
-                            <option value="mega">1M+</option>
-                        </select>
-                        <select class="filter-select" id="engagementFilter">
-                            <option value="">All Engagement</option>
-                            <option value="high">High (5%+)</option>
-                            <option value="medium">Medium (2-5%)</option>
-                            <option value="low">Low (<2%)</option>
-                        </select>
-                    </div>
-                    <div class="influencer-grid" id="influencerGrid">
-                        <!-- Influencer cards will be dynamically generated -->
-                    </div>
-                </div>
-
-                <!-- Active Campaigns -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h2 class="card-title">Active Campaigns</h2>
-                        <a href="#" class="card-action">Manage All</a>
-                    </div>
-                    <div class="campaign-list">
-                        <div class="campaign-item">
-                            <div class="campaign-header">
-                                <div class="campaign-name">Summer Fashion Collection</div>
-                                <div class="campaign-status status-active">Active</div>
-                            </div>
-                            <div>15 influencers • $12,000 budget</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        <div class="campaign-item">
-                            <div class="campaign-header">
-                                <div class="campaign-name">Tech Product Launch</div>
-                                <div class="campaign-status status-pending">Pending</div>
-                            </div>
-                            <div>8 influencers • $8,500 budget</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 45%"></div>
-                            </div>
-                        </div>
-                        <div class="campaign-item">
-                            <div class="campaign-header">
-                                <div class="campaign-name">Holiday Special</div>
-                                <div class="campaign-status status-active">Active</div>
-                            </div>
-                            <div>22 influencers • $18,000 budget</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 90%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recent Messages -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h2 class="card-title">Recent Messages</h2>
-                        <a href="#" class="card-action">View All</a>
-                    </div>
-                    <div class="message-list">
-                        <div class="message-item">
-                            <div class="message-avatar">SA</div>
-                            <div class="message-content">
-                                <div class="message-sender">Sarah Anderson</div>
-                                <div class="message-preview">Thanks for the campaign details. I'm interested in...</div>
-                            </div>
-                            <div class="message-time">2h ago</div>
-                            <div class="unread-badge">2</div>
-                        </div>
-                        <div class="message-item">
-                            <div class="message-avatar">MJ</div>
-                            <div class="message-content">
-                                <div class="message-sender">Mike Johnson</div>
-                                <div class="message-preview">Can we schedule a call to discuss the rates?</div>
-                            </div>
-                            <div class="message-time">4h ago</div>
-                        </div>
-                        <div class="message-item">
-                            <div class="message-avatar">EL</div>
-                            <div class="message-content">
-                                <div class="message-sender">Emma Lee</div>
-                                <div class="message-preview">I've completed the content review. Ready to post!</div>
-                            </div>
-                            <div class="message-time">6h ago</div>
-                            <div class="unread-badge">1</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Campaign Performance -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h2 class="card-title">Campaign Performance</h2>
-                        <a href="#" class="card-action">Detailed Analytics</a>
-                    </div>
-                    <div class="chart-container">
-                        <div>📈 Performance Chart - Coming Soon</div>
-                    </div>
-                    <div class="performance-metrics">
-                        <div class="metric-card">
-                            <div class="metric-value">2.4M</div>
-                            <div class="metric-label">Total Reach</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-value">156K</div>
-                            <div class="metric-label">Engagement</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-value">6.5%</div>
-                            <div class="metric-label">Avg. Engagement</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-value">$0.12</div>
-                            <div class="metric-label">Cost per Click</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h2 class="card-title">Quick Actions</h2>
-                    </div>
-                    <div class="quick-actions">
-                        <div class="quick-action">
-                            <div class="quick-action-icon">📝</div>
-                            <div class="quick-action-label">Create Campaign</div>
-                        </div>
-                        <div class="quick-action">
-                            <div class="quick-action-icon">👥</div>
-                            <div class="quick-action-label">Browse Influencers</div>
-                        </div>
-                        <div class="quick-action">
-                            <div class="quick-action-icon">💬</div>
-                            <div class="quick-action-label">Send Message</div>
-                        </div>
-                        <div class="quick-action">
-                            <div class="quick-action-icon">📊</div>
-                            <div class="quick-action-label">View Reports</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sidebar -->
+        <!-- Sidebar now on left -->
         <aside class="sidebar">
             <!-- Campaign Tools -->
             <div class="sidebar-section">
@@ -994,6 +824,242 @@
                 </ul>
             </div>
         </aside>
+
+        <!-- Dashboard Content section -->
+        <div class="dashboard-content">
+            <!-- New container for welcome section + overview card -->
+            <div class="top-dashboard">
+                <!-- Welcome Section -->
+                <section class="welcome-section">
+                    <div class="welcome-header">
+                        <div>
+                            <h1 class="welcome-title">Welcome back, John!</h1>
+                            <p>Here's what's happening with your campaigns today.</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary">+ Create Campaign</button>
+                            <button class="btn btn-secondary">📊 View Reports</button>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Active Campaigns</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">247</div>
+                            <div class="stat-label">Total Messages</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">$24,580</div>
+                            <div class="stat-label">Budget Spent</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">89%</div>
+                            <div class="stat-label">Campaign Success</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Overview Card -->
+                <div class="dashboard-card overview-card-wrapper">
+                    <div class="card-header">
+                        <h2 class="card-title">Overview</h2>
+                        <a href="#" class="card-action">View All</a>
+                    </div>
+                    <div class="overview-grid">
+                        <div class="overview-card">
+                            <div class="overview-value">45</div>
+                            <div class="overview-label">Total Campaigns</div>
+                            <div class="overview-change change-positive">+12% from last month</div>
+                        </div>
+                        <div class="overview-card">
+                            <div class="overview-value">1,247</div>
+                            <div class="overview-label">Influencers Worked With</div>
+                            <div class="overview-change change-positive">+8% from last month</div>
+                        </div>
+                        <div class="overview-card">
+                            <div class="overview-value">2.4M</div>
+                            <div class="overview-label">Total Reach</div>
+                            <div class="overview-change change-positive">+15% from last month</div>
+                        </div>
+                        <div class="overview-card">
+                            <div class="overview-value">4.2x</div>
+                            <div class="overview-label">Average ROI</div>
+                            <div class="overview-change change-positive">+0.3x from last month</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommended Influencers takes full width now -->
+            <div class="dashboard-card recommended-influencers">
+                <div class="card-header">
+                    <h2 class="card-title">Recommended Influencers</h2>
+                    <a href="#" class="card-action">View All</a>
+                </div>
+                <div class="influencer-filters">
+                    <select class="filter-select" id="nicheFilter">
+                        <option value="">All Niches</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="tech">Technology</option>
+                        <option value="food">Food & Lifestyle</option>
+                        <option value="fitness">Fitness</option>
+                    </select>
+                    <select class="filter-select" id="followersFilter">
+                        <option value="">All Followers</option>
+                        <option value="micro">1K-10K</option>
+                        <option value="mid">10K-100K</option>
+                        <option value="macro">100K-1M</option>
+                        <option value="mega">1M+</option>
+                    </select>
+                    <select class="filter-select" id="engagementFilter">
+                        <option value="">All Engagement</option>
+                        <option value="high">High (5%+)</option>
+                        <option value="medium">Medium (2-5%)</option>
+                        <option value="low">Low (<2%)</option>
+                    </select>
+                </div>
+                <div class="influencer-grid" id="influencerGrid">
+                    <!-- Influencer cards will be dynamically generated -->
+                </div>
+            </div>
+            
+            <!-- New container for Active Campaigns and Recent Messages placed below Recommended Influencers -->
+            <div class="secondary-dashboard">
+                <!-- Active Campaigns -->
+                <div class="dashboard-card active-campaigns">
+                    <div class="card-header">
+                        <h2 class="card-title">Active Campaigns</h2>
+                        <a href="#" class="card-action">Manage All</a>
+                    </div>
+                    <div class="campaign-list">
+                        <div class="campaign-item">
+                            <div class="campaign-header">
+                                <div class="campaign-name">Summer Fashion Collection</div>
+                                <div class="campaign-status status-active">Active</div>
+                            </div>
+                            <div>15 influencers • $12,000 budget</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="campaign-item">
+                            <div class="campaign-header">
+                                <div class="campaign-name">Tech Product Launch</div>
+                                <div class="campaign-status status-pending">Pending</div>
+                            </div>
+                            <div>8 influencers • $8,500 budget</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <div class="campaign-item">
+                            <div class="campaign-header">
+                                <div class="campaign-name">Holiday Special</div>
+                                <div class="campaign-status status-active">Active</div>
+                            </div>
+                            <div>22 influencers • $18,000 budget</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Messages -->
+                <div class="dashboard-card recent-messages">
+                    <div class="card-header">
+                        <h2 class="card-title">Recent Messages</h2>
+                        <a href="#" class="card-action">View All</a>
+                    </div>
+                    <div class="message-list">
+                        <div class="message-item">
+                            <div class="message-avatar">SA</div>
+                            <div class="message-content">
+                                <div class="message-sender">Sarah Anderson</div>
+                                <div class="message-preview">Thanks for the campaign details. I'm interested in...</div>
+                            </div>
+                            <div class="message-time">2h ago</div>
+                            <div class="unread-badge">2</div>
+                        </div>
+                        <div class="message-item">
+                            <div class="message-avatar">MJ</div>
+                            <div class="message-content">
+                                <div class="message-sender">Mike Johnson</div>
+                                <div class="message-preview">Can we schedule a call to discuss the rates?</div>
+                            </div>
+                            <div class="message-time">4h ago</div>
+                        </div>
+                        <div class="message-item">
+                            <div class="message-avatar">EL</div>
+                            <div class="message-content">
+                                <div class="message-sender">Emma Lee</div>
+                                <div class="message-preview">I've completed the content review. Ready to post!</div>
+                            </div>
+                            <div class="message-time">6h ago</div>
+                            <div class="unread-badge">1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Remaining cards (e.g. Campaign Performance, Quick Actions) -->
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Campaign Performance</h2>
+                        <a href="#" class="card-action">Detailed Analytics</a>
+                    </div>
+                    <div class="chart-container">
+                        <div>📈 Performance Chart - Coming Soon</div>
+                    </div>
+                    <div class="performance-metrics">
+                        <div class="metric-card">
+                            <div class="metric-value">2.4M</div>
+                            <div class="metric-label">Total Reach</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">156K</div>
+                            <div class="metric-label">Engagement</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">6.5%</div>
+                            <div class="metric-label">Avg. Engagement</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">$0.12</div>
+                            <div class="metric-label">Cost per Click</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Quick Actions</h2>
+                    </div>
+                    <div class="quick-actions">
+                        <div class="quick-action">
+                            <div class="quick-action-icon">📝</div>
+                            <div class="quick-action-label">Create Campaign</div>
+                        </div>
+                        <div class="quick-action">
+                            <div class="quick-action-icon">👥</div>
+                            <div class="quick-action-label">Browse Influencers</div>
+                        </div>
+                        <div class="quick-action">
+                            <div class="quick-action-icon">💬</div>
+                            <div class="quick-action-label">Send Message</div>
+                        </div>
+                        <div class="quick-action">
+                            <div class="quick-action-icon">📊</div>
+                            <div class="quick-action-label">View Reports</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
