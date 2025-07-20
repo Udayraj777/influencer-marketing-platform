@@ -507,16 +507,30 @@
             // Form submission
             document.getElementById('loginForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                
+
                 const activeRole = document.querySelector('.role-option.active').dataset.role;
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
-                
-                // Here you would typically send the data to your backend
-                console.log('Login attempt:', { role: activeRole, email, password });
-                
-                // For demo purposes, show success message
-                alert('Login functionality would be implemented here. Role: ' + activeRole);
+
+                fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ role: activeRole, email, password }),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Login failed');
+                })
+                .then(data => {
+                    console.log('Login successful:', data);
+                    alert('Login successful!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Login failed: ' + error.message);
+                });
             });
         });
     </script>

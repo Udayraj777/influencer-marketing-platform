@@ -1,12 +1,16 @@
 import mongoose from 'mongoose';
 import { logger } from '../utils/logger.js';
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // MongoDB connection configuration
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.NODE_ENV === 'production' 
-      ? process.env.MONGODB_URI_PROD 
-      : process.env.MONGODB_URI;
+    const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/influencerDB';
 
     if (!mongoURI) {
       throw new Error('MongoDB URI is not defined in environment variables');
@@ -19,6 +23,8 @@ const connectDB = async () => {
       socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
       bufferMaxEntries: 0, // Disable mongoose buffering
       bufferCommands: false, // Disable mongoose buffering
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
 
     logger.info(`✅ MongoDB Connected: ${conn.connection.host}`);
@@ -81,3 +87,40 @@ const checkDBHealth = async () => {
 };
 
 export { connectDB, checkDBHealth };
+
+// MongoDB log file path (for reference or external monitoring)
+// C:\Program Files\MongoDB\Server\8.0\log\mongod.log
+
+const app = express();
+const PORT = 5000;
+
+app.use(cors());
+app.use(bodyParser.json());
+
+app.post('/api/auth/register', (req, res) => {
+    const data = req.body;
+    console.log('Received registration data:', data);
+    res.status(200).json({ message: 'Registration successful!' });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+// Example fetch request to the registration endpoint
+const data = {
+    username: 'newuser',
+    password: 'securepassword',
+    email: 'newuser@example.com'
+};
+
+fetch('http://localhost:5000/api/auth/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => console.log('Success:', data))
+.catch((error) => {
+    console.error('Error:', error);
+});

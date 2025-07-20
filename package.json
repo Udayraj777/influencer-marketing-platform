@@ -1,0 +1,25 @@
+{
+  "name": "influencer-marketing-platform",
+  "version": "1.0.0",
+  "description": "A comprehensive two-sided marketplace connecting businesses with authentic micro and nano influencers for meaningful brand partnerships.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rs0309/influencer-marketing-platform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rs0309/influencer-marketing-platform/issues"
+  },
+  "homepage": "https://github.com/Rs0309/influencer-marketing-platform#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
