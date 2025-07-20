@@ -143,12 +143,7 @@ conversationSchema.virtual('isBlocked').get(function() {
   return this.blockedBy.length > 0;
 });
 
-// Virtual to get the other participant for a given user
-conversationSchema.virtual('getOtherParticipant').get(function() {
-  return function(userId) {
-    return this.participants.find(p => p.toString() !== userId.toString());
-  }.bind(this);
-});
+// Removed virtual getOtherParticipant to avoid conflict with instance method
 
 // Pre-save middleware to initialize unread counts
 conversationSchema.pre('save', function(next) {

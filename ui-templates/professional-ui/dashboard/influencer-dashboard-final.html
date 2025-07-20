@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Influencer Dashboard - Upsaleit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #334155;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .notification-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .profile-info h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-details {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .profile-meta {
+            display: flex;
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+        }
+
+        /* Main Content Area */
+        .main-area {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .section-subtitle {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .section-action {
+            color: #3b82f6;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-action:hover {
+            background: #f0f9ff;
+            color: #1e3a8a;
+            border-color: #3b82f6;
+        }
+
+        /* Available Campaigns */
+        .campaign-filters {
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            background: white;
+            min-width: 140px;
+        }
+
+        .campaigns-list {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .campaign-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
+        }
+
+        .campaign-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .campaign-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .campaign-company {
+            color: #6b7280;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .campaign-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-new {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .badge-urgent {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .badge-featured {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .campaign-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .campaign-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-value {
+            font-weight: bold;
+            color: #1e3a8a;
+            font-size: 0.875rem;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .campaign-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .campaign-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #d1d5db;
+            color: #6b7280;
+        }
+
+        .btn-outline:hover {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        /* Applications Section */
+        .applications-tabs {
+            display: flex;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            border: none;
+            background: none;
+            color: #6b7280;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            color: #1e3a8a;
+            border-bottom-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .tab:hover {
+            color: #1e3a8a;
+        }
+
+        .applications-content {
+            padding: 1.5rem;
+        }
+
+        .application-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+
+        .application-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .application-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .application-title {
+            font-weight: bold;
+            color: #1e3a8a;
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .application-meta {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .application-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-accepted {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-in-progress {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        /* Invitations Section */
+        .invitation-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%);
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            color: #92400e;
+        }
+
+        .invitation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .invitation-title {
+            font-weight: bold;
+            color: #92400e;
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .invitation-company {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .invitation-badge {
+            background: #92400e;
+            color: #fef3c7;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .invitation-details {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .invitation-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-accept {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-decline {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-discuss {
+            background: #3b82f6;
+            color: white;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .sidebar-title {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .profile-completion {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .completion-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .completion-bar {
+            background: rgba(255, 255, 255, 0.2);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .completion-fill {
+            background: white;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .completion-text {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+        }
+
+        .quick-action {
+            background: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .quick-action:hover {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .profile-meta {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .campaign-filters {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .campaign-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .applications-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">Upsaleit</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#dashboard" class="active" onclick="showSection('dashboard')">Dashboard</a></li>
+                    <li><a href="#collab" onclick="showSection('collab')">Collab</a></li>
+                    <li><a href="#messages" onclick="showSection('messages')">Messages</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="notification-btn">
+                    🔔
+                    <span class="notification-badge">4</span>
+                </button>
+                <div class="user-profile">
+                    <div class="user-avatar">SA</div>
+                    <span>Sarah Anderson</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Profile Header -->
+        <section class="profile-header">
+            <div class="profile-avatar">SA</div>
+            <div class="profile-info">
+                <h1>Sarah Anderson</h1>
+                <p class="profile-details">Fashion & Beauty Content Creator</p>
+                <div class="profile-meta">
+                    <div class="meta-item">
+                        <span>📸</span>
+                        <span>Instagram • TikTok</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>👥</span>
+                        <span>125K followers</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>📊</span>
+                        <span>7.2% engagement</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>📍</span>
+                        <span>New York, USA</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Collab Discovery Section -->
+        <section class="section-card" style="margin-bottom: 2rem;">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">🎯 Collaboration Hub</h2>
+                    <p class="section-subtitle">Manage your collaborations, ratings, and active campaigns</p>
+                </div>
+                <button class="btn btn-primary" onclick="showCollabTab()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                    📊 View Collab Dashboard
+                </button>
+            </div>
+            <div style="padding: 1.5rem 2rem;">
+                <div style="background: #f0f9ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                    <div style="font-weight: 600; color: #1e40af; margin-bottom: 0.5rem;">💡 Tip</div>
+                    <div style="color: #374151; font-size: 0.875rem;">Click the "Collab" tab above to access your collaboration management dashboard, view your ratings, and track active campaigns.</div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); border-radius: 12px; color: white;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📝</div>
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">Active Collaborations</div>
+                        <div style="font-size: 0.875rem; opacity: 0.9;">Track ongoing projects</div>
+                    </div>
+                    <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); border-radius: 12px; color: white;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⭐</div>
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">Your Ratings</div>
+                        <div style="font-size: 0.875rem; opacity: 0.9;">View business feedback</div>
+                    </div>
+                    <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); border-radius: 12px; color: white;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">Performance</div>
+                        <div style="font-size: 0.875rem; opacity: 0.9;">Real-time analytics</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Grid -->
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <!-- Main Content Area -->
+            <div class="main-area">
+                <!-- Available Campaigns -->
+                <section class="section-card">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Available Campaigns</h2>
+                            <p class="section-subtitle">Browse and apply to campaigns that match your profile</p>
+                        </div>
+                        <a href="#" class="section-action">View All</a>
+                    </div>
+                    
+                    <div class="campaign-filters">
+                        <select class="filter-select">
+                            <option>All Categories</option>
+                            <option>Fashion & Beauty</option>
+                            <option>Lifestyle</option>
+                            <option>Technology</option>
+                            <option>Food & Beverage</option>
+                        </select>
+                        <select class="filter-select">
+                            <option>All Budgets</option>
+                            <option>$100 - $500</option>
+                            <option>$500 - $1,500</option>
+                            <option>$1,500+</option>
+                        </select>
+                        <select class="filter-select">
+                            <option>All Platforms</option>
+                            <option>Instagram</option>
+                            <option>TikTok</option>
+                            <option>YouTube</option>
+                        </select>
+                        <select class="filter-select">
+                            <option>All Deadlines</option>
+                            <option>This week</option>
+                            <option>This month</option>
+                            <option>Flexible</option>
+                        </select>
+                    </div>
+
+                    <div class="campaigns-list">
+                        <div class="campaign-card">
+                            <div class="campaign-header">
+                                <div>
+                                    <div class="campaign-title">Summer Beauty Collection Campaign</div>
+                                    <div class="campaign-company">GlowCosmetics • Verified</div>
+                                </div>
+                                <div class="campaign-badge badge-new">New</div>
+                            </div>
+                            <div class="campaign-description">
+                                Looking for beauty influencers to showcase our new summer makeup collection. 
+                                Create authentic content featuring our latest products with tutorials and styling tips.
+                            </div>
+                            <div class="campaign-details">
+                                <div class="detail-item">
+                                    <div class="detail-value">$1,200</div>
+                                    <div class="detail-label">Budget</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-value">Instagram</div>
+                                    <div class="detail-label">Platform</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-value">2 weeks</div>
+                                    <div class="detail-label">Deadline</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-value">15</div>
+                                    <div class="detail-label">Applicants</div>
+                                </div>
+                            </div>
+                            <div class="campaign-tags">
+                                <span class="tag">Beauty</span>
+                                <span class="tag">Tutorial</span>
+                                <span class="tag">Summer Collection</span>
+                            </div>
+                            <div class="campaign-actions">
+                                <button class="btn btn-primary" onclick="applyCampaign('Summer Beauty Collection')">Apply Now</button>
+                                <button class="btn btn-outline">View Details</button>
+                            </div>
+                        </div>
+
+                        <div class="campaign-card">
+                            <div class="campaign-header">
+                                <div>
+                                    <div class="campaign-title">Sustainable Fashion Brand Partnership</div>
+                                    <div class="campaign-company">EcoWear • Verified</div>
+                                </div>
+                                <div class="campaign-badge badge-featured">Featured</div>
+                            </div>
+                            <div class="campaign-description">
+                                Partner with us to promote sustainable fashion choices. Looking for fashion influencers 
+                                who align with eco-friendly values and sustainable living.
+                            </div>
+                            <div class="campaign-details">
+                                <div class="detail-item">
+                                    <div class="detail-value">$1,800</div>
+                                    <div class="detail-label">Budget</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-value">Instagram</div>
+                                    <div class="detail-label">Platform</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-value">3 weeks</div>
+                                    <div class="detail-label">Deadline</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-value">8</div>
+                                    <div class="detail-label">Applicants</div>
+                                </div>
+                            </div>
+                            <div class="campaign-tags">
+                                <span class="tag">Sustainable</span>
+                                <span class="tag">Fashion</span>
+                                <span class="tag">Eco-friendly</span>
+                            </div>
+                            <div class="campaign-actions">
+                                <button class="btn btn-primary" onclick="applyCampaign('Sustainable Fashion')">Apply Now</button>
+                                <button class="btn btn-outline">View Details</button>
+                            </div>
+                        </div>
+
+                        <div class="campaign-card">
+                            <div class="campaign-header">
+                                <div>
+                                    <div class="campaign-title">Lifestyle Brand Ambassador Program</div>
+                                    <div class="campaign-company">LifeStyle Co. • Verified</div>
+                                </div>
+                                <div class="campaign-badge badge-urgent">Urgent</div>
+                            </div>
+                            <div class="campaign-description">
+                                Join our brand ambassador program for long-term collaboration. Create lifestyle content 
+                                showcasing our products in daily routines and special occasions.
+                            </div>
+                            <div class="campaign-details">
+                                <div class="detail-item">
+                                    <div class="detail-value">$950</div>
+                                    <div class="detail-label">Budget</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-value">TikTok</div>
+                                    <div class="detail-label">Platform</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-value">5 days</div>
+                                    <div class="detail-label">Deadline</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-value">22</div>
+                                    <div class="detail-label">Applicants</div>
+                                </div>
+                            </div>
+                            <div class="campaign-tags">
+                                <span class="tag">Lifestyle</span>
+                                <span class="tag">Ambassador</span>
+                                <span class="tag">Long-term</span>
+                            </div>
+                            <div class="campaign-actions">
+                                <button class="btn btn-primary" onclick="applyCampaign('Lifestyle Ambassador')">Apply Now</button>
+                                <button class="btn btn-outline">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- My Applications -->
+                <section class="section-card">
+                    <div class="applications-tabs">
+                        <button class="tab active" onclick="switchTab('applied')">Applied</button>
+                        <button class="tab" onclick="switchTab('progress')">In Progress</button>
+                        <button class="tab" onclick="switchTab('completed')">Completed</button>
+                    </div>
+                    
+                    <div class="applications-content" id="applicationsContent">
+                        <div class="application-card">
+                            <div class="application-header">
+                                <div>
+                                    <div class="application-title">Tech Product Review Campaign</div>
+                                    <div class="application-meta">Applied 2 days ago • TechCorp Inc.</div>
+                                </div>
+                                <div class="application-status status-pending">Pending</div>
+                            </div>
+                            <p style="color: #6b7280; font-size: 0.875rem;">Waiting for brand response • You're in the top 5 candidates</p>
+                        </div>
+
+                        <div class="application-card">
+                            <div class="application-header">
+                                <div>
+                                    <div class="application-title">Fashion Week Coverage</div>
+                                    <div class="application-meta">Applied 1 week ago • Fashion Nova</div>
+                                </div>
+                                <div class="application-status status-accepted">Accepted</div>
+                            </div>
+                            <p style="color: #6b7280; font-size: 0.875rem;">Congratulations! Check your messages for collaboration details</p>
+                        </div>
+
+                        <div class="application-card">
+                            <div class="application-header">
+                                <div>
+                                    <div class="application-title">Fitness Equipment Review</div>
+                                    <div class="application-meta">Applied 3 days ago • FitLife Gear</div>
+                                </div>
+                                <div class="application-status status-rejected">Not Selected</div>
+                            </div>
+                            <p style="color: #6b7280; font-size: 0.875rem;">Brand chose other candidates • Keep applying to similar opportunities</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Direct Invitations -->
+                <section class="section-card">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Direct Invitations</h2>
+                            <p class="section-subtitle">Collaboration invites from businesses</p>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 1.5rem;">
+                        <div class="invitation-card">
+                            <div class="invitation-header">
+                                <div>
+                                    <div class="invitation-title">Summer Beauty Collection Campaign</div>
+                                    <div class="invitation-company">GlowCosmetics</div>
+                                </div>
+                                <div class="invitation-badge">Collaboration Invite</div>
+                            </div>
+                            <div class="invitation-details">
+                                <p style="margin-bottom: 0.5rem;"><strong>Campaign:</strong> Summer Beauty Collection Launch</p>
+                                <p style="margin-bottom: 0.5rem;"><strong>Budget:</strong> $1,200</p>
+                                <p style="margin-bottom: 0.5rem;"><strong>Message:</strong> Hi Sarah! We'd love to collaborate with you on our summer campaign...</p>
+                            </div>
+                            <div class="invitation-actions">
+                                <button class="btn btn-accept" onclick="acceptCollabInvite('GLOW001')">Accept Invite</button>
+                                <button class="btn btn-decline" onclick="declineCollabInvite('GLOW001')">Decline</button>
+                            </div>
+                        </div>
+                        
+                        <div class="invitation-card">
+                            <div class="invitation-header">
+                                <div>
+                                    <div class="invitation-title">Tech Product Review Partnership</div>
+                                    <div class="invitation-company">TechCorp Inc.</div>
+                                </div>
+                                <div class="invitation-badge">Collaboration Invite</div>
+                            </div>
+                            <div class="invitation-details">
+                                <p style="margin-bottom: 0.5rem;"><strong>Campaign:</strong> Latest Smartphone Review</p>
+                                <p style="margin-bottom: 0.5rem;"><strong>Budget:</strong> $1,500</p>
+                                <p style="margin-bottom: 0.5rem;"><strong>Message:</strong> We noticed your tech content and would like to partner with you...</p>
+                            </div>
+                            <div class="invitation-actions">
+                                <button class="btn btn-accept" onclick="acceptCollabInvite('TECH001')">Accept Invite</button>
+                                <button class="btn btn-decline" onclick="declineCollabInvite('TECH001')">Decline</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Collab Section (Hidden by default) -->
+                <div id="collabSection" style="display: none;">
+                    <!-- Rating Overview -->
+                    <section class="section-card" style="margin-bottom: 2rem;">
+                        <div class="section-header">
+                            <div>
+                                <h2 class="section-title">Your Rating & Performance</h2>
+                                <p class="section-subtitle">Business feedback and collaboration statistics</p>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 1.5rem;">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                                <!-- Overall Rating -->
+                                <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); border-radius: 12px; color: white;">
+                                    <div style="font-size: 3rem; font-weight: bold; margin-bottom: 0.5rem;">4.9</div>
+                                    <div style="margin-bottom: 0.5rem;">⭐⭐⭐⭐⭐</div>
+                                    <div style="font-size: 0.875rem; opacity: 0.9;">Overall Rating</div>
+                                    <div style="font-size: 0.75rem; opacity: 0.8; margin-top: 0.25rem;">Based on 23 reviews</div>
+                                </div>
+                                
+                                <!-- Completion Rate -->
+                                <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; color: white;">
+                                    <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">100%</div>
+                                    <div style="margin-bottom: 0.5rem;">✅</div>
+                                    <div style="font-size: 0.875rem; opacity: 0.9;">Completion Rate</div>
+                                    <div style="font-size: 0.75rem; opacity: 0.8; margin-top: 0.25rem;">All campaigns delivered</div>
+                                </div>
+                                
+                                <!-- Total Earned -->
+                                <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); border-radius: 12px; color: white;">
+                                    <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">$4,250</div>
+                                    <div style="margin-bottom: 0.5rem;">💰</div>
+                                    <div style="font-size: 0.875rem; opacity: 0.9;">Total Earned</div>
+                                    <div style="font-size: 0.75rem; opacity: 0.8; margin-top: 0.25rem;">Across 23 campaigns</div>
+                                </div>
+                                
+                                <!-- Recommendation Rate -->
+                                <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); border-radius: 12px; color: white;">
+                                    <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">95%</div>
+                                    <div style="margin-bottom: 0.5rem;">👍</div>
+                                    <div style="font-size: 0.875rem; opacity: 0.9;">Recommended</div>
+                                    <div style="font-size: 0.75rem; opacity: 0.8; margin-top: 0.25rem;">By businesses</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Detailed Ratings -->
+                            <div style="margin-top: 2rem; padding: 1.5rem; background: #f8fafc; border-radius: 12px;">
+                                <h3 style="font-weight: bold; color: #1e3a8a; margin-bottom: 1rem;">Detailed Ratings</h3>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+                                    <div style="text-align: center;">
+                                        <div style="font-weight: bold; color: #1e3a8a; font-size: 1.25rem;">4.8</div>
+                                        <div style="color: #fbbf24; margin: 0.25rem 0;">⭐⭐⭐⭐⭐</div>
+                                        <div style="font-size: 0.875rem; color: #6b7280;">Communication</div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="font-weight: bold; color: #1e3a8a; font-size: 1.25rem;">5.0</div>
+                                        <div style="color: #fbbf24; margin: 0.25rem 0;">⭐⭐⭐⭐⭐</div>
+                                        <div style="font-size: 0.875rem; color: #6b7280;">Content Quality</div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="font-weight: bold; color: #1e3a8a; font-size: 1.25rem;">4.9</div>
+                                        <div style="color: #fbbf24; margin: 0.25rem 0;">⭐⭐⭐⭐⭐</div>
+                                        <div style="font-size: 0.875rem; color: #6b7280;">Timeliness</div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="font-weight: bold; color: #1e3a8a; font-size: 1.25rem;">4.7</div>
+                                        <div style="color: #fbbf24; margin: 0.25rem 0;">⭐⭐⭐⭐⭐</div>
+                                        <div style="font-size: 0.875rem; color: #6b7280;">Professionalism</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Active Collaborations -->
+                    <section class="section-card">
+                        <div class="section-header">
+                            <div>
+                                <h2 class="section-title">Active Collaborations</h2>
+                                <p class="section-subtitle">Ongoing campaigns with live tracking</p>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 1.5rem;">
+                            <div class="application-card" style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-color: #16a34a;">
+                                <div class="application-header">
+                                    <div>
+                                        <div class="application-title" style="color: #166534;">Fashion Week Coverage</div>
+                                        <div class="application-meta" style="color: #166534;">GlowCosmetics • Started 3 days ago • $1,200</div>
+                                    </div>
+                                    <div class="application-status" style="background: #16a34a; color: white;">Active</div>
+                                </div>
+                                <div style="margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.7); border-radius: 8px;">
+                                    <p style="margin-bottom: 0.5rem;"><strong>Content URL:</strong> <a href="https://youtube.com/watch?v=example1" target="_blank" style="color: #1e3a8a;">https://youtube.com/watch?v=example1</a></p>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Posted:</strong> 2 days ago</p>
+                                    <p><strong>Status:</strong> Live tracking active</p>
+                                </div>
+                                <div class="campaign-details" style="background: rgba(255,255,255,0.8);">
+                                    <div class="detail-item">
+                                        <div class="detail-value" style="color: #16a34a;">2,847</div>
+                                        <div class="detail-label">Views</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value" style="color: #16a34a;">234</div>
+                                        <div class="detail-label">Likes</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value" style="color: #16a34a;">18</div>
+                                        <div class="detail-label">Comments</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value" style="color: #16a34a;">8.2%</div>
+                                        <div class="detail-label">Engagement</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                                    <button class="btn btn-outline" onclick="viewLiveTracking('GLOW001')">🔴 Live Tracking</button>
+                                    <button class="btn btn-outline" onclick="updateContentUrl('GLOW001')">📝 Update URL</button>
+                                    <button class="btn btn-secondary" onclick="endCollaboration('GLOW001')">🏁 End Campaign</button>
+                                </div>
+                            </div>
+                            
+                            <div class="application-card" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-color: #f59e0b;">
+                                <div class="application-header">
+                                    <div>
+                                        <div class="application-title" style="color: #92400e;">Tech Product Review</div>
+                                        <div class="application-meta" style="color: #92400e;">TechCorp Inc. • Waiting for URL</div>
+                                    </div>
+                                    <div class="application-status" style="background: #f59e0b; color: white;">Pending URL</div>
+                                </div>
+                                <div style="margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.7); border-radius: 8px;">
+                                    <p style="margin-bottom: 1rem; color: #92400e;"><strong>Next Step:</strong> Upload your content and submit the YouTube URL to start tracking</p>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <input type="url" placeholder="https://youtube.com/watch?v=" style="flex: 1; padding: 0.75rem; border: 2px solid #f59e0b; border-radius: 8px;">
+                                        <button class="btn btn-primary" onclick="submitContentUrl('TECH001')">📤 Submit URL</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Previous Collaborations -->
+                    <section class="section-card" style="margin-top: 2rem;">
+                        <div class="section-header">
+                            <div>
+                                <h2 class="section-title">Previous Collaborations</h2>
+                                <p class="section-subtitle">Completed campaigns with performance reports</p>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 1.5rem;">
+                            <div class="application-card">
+                                <div class="application-header">
+                                    <div>
+                                        <div class="application-title">Summer Beauty Collection</div>
+                                        <div class="application-meta">GlowUp Beauty • Completed 2 weeks ago • $2,100 earned</div>
+                                    </div>
+                                    <div class="application-status status-accepted">Completed</div>
+                                </div>
+                                <div class="campaign-details">
+                                    <div class="detail-item">
+                                        <div class="detail-value">42.1K</div>
+                                        <div class="detail-label">Total Views</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">4,750</div>
+                                        <div class="detail-label">Engagements</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">11.3%</div>
+                                        <div class="detail-label">Engagement Rate</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">5/5 ⭐</div>
+                                        <div class="detail-label">Rating</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                                    <button class="btn btn-outline" onclick="viewFullReport('GU001')">📊 Full Report</button>
+                                    <button class="btn btn-outline" onclick="downloadCertificate('GU001')">📜 Certificate</button>
+                                    <button class="btn btn-secondary" onclick="requestTestimonial('GU001')">💬 Request Testimonial</button>
+                                </div>
+                            </div>
+
+                            <div class="application-card">
+                                <div class="application-header">
+                                    <div>
+                                        <div class="application-title">Tech Product Unboxing</div>
+                                        <div class="application-meta">TechReviews • Completed 1 month ago • $1,200 earned</div>
+                                    </div>
+                                    <div class="application-status status-accepted">Completed</div>
+                                </div>
+                                <div class="campaign-details">
+                                    <div class="detail-item">
+                                        <div class="detail-value">28.5K</div>
+                                        <div class="detail-label">Total Views</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">2,890</div>
+                                        <div class="detail-label">Engagements</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">10.1%</div>
+                                        <div class="detail-label">Engagement Rate</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">4.8/5 ⭐</div>
+                                        <div class="detail-label">Rating</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                                    <button class="btn btn-outline" onclick="viewFullReport('TR001')">📊 Full Report</button>
+                                    <button class="btn btn-outline" onclick="downloadCertificate('TR001')">📜 Certificate</button>
+                                    <button class="btn btn-secondary" onclick="leaveBusinessReview('TR001')">⭐ Rate Business</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function applyCampaign(campaignName) {
+            alert(`Applying to: ${campaignName}\n\nThis will open the application form where you can:\n• Write a personalized proposal\n• Upload relevant portfolio samples\n• Set your collaboration terms\n• Submit your application`);
+        }
+
+        function switchTab(tabName) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            const content = document.getElementById('applicationsContent');
+            
+            if (tabName === 'progress') {
+                content.innerHTML = `
+                    <div class="application-card">
+                        <div class="application-header">
+                            <div>
+                                <div class="application-title">Fashion Week Coverage</div>
+                                <div class="application-meta">Started 3 days ago • Fashion Nova • $1,800</div>
+                            </div>
+                            <div class="application-status status-in-progress">In Progress</div>
+                        </div>
+                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">Content creation deadline: 5 days remaining • Phase 2 of 3</p>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <button class="btn btn-outline" onclick="viewCampaignDetails('FW001')">View Brief</button>
+                            <button class="btn btn-outline" onclick="downloadDeliverables('FW001')">Download Assets</button>
+                            <button class="btn btn-secondary">Upload Content</button>
+                        </div>
+                    </div>
+                    <div class="application-card">
+                        <div class="application-header">
+                            <div>
+                                <div class="application-title">Eco-Friendly Product Launch</div>
+                                <div class="application-meta">Started 1 week ago • GreenLife Co. • $1,200</div>
+                            </div>
+                            <div class="application-status status-in-progress">In Progress</div>
+                        </div>
+                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">Final review stage • Awaiting brand approval on submitted content</p>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <button class="btn btn-outline" onclick="viewCampaignDetails('GL002')">View Brief</button>
+                            <button class="btn btn-outline">View Submitted Content</button>
+                            <button class="btn btn-secondary">Message Brand</button>
+                        </div>
+                    </div>
+                `;
+            } else if (tabName === 'completed') {
+                content.innerHTML = `
+                    <div class="application-card">
+                        <div class="application-header">
+                            <div>
+                                <div class="application-title">Summer Fitness Challenge</div>
+                                <div class="application-meta">Completed 2 weeks ago • FitLife • $850 earned</div>
+                            </div>
+                            <div class="application-status status-accepted">Completed</div>
+                        </div>
+                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">Campaign performance: 15.2K reach, 1,240 engagements • Rating: 5/5 stars</p>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <button class="btn btn-outline" onclick="viewReport('SF001')">View Report</button>
+                            <button class="btn btn-outline">Download Certificate</button>
+                            <button class="btn btn-secondary">Leave Review</button>
+                        </div>
+                    </div>
+                    <div class="application-card">
+                        <div class="application-header">
+                            <div>
+                                <div class="application-title">Tech Product Unboxing</div>
+                                <div class="application-meta">Completed 1 month ago • TechReviews • $1,200 earned</div>
+                            </div>
+                            <div class="application-status status-accepted">Completed</div>
+                        </div>
+                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">Campaign performance: 28.5K reach, 2,890 engagements • Rating: 4.8/5 stars</p>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <button class="btn btn-outline" onclick="viewReport('TR001')">View Report</button>
+                            <button class="btn btn-outline">Download Certificate</button>
+                            <button class="btn btn-secondary">Request Testimonial</button>
+                        </div>
+                    </div>
+                    <div class="application-card">
+                        <div class="application-header">
+                            <div>
+                                <div class="application-title">Beauty Product Review Series</div>
+                                <div class="application-meta">Completed 6 weeks ago • GlowUp Beauty • $2,100 earned</div>
+                            </div>
+                            <div class="application-status status-accepted">Completed</div>
+                        </div>
+                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">Campaign performance: 42.1K reach, 4,750 engagements • Rating: 5/5 stars</p>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <button class="btn btn-outline" onclick="viewReport('GU001')">View Report</button>
+                            <button class="btn btn-outline">Download Certificate</button>
+                            <button class="btn btn-secondary">Apply for Follow-up</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Applied tab (default)
+                content.innerHTML = `
+                    <div class="application-card">
+                        <div class="application-header">
+                            <div>
+                                <div class="application-title">Tech Product Review Campaign</div>
+                                <div class="application-meta">Applied 2 days ago • TechCorp Inc. • $1,500 budget</div>
+                            </div>
+                            <div class="application-status status-pending">Pending</div>
+                        </div>
+                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">Waiting for brand response • You're in the top 5 candidates • Expected response: 3 days</p>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <button class="btn btn-outline" onclick="viewApplication('TC001')">View Application</button>
+                            <button class="btn btn-outline">Edit Proposal</button>
+                            <button class="btn btn-secondary">Withdraw Application</button>
+                        </div>
+                    </div>
+                    <div class="application-card">
+                        <div class="application-header">
+                            <div>
+                                <div class="application-title">Holiday Lifestyle Campaign</div>
+                                <div class="application-meta">Applied 4 days ago • LifeStyle Hub • $950 budget</div>
+                            </div>
+                            <div class="application-status status-pending">Under Review</div>
+                        </div>
+                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">Brand is reviewing applications • 12 total applicants • Interview may be required</p>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <button class="btn btn-outline" onclick="viewApplication('LH001')">View Application</button>
+                            <button class="btn btn-outline">Message Brand</button>
+                            <button class="btn btn-secondary">Update Availability</button>
+                        </div>
+                    </div>
+                    <div class="application-card">
+                        <div class="application-header">
+                            <div>
+                                <div class="application-title">Fitness Equipment Review</div>
+                                <div class="application-meta">Applied 3 days ago • FitLife Gear • $750 budget</div>
+                            </div>
+                            <div class="application-status status-rejected">Not Selected</div>
+                        </div>
+                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">Brand chose other candidates • Feedback: Great portfolio, looking for fitness-focused creators next time</p>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <button class="btn btn-outline" onclick="viewApplication('FG001')">View Application</button>
+                            <button class="btn btn-outline">View Feedback</button>
+                            <button class="btn btn-secondary">Find Similar Jobs</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Quick action handlers
+        document.querySelectorAll('.quick-action').forEach(action => {
+            action.addEventListener('click', function() {
+                const text = this.textContent.trim();
+                alert(`${text} functionality coming soon!`);
+            });
+        });
+
+        // Campaign action handlers
+        document.querySelectorAll('.btn-outline').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.textContent === 'View Details') {
+                    const campaignTitle = this.closest('.campaign-card').querySelector('.campaign-title').textContent;
+                    alert(`Viewing details for: ${campaignTitle}\n\nThis will show:\n• Full campaign brief\n• Detailed requirements\n• Brand information\n• Sample content examples\n• Application timeline`);
+                }
+            });
+        });
+
+        // Add specific function handlers
+        function applyCampaign(campaignId) {
+            alert(`Applying to campaign ${campaignId}!\n\nThis will:\n• Submit your profile for review\n• Send a personalized proposal\n• Track application status\n• Notify you of updates`);
+        }
+
+        function viewApplication(applicationId) {
+            alert(`Viewing application ${applicationId} details!\n\nThis shows:\n• Application status\n• Proposal submitted\n• Brand feedback\n• Next steps`);
+        }
+
+        function viewCampaignDetails(campaignId) {
+            alert(`Viewing campaign ${campaignId} details!\n\nThis includes:\n• Full campaign brief\n• Content requirements\n• Timeline & deadlines\n• Compensation details`);
+        }
+
+        function downloadDeliverables(campaignId) {
+            alert(`Downloading deliverables for campaign ${campaignId}!\n\nThis includes:\n• Content templates\n• Brand guidelines\n• Required hashtags\n• Asset files`);
+        }
+
+        function viewReport(campaignId) {
+            alert(`Viewing performance report for campaign ${campaignId}!\n\nThis shows:\n• Reach and impressions\n• Engagement metrics\n• Click-through rates\n• ROI data`);
+        }
+
+        function acceptCollabInvite(inviteId) {
+            alert(`Accepting collaboration invite ${inviteId}!\n\nThis will:\n• Confirm your participation\n• Start the collaboration\n• Move to active collaborations\n• Enable content URL submission`);
+        }
+
+        function declineCollabInvite(inviteId) {
+            alert(`Declining collaboration invite ${inviteId}!\n\nThis will:\n• Politely decline the collaboration\n• Archive the invitation\n• Keep professional relationship`);
+        }
+
+        // Section navigation
+        function showSection(section) {
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+            
+            // Add active class to clicked link
+            event.target.classList.add('active');
+            
+            // Hide all sections
+            const mainArea = document.querySelector('.main-area');
+            const collabSection = document.getElementById('collabSection');
+            
+            if (section === 'collab') {
+                mainArea.style.display = 'none';
+                collabSection.style.display = 'block';
+            } else {
+                mainArea.style.display = 'block';
+                collabSection.style.display = 'none';
+                
+                if (section === 'dashboard') {
+                    // Show dashboard content (already visible)
+                } else {
+                    alert(`${section.charAt(0).toUpperCase() + section.slice(1)} section coming soon!`);
+                }
+            }
+        }
+
+        // Function to show Collab tab
+        function showCollabTab() {
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+            
+            // Add active class to Collab link
+            document.querySelector('.nav-links a[onclick="showSection(\'collab\')"]').classList.add('active');
+            
+            // Hide main area and show collab section
+            document.querySelector('.main-area').style.display = 'none';
+            document.getElementById('collabSection').style.display = 'block';
+        }
+
+        // Collaboration functions
+        function viewLiveTracking(collabId) {
+            alert(`Live Tracking for ${collabId}!\n\n🔴 Real-time YouTube Analytics:\n• Views: 2,847 (+127 in last hour)\n• Likes: 234 (+12 in last hour)\n• Comments: 18 (+3 in last hour)\n• Watch Time: 1.2K hours\n• CTR: 8.2%\n\nUpdates every 10 seconds`);
+        }
+
+        function updateContentUrl(collabId) {
+            const newUrl = prompt('Enter new YouTube URL:', 'https://youtube.com/watch?v=');
+            if (newUrl) {
+                alert(`URL updated for ${collabId}!\n\nNew URL: ${newUrl}\n\nTracking will restart with new video data.`);
+            }
+        }
+
+        function submitContentUrl(collabId) {
+            const urlInput = event.target.parentElement.querySelector('input[type="url"]');
+            const url = urlInput.value;
+            if (url) {
+                alert(`Content URL submitted for ${collabId}!\n\nURL: ${url}\n\nLive tracking will begin shortly.\nBoth you and the business can now monitor performance in real-time.`);
+                urlInput.value = '';
+            } else {
+                alert('Please enter a valid YouTube URL');
+            }
+        }
+
+        function endCollaboration(collabId) {
+            if (confirm('Are you sure you want to end this collaboration?\n\nThis will:\n• Stop live tracking\n• Generate final report\n• Request rating from business\n• Move to completed campaigns')) {
+                alert(`Collaboration ${collabId} ended!\n\n📊 Final report generated\n⭐ Business rating requested\n✅ Moved to completed campaigns`);
+            }
+        }
+
+        function viewFullReport(campaignId) {
+            alert(`Full Performance Report for ${campaignId}!\n\n📊 Complete Analytics:\n• Total Views: 42.1K\n• Peak Views: 1.2K/hour\n• Total Engagement: 4,750\n• Engagement Rate: 11.3%\n• Watch Time: 8.5K hours\n• Click-through Rate: 3.2%\n• Conversion Rate: 1.8%\n• Revenue Generated: $2,400\n\n📈 Performance Timeline Available`);
+        }
+
+        function downloadCertificate(campaignId) {
+            alert(`Downloading completion certificate for ${campaignId}!\n\n📜 Certificate includes:\n• Campaign details\n• Performance metrics\n• Completion date\n• Business rating\n• Digital signature\n\nUse this for your portfolio!`);
+        }
+
+        function requestTestimonial(campaignId) {
+            alert(`Testimonial request sent for ${campaignId}!\n\n📝 Request sent to business:\n• Ask for written testimonial\n• Request LinkedIn recommendation\n• Portfolio permission\n• Future collaboration interest\n\nBusiness will be notified.`);
+        }
+
+        function leaveBusinessReview(campaignId) {
+            alert(`Rate Business for ${campaignId}!\n\n⭐ Review Categories:\n• Communication\n• Payment promptness\n• Brief clarity\n• Professional collaboration\n• Would recommend\n\nYour review helps other influencers!`);
+        }
+
+        // Notification button handler
+        document.querySelector('.notification-btn').addEventListener('click', function() {
+            alert('Notifications!\n\n• New collaboration invite from GlowCosmetics\n• Application update: Fashion Week\n• Message from TechCorp Inc.\n• Profile view by Lifestyle Co.');
+        });
+    </script>
+</body>
+</html>

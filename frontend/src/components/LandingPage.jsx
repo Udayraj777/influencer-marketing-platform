@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
   return (
@@ -33,9 +34,9 @@ const LandingPage = () => {
             Bridge the Gap Between Ambitious Brands and Talented Influencers — Built for Results.
           </p>
           <div className="mt-8">
-            <a href="#" className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-block hover:-translate-y-1 transform">
+            <Link to="/register" className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-block hover:-translate-y-1 transform">
               Get Started
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -61,9 +62,9 @@ const LandingPage = () => {
               <p className="text-gray-600 mb-8 leading-relaxed">
                 Run smarter campaigns with authentic creators. Discover talent, manage deals, and measure success — all from one powerful platform.
               </p>
-              <a href="#" className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-block">
+              <Link to="/register" className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-block">
                 Explore Brand Solutions
-              </a>
+              </Link>
             </div>
             
             <div className="bg-white p-12 rounded-2xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-gray-200 text-center">
@@ -76,9 +77,9 @@ const LandingPage = () => {
               <p className="text-gray-600 mb-8 leading-relaxed">
                 Monetize your content, build real brand partnerships, and run your creator business like a pro — all from one sleek platform.
               </p>
-              <a href="#" className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-block">
+              <Link to="/register" className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-block">
                 Join Our Network
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -226,9 +227,9 @@ const LandingPage = () => {
           <p className="text-xl mb-8 text-gray-200">
             Join a growing network of brands and creators using Upsaleit to drive real growth and measurable impact.
           </p>
-          <a href="#" className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-block">
+          <Link to="/register" className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-block">
             Get Started
-          </a>
+          </Link>
         </div>
       </section>
 

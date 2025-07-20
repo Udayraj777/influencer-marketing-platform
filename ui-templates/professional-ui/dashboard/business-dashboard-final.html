@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Dashboard - Upsaleit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #334155;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .notification-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #1e3a8a;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Company Header */
+        .company-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .company-info h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .company-details {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .company-meta {
+            display: flex;
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+
+        /* Main Content Area */
+        .main-area {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .section-subtitle {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .section-action {
+            color: #3b82f6;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-action:hover {
+            background: #f0f9ff;
+            color: #1e3a8a;
+            border-color: #3b82f6;
+        }
+
+        /* Recommended Influencers */
+        .influencer-filters {
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            background: white;
+            min-width: 140px;
+        }
+
+        .influencer-grid {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .influencer-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .influencer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+
+        .influencer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border-color: #10b981;
+        }
+
+        .influencer-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .influencer-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            border: 3px solid white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .influencer-info h3 {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.25rem;
+        }
+
+        .influencer-niche {
+            color: #6b7280;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .verified-badge {
+            color: #10b981;
+            font-size: 1rem;
+            margin-left: 0.25rem;
+        }
+
+        .match-score {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .influencer-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-weight: bold;
+            color: #1e3a8a;
+            font-size: 1rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .influencer-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .influencer-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(30, 58, 138, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #d1d5db;
+            color: #6b7280;
+        }
+
+        .btn-outline:hover {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        /* Campaigns Section */
+        .campaigns-tabs {
+            display: flex;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            border: none;
+            background: none;
+            color: #6b7280;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            color: #1e3a8a;
+            border-bottom-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .tab:hover {
+            color: #1e3a8a;
+        }
+
+        .post-campaign-btn {
+            margin-left: auto;
+            margin-right: 1rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .post-campaign-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 15px rgba(30, 58, 138, 0.3);
+        }
+
+        .campaigns-content {
+            padding: 2rem;
+            min-height: 300px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-description {
+            color: #6b7280;
+            margin-bottom: 2rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .empty-action {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .empty-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.3);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .sidebar-title {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .quick-action {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .quick-action:hover {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .quick-action-icon {
+            font-size: 1.25rem;
+        }
+
+        .quick-action-label {
+            font-weight: 500;
+        }
+
+        .stats-card {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .company-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .company-meta {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .influencer-filters {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .influencer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campaigns-tabs {
+                flex-direction: column;
+            }
+
+            .post-campaign-btn {
+                margin: 1rem;
+                align-self: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">Upsaleit</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#dashboard" class="active" onclick="showSection('dashboard')">Dashboard</a></li>
+                    <li><a href="#collab" onclick="showSection('collab')">Collab</a></li>
+                    <li><a href="#messages" onclick="showSection('messages')">Messages</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="notification-btn">
+                    🔔
+                    <span class="notification-badge">2</span>
+                </button>
+                <div class="user-profile">
+                    <div class="user-avatar">TC</div>
+                    <span>TechCorp Inc.</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Company Header -->
+        <section class="company-header">
+            <div class="company-logo">TC</div>
+            <div class="company-info">
+                <h1>TechCorp Inc.</h1>
+                <p class="company-details">Leading technology solutions for modern businesses</p>
+                <div class="company-meta">
+                    <div class="meta-item">
+                        <span>🏢</span>
+                        <span>Technology</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>📍</span>
+                        <span>San Francisco, CA</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>👥</span>
+                        <span>201-500 employees</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>💰</span>
+                        <span>$5K-25K budget range</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Grid -->
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <!-- Main Content Area -->
+            <div class="main-area">
+                <!-- Recommended Influencers -->
+                <section class="section-card">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Recommended Talent</h2>
+                            <p class="section-subtitle">Influencers matched to your technology focus and target audience</p>
+                        </div>
+                        <a href="#" class="section-action">View All</a>
+                    </div>
+                    
+                    <div class="influencer-filters">
+                        <select class="filter-select">
+                            <option>All Categories</option>
+                            <option>Technology</option>
+                            <option>Gaming</option>
+                            <option>Business</option>
+                            <option>Education</option>
+                        </select>
+                        <select class="filter-select">
+                            <option>All Platforms</option>
+                            <option>YouTube</option>
+                            <option>Instagram</option>
+                            <option>TikTok</option>
+                            <option>LinkedIn</option>
+                        </select>
+                        <select class="filter-select">
+                            <option>All Audience Sizes</option>
+                            <option>10K-50K</option>
+                            <option>50K-100K</option>
+                            <option>100K-500K</option>
+                            <option>500K+</option>
+                        </select>
+                    </div>
+
+                    <div class="influencer-grid">
+                        <div class="influencer-card">
+                            <div class="match-score">94% Match</div>
+                            <div class="influencer-header">
+                                <div class="influencer-avatar">MJ</div>
+                                <div class="influencer-info">
+                                    <h3>Mike Johnson <span class="verified-badge">✓</span></h3>
+                                    <div class="influencer-niche">Tech Reviewer • San Francisco</div>
+                                </div>
+                            </div>
+                            <div class="influencer-stats">
+                                <div class="stat">
+                                    <div class="stat-number">89K</div>
+                                    <div class="stat-label">Followers</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">7.2%</div>
+                                    <div class="stat-label">Engagement</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">$800</div>
+                                    <div class="stat-label">Per Video</div>
+                                </div>
+                            </div>
+                            <div class="influencer-tags">
+                                <span class="tag">Tech Reviews</span>
+                                <span class="tag">Gadgets</span>
+                                <span class="tag">YouTube</span>
+                            </div>
+                            <div class="influencer-actions">
+                                <button class="btn-small btn-primary">View Profile</button>
+                                <button class="btn-small btn-secondary">Message</button>
+                                <button class="btn-small btn-outline">Invite</button>
+                            </div>
+                        </div>
+
+                        <div class="influencer-card">
+                            <div class="match-score">91% Match</div>
+                            <div class="influencer-header">
+                                <div class="influencer-avatar">SA</div>
+                                <div class="influencer-info">
+                                    <h3>Sarah Analytics <span class="verified-badge">✓</span></h3>
+                                    <div class="influencer-niche">Business Tech • New York</div>
+                                </div>
+                            </div>
+                            <div class="influencer-stats">
+                                <div class="stat">
+                                    <div class="stat-number">124K</div>
+                                    <div class="stat-label">Followers</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">6.8%</div>
+                                    <div class="stat-label">Engagement</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">$650</div>
+                                    <div class="stat-label">Per Post</div>
+                                </div>
+                            </div>
+                            <div class="influencer-tags">
+                                <span class="tag">SaaS</span>
+                                <span class="tag">Analytics</span>
+                                <span class="tag">LinkedIn</span>
+                            </div>
+                            <div class="influencer-actions">
+                                <button class="btn-small btn-primary">View Profile</button>
+                                <button class="btn-small btn-secondary">Message</button>
+                                <button class="btn-small btn-outline">Invite</button>
+                            </div>
+                        </div>
+
+                        <div class="influencer-card">
+                            <div class="match-score">88% Match</div>
+                            <div class="influencer-header">
+                                <div class="influencer-avatar">DT</div>
+                                <div class="influencer-info">
+                                    <h3>David TechFlow <span class="verified-badge">✓</span></h3>
+                                    <div class="influencer-niche">Developer • Remote</div>
+                                </div>
+                            </div>
+                            <div class="influencer-stats">
+                                <div class="stat">
+                                    <div class="stat-number">67K</div>
+                                    <div class="stat-label">Followers</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">8.4%</div>
+                                    <div class="stat-label">Engagement</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">$500</div>
+                                    <div class="stat-label">Per Tutorial</div>
+                                </div>
+                            </div>
+                            <div class="influencer-tags">
+                                <span class="tag">Coding</span>
+                                <span class="tag">Tutorials</span>
+                                <span class="tag">TikTok</span>
+                            </div>
+                            <div class="influencer-actions">
+                                <button class="btn-small btn-primary">View Profile</button>
+                                <button class="btn-small btn-secondary">Message</button>
+                                <button class="btn-small btn-outline">Invite</button>
+                            </div>
+                        </div>
+
+                        <div class="influencer-card">
+                            <div class="match-score">86% Match</div>
+                            <div class="influencer-header">
+                                <div class="influencer-avatar">EL</div>
+                                <div class="influencer-info">
+                                    <h3>Emma Launch <span class="verified-badge">✓</span></h3>
+                                    <div class="influencer-niche">Startup Tech • Austin</div>
+                                </div>
+                            </div>
+                            <div class="influencer-stats">
+                                <div class="stat">
+                                    <div class="stat-number">156K</div>
+                                    <div class="stat-label">Followers</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">5.9%</div>
+                                    <div class="stat-label">Engagement</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">$720</div>
+                                    <div class="stat-label">Per Campaign</div>
+                                </div>
+                            </div>
+                            <div class="influencer-tags">
+                                <span class="tag">Startups</span>
+                                <span class="tag">Innovation</span>
+                                <span class="tag">Instagram</span>
+                            </div>
+                            <div class="influencer-actions">
+                                <button class="btn-small btn-primary">View Profile</button>
+                                <button class="btn-small btn-secondary">Message</button>
+                                <button class="btn-small btn-outline">Invite</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Start -->
+                <section class="section-card">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Quick Start</h2>
+                            <p class="section-subtitle">Get started with your first campaign</p>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 2rem; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+                        <h3 style="color: #1e3a8a; margin-bottom: 0.5rem;">Ready to launch your first campaign?</h3>
+                        <p style="color: #6b7280; margin-bottom: 2rem;">Connect with talented influencers and grow your brand reach</p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn btn-primary" onclick="openCampaignModal()" style="padding: 1rem 2rem; font-size: 1.125rem;">
+                                📝 Post New Campaign
+                            </button>
+                            <button class="btn btn-outline" onclick="showSection('collab')" style="padding: 1rem 2rem; font-size: 1.125rem; background: white; border: 2px solid #e2e8f0; color: #1e3a8a;">
+                                📊 View Collab Dashboard
+                            </button>
+                        </div>
+                        <div style="margin-top: 1.5rem; padding: 1rem; background: #f0f9ff; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                            <p style="color: #1e40af; font-size: 0.875rem; margin: 0;">
+                                💡 <strong>Tip:</strong> Click the "Collab" tab above to manage your campaigns and view active collaborations with real-time tracking!
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Collab Section (Hidden by default) -->
+                <div id="collabSection" style="display: none;">
+                    <!-- Campaign Management -->
+                    <section class="section-card">
+                        <div class="section-header">
+                            <div>
+                                <h2 class="section-title">Campaign Management</h2>
+                                <p class="section-subtitle">Manage your campaigns and collaborations</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="openCampaignModal()">+ Post Campaign</button>
+                        </div>
+                        
+                        <!-- Campaign Tabs -->
+                        <div class="campaigns-tabs" style="border-bottom: 1px solid #f1f5f9;">
+                            <button class="tab active" onclick="switchCampaignTab('active')">Active Campaigns</button>
+                            <button class="tab" onclick="switchCampaignTab('previous')">Previous Campaigns</button>
+                            <button class="tab" onclick="switchCampaignTab('collaborations')">Active Collaborations</button>
+                        </div>
+                        
+                        <!-- Tab Content -->
+                        <div id="activeCampaigns" class="tab-content" style="padding: 1.5rem;">
+                            <div class="campaign-card">
+                                <div class="campaign-header">
+                                    <div>
+                                        <div class="campaign-title">Summer Tech Product Launch</div>
+                                        <div class="campaign-company">Posted 2 days ago • 12 applications</div>
+                                    </div>
+                                    <div class="campaign-badge badge-new">Active</div>
+                                </div>
+                                <div class="campaign-description">
+                                    Looking for tech influencers to showcase our latest smartphone with unboxing and review content.
+                                </div>
+                                <div class="campaign-details">
+                                    <div class="detail-item">
+                                        <div class="detail-value">$1,500</div>
+                                        <div class="detail-label">Budget</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">YouTube</div>
+                                        <div class="detail-label">Platform</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">5 days</div>
+                                        <div class="detail-label">Deadline</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">12</div>
+                                        <div class="detail-label">Applications</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                                    <button class="btn btn-outline" onclick="viewApplications('TECH001')">👥 View Applications</button>
+                                    <button class="btn btn-outline" onclick="editCampaign('TECH001')">✏️ Edit Campaign</button>
+                                    <button class="btn btn-secondary" onclick="closeCampaign('TECH001')">🔒 Close Campaign</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="previousCampaigns" class="tab-content" style="display: none; padding: 1.5rem;">
+                            <div class="campaign-card">
+                                <div class="campaign-header">
+                                    <div>
+                                        <div class="campaign-title">Holiday Gadget Reviews</div>
+                                        <div class="campaign-company">Completed 3 weeks ago • 5 collaborations</div>
+                                    </div>
+                                    <div class="campaign-badge" style="background: #16a34a; color: white;">Completed</div>
+                                </div>
+                                <div class="campaign-description">
+                                    Holiday-focused tech review campaign featuring our latest gadgets and accessories.
+                                </div>
+                                <div class="campaign-details">
+                                    <div class="detail-item">
+                                        <div class="detail-value">$7,500</div>
+                                        <div class="detail-label">Total Spent</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">185K</div>
+                                        <div class="detail-label">Total Reach</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">18.2K</div>
+                                        <div class="detail-label">Engagements</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value">9.8%</div>
+                                        <div class="detail-label">Avg Engagement</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                                    <button class="btn btn-outline" onclick="viewCampaignReport('HOL001')">📊 View Report</button>
+                                    <button class="btn btn-outline" onclick="duplicateCampaign('HOL001')">🔄 Duplicate</button>
+                                    <button class="btn btn-secondary" onclick="downloadCampaignData('HOL001')">📥 Download Data</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="activeCollaborations" class="tab-content" style="display: none; padding: 1.5rem;">
+                            <div class="campaign-card" style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-color: #16a34a;">
+                                <div class="campaign-header">
+                                    <div>
+                                        <div class="campaign-title" style="color: #166534;">Fashion Week Coverage</div>
+                                        <div class="campaign-company" style="color: #166534;">Sarah Anderson • Started 3 days ago</div>
+                                    </div>
+                                    <div class="campaign-badge" style="background: #16a34a; color: white;">Live Tracking</div>
+                                </div>
+                                <div style="margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.7); border-radius: 8px;">
+                                    <p style="margin-bottom: 0.5rem;"><strong>Content URL:</strong> <a href="https://youtube.com/watch?v=example1" target="_blank" style="color: #1e3a8a;">https://youtube.com/watch?v=example1</a></p>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Posted:</strong> 2 days ago</p>
+                                    <p><strong>Budget:</strong> $1,200 • <strong>ROI:</strong> +$2,400 estimated</p>
+                                </div>
+                                <div class="campaign-details" style="background: rgba(255,255,255,0.8);">
+                                    <div class="detail-item">
+                                        <div class="detail-value" style="color: #16a34a;">2,847</div>
+                                        <div class="detail-label">Views</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value" style="color: #16a34a;">234</div>
+                                        <div class="detail-label">Likes</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value" style="color: #16a34a;">18</div>
+                                        <div class="detail-label">Comments</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-value" style="color: #16a34a;">8.2%</div>
+                                        <div class="detail-label">Engagement</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                                    <button class="btn btn-outline" onclick="viewBusinessLiveTracking('SA001')">🔴 Live Analytics</button>
+                                    <button class="btn btn-outline" onclick="downloadInterimReport('SA001')">📊 Interim Report</button>
+                                    <button class="btn btn-secondary" onclick="endBusinessCollaboration('SA001')">🏁 End & Rate</button>
+                                </div>
+                            </div>
+                            
+                            <div class="campaign-card" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-color: #f59e0b;">
+                                <div class="campaign-header">
+                                    <div>
+                                        <div class="campaign-title" style="color: #92400e;">Tech Product Review</div>
+                                        <div class="campaign-company" style="color: #92400e;">Mike Johnson • Waiting for content</div>
+                                    </div>
+                                    <div class="campaign-badge" style="background: #f59e0b; color: white;">Pending</div>
+                                </div>
+                                <div style="margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.7); border-radius: 8px;">
+                                    <p style="margin-bottom: 0.5rem; color: #92400e;"><strong>Status:</strong> Influencer accepted collaboration, content creation in progress</p>
+                                    <p style="margin-bottom: 0.5rem;"><strong>Expected:</strong> Content URL submission within 3 days</p>
+                                    <p><strong>Budget:</strong> $1,500</p>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                                    <button class="btn btn-outline" onclick="messageInfluencer('MJ002')">💬 Message Mike</button>
+                                    <button class="btn btn-outline" onclick="viewCollabDetails('MJ002')">📋 View Details</button>
+                                    <button class="btn btn-secondary" onclick="extendDeadline('MJ002')">⏰ Extend Deadline</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Campaign Modal -->
+    <div class="modal" id="campaignModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; backdrop-filter: blur(4px);">
+        <div class="modal-content" style="background: white; margin: 5% auto; border-radius: 16px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
+            <div style="padding: 2rem 2rem 1rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="font-size: 1.5rem; font-weight: bold; color: #1e3a8a;">Post New Campaign</h3>
+                <button onclick="closeCampaignModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #6b7280; padding: 0.5rem; border-radius: 6px; transition: all 0.2s;">&times;</button>
+            </div>
+            <div style="padding: 1rem 2rem 2rem;">
+                <div id="successMessage" style="background: #dcfce7; color: #166534; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid #bbf7d0; text-align: center; font-weight: 500; display: none;">
+                    🎉 Campaign posted successfully! Influencers can now discover and apply to your campaign.
+                </div>
+
+                <form id="campaignForm">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #374151; font-size: 0.875rem;">Campaign Title <span style="color: #ef4444;">*</span></label>
+                        <input type="text" name="title" required placeholder="e.g. Summer Beauty Collection Launch" style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; font-family: inherit;">
+                        <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">Keep it clear and appealing to attract the right influencers</div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #374151; font-size: 0.875rem;">Description <span style="color: #ef4444;">*</span></label>
+                        <textarea name="description" required placeholder="Describe your campaign goals, target audience, and what you're looking for..." style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; font-family: inherit; resize: vertical; min-height: 100px;"></textarea>
+                        <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">Be specific about your expectations and campaign objectives</div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #374151; font-size: 0.875rem;">Budget Range <span style="color: #ef4444;">*</span></label>
+                            <select name="budget" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; font-family: inherit;">
+                                <option value="">Select budget</option>
+                                <option value="500-1000">$500 - $1,000</option>
+                                <option value="1000-2500">$1,000 - $2,500</option>
+                                <option value="2500-5000">$2,500 - $5,000</option>
+                                <option value="5000-10000">$5,000 - $10,000</option>
+                                <option value="10000+">$10,000+</option>
+                                <option value="negotiable">Negotiable</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #374151; font-size: 0.875rem;">Application Deadline <span style="color: #ef4444;">*</span></label>
+                            <input type="date" name="deadline" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; font-family: inherit;">
+                            <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">When should influencers apply by?</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #374151; font-size: 0.875rem;">Platforms Needed <span style="color: #ef4444;">*</span></label>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.5rem; margin-top: 0.5rem;">
+                            <label class="platform-item" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 0.875rem;">
+                                <input type="checkbox" name="platforms" value="instagram" style="width: auto; margin: 0;">
+                                <span>📸 Instagram</span>
+                            </label>
+                            <label class="platform-item" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 0.875rem;">
+                                <input type="checkbox" name="platforms" value="tiktok" style="width: auto; margin: 0;">
+                                <span>🎵 TikTok</span>
+                            </label>
+                            <label class="platform-item" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 0.875rem;">
+                                <input type="checkbox" name="platforms" value="youtube" style="width: auto; margin: 0;">
+                                <span>📺 YouTube</span>
+                            </label>
+                            <label class="platform-item" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 0.875rem;">
+                                <input type="checkbox" name="platforms" value="twitter" style="width: auto; margin: 0;">
+                                <span>🐦 Twitter</span>
+                            </label>
+                        </div>
+                        <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">Select all platforms where you need content</div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #f1f5f9;">
+                        <button type="button" onclick="closeCampaignModal()" style="padding: 0.75rem 1.5rem; border: 2px solid #e5e7eb; background: white; color: #6b7280; border-radius: 8px; font-weight: 600; cursor: pointer;">Cancel</button>
+                        <button type="submit" style="padding: 0.75rem 1.5rem; border: none; background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">🚀 Post Campaign</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rating Modal -->
+    <div class="modal" id="ratingModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000;">
+        <div class="modal-content" style="background: white; margin: 5% auto; border-radius: 16px; max-width: 500px; width: 90%; position: relative;">
+            <div class="modal-header" style="padding: 2rem 2rem 1rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+                <h3 class="modal-title" style="font-size: 1.5rem; font-weight: bold; color: #1e3a8a;">Rate & Review Influencer</h3>
+                <button class="close-btn" onclick="closeRatingModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #6b7280;">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1rem 2rem 2rem;">
+                <div id="ratingContent">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <div style="font-size: 1.125rem; font-weight: 600; color: #1e3a8a; margin-bottom: 0.5rem;">How was your collaboration with <span id="influencerName">Sarah Anderson</span>?</div>
+                        <div style="color: #6b7280; font-size: 0.875rem;">Campaign: <span id="campaignName">Fashion Week Coverage</span></div>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #374151;">Overall Rating</label>
+                        <div class="star-rating" style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span class="star" data-rating="1" onclick="setRating(1)" style="font-size: 2rem; color: #d1d5db; cursor: pointer; transition: color 0.2s;">⭐</span>
+                            <span class="star" data-rating="2" onclick="setRating(2)" style="font-size: 2rem; color: #d1d5db; cursor: pointer; transition: color 0.2s;">⭐</span>
+                            <span class="star" data-rating="3" onclick="setRating(3)" style="font-size: 2rem; color: #d1d5db; cursor: pointer; transition: color 0.2s;">⭐</span>
+                            <span class="star" data-rating="4" onclick="setRating(4)" style="font-size: 2rem; color: #d1d5db; cursor: pointer; transition: color 0.2s;">⭐</span>
+                            <span class="star" data-rating="5" onclick="setRating(5)" style="font-size: 2rem; color: #d1d5db; cursor: pointer; transition: color 0.2s;">⭐</span>
+                        </div>
+                        <div id="ratingText" style="text-align: center; color: #6b7280; font-size: 0.875rem;">Click stars to rate</div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #374151;">Rate Specific Aspects</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Communication</div>
+                                <div class="aspect-rating" data-aspect="communication">
+                                    <span data-rating="1" onclick="setAspectRating('communication', 1)">⭐</span>
+                                    <span data-rating="2" onclick="setAspectRating('communication', 2)">⭐</span>
+                                    <span data-rating="3" onclick="setAspectRating('communication', 3)">⭐</span>
+                                    <span data-rating="4" onclick="setAspectRating('communication', 4)">⭐</span>
+                                    <span data-rating="5" onclick="setAspectRating('communication', 5)">⭐</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Content Quality</div>
+                                <div class="aspect-rating" data-aspect="quality">
+                                    <span data-rating="1" onclick="setAspectRating('quality', 1)">⭐</span>
+                                    <span data-rating="2" onclick="setAspectRating('quality', 2)">⭐</span>
+                                    <span data-rating="3" onclick="setAspectRating('quality', 3)">⭐</span>
+                                    <span data-rating="4" onclick="setAspectRating('quality', 4)">⭐</span>
+                                    <span data-rating="5" onclick="setAspectRating('quality', 5)">⭐</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Timeliness</div>
+                                <div class="aspect-rating" data-aspect="timeliness">
+                                    <span data-rating="1" onclick="setAspectRating('timeliness', 1)">⭐</span>
+                                    <span data-rating="2" onclick="setAspectRating('timeliness', 2)">⭐</span>
+                                    <span data-rating="3" onclick="setAspectRating('timeliness', 3)">⭐</span>
+                                    <span data-rating="4" onclick="setAspectRating('timeliness', 4)">⭐</span>
+                                    <span data-rating="5" onclick="setAspectRating('timeliness', 5)">⭐</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Professionalism</div>
+                                <div class="aspect-rating" data-aspect="professionalism">
+                                    <span data-rating="1" onclick="setAspectRating('professionalism', 1)">⭐</span>
+                                    <span data-rating="2" onclick="setAspectRating('professionalism', 2)">⭐</span>
+                                    <span data-rating="3" onclick="setAspectRating('professionalism', 3)">⭐</span>
+                                    <span data-rating="4" onclick="setAspectRating('professionalism', 4)">⭐</span>
+                                    <span data-rating="5" onclick="setAspectRating('professionalism', 5)">⭐</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #374151;">Written Review</label>
+                        <textarea id="reviewText" placeholder="Share your experience working with this influencer..." style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; min-height: 100px; resize: vertical;"></textarea>
+                        <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">This review will be visible on the influencer's profile</div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="recommendInfluencer" style="width: auto;">
+                            <span style="font-weight: 600; color: #374151;">I would recommend this influencer to other businesses</span>
+                        </label>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                        <button onclick="closeRatingModal()" style="padding: 0.75rem 1.5rem; border: 2px solid #e5e7eb; background: white; color: #6b7280; border-radius: 8px; font-weight: 600; cursor: pointer;">Cancel</button>
+                        <button onclick="submitRating()" style="padding: 0.75rem 1.5rem; border: none; background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; border-radius: 8px; font-weight: 600; cursor: pointer;">Submit Rating</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Campaign Modal Functions
+        function openCampaignModal() {
+            document.getElementById('campaignModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Set minimum date to today
+            const dateInput = document.querySelector('input[type="date"]');
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.min = today;
+        }
+
+        function closeCampaignModal() {
+            document.getElementById('campaignModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            // Reset form and hide success message
+            document.getElementById('campaignForm').reset();
+            document.getElementById('successMessage').style.display = 'none';
+            // Reset platform selections
+            document.querySelectorAll('.platform-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+        }
+
+        // Campaign Tab Switching
+        function switchCampaignTab(tabName) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.campaigns-tabs .tab').forEach(tab => tab.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+            
+            // Show selected tab content
+            if (tabName === 'active') {
+                document.getElementById('activeCampaigns').style.display = 'block';
+            } else if (tabName === 'previous') {
+                document.getElementById('previousCampaigns').style.display = 'block';
+            } else if (tabName === 'collaborations') {
+                document.getElementById('activeCollaborations').style.display = 'block';
+            }
+        }
+
+        // Campaign Functions
+        function viewApplications(campaignId) {
+            alert(`Viewing applications for ${campaignId}!\n\n👥 12 Total Applications:\n• 8 Qualified candidates\n• 4 Under review\n• Filter by engagement rate, followers, etc.\n• Compare influencer profiles\n• Send collaboration invites`);
+        }
+
+        function editCampaign(campaignId) {
+            alert(`Editing campaign ${campaignId}!\n\n✏️ You can modify:\n• Campaign description\n• Budget range\n• Application deadline\n• Platform requirements\n• Target audience\n\nChanges will notify interested influencers.`);
+        }
+
+        function closeCampaign(campaignId) {
+            if (confirm('Close this campaign?\n\nThis will:\n• Stop accepting new applications\n• Notify current applicants\n• Move to previous campaigns\n• Archive campaign data')) {
+                alert(`Campaign ${campaignId} closed!\n\n🔒 No longer accepting applications\n📊 12 applications received\n✅ Moved to campaign history`);
+            }
+        }
+
+        function viewCampaignReport(campaignId) {
+            alert(`Campaign Report for ${campaignId}!\n\n📊 Complete Analytics:\n• Total Applications: 28\n• Collaborations: 5\n• Total Reach: 185K\n• Total Engagements: 18.2K\n• ROI: 340%\n• Campaign Performance Score: 9.2/10`);
+        }
+
+        function duplicateCampaign(campaignId) {
+            alert(`Duplicating campaign ${campaignId}!\n\n🔄 Creating new campaign with same:\n• Title (with "Copy" suffix)\n• Description template\n• Budget range\n• Platform requirements\n\nYou can modify before posting.`);
+            openCampaignModal();
+        }
+
+        function downloadCampaignData(campaignId) {
+            alert(`Downloading data for ${campaignId}!\n\n📥 Download includes:\n• Application details\n• Influencer profiles\n• Performance metrics\n• Collaboration results\n• ROI analysis\n\nFormat: CSV and PDF reports`);
+        }
+
+        // Section navigation
+        function showSection(section) {
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+            
+            // Add active class to clicked link
+            event.target.classList.add('active');
+            
+            // Hide all sections
+            const mainArea = document.querySelector('.main-area');
+            const collabSection = document.getElementById('collabSection');
+            
+            if (section === 'collab') {
+                mainArea.style.display = 'none';
+                collabSection.style.display = 'block';
+            } else {
+                mainArea.style.display = 'block';
+                collabSection.style.display = 'none';
+                
+                if (section === 'dashboard') {
+                    // Show dashboard content (already visible)
+                } else {
+                    alert(`${section.charAt(0).toUpperCase() + section.slice(1)} section coming soon!`);
+                }
+            }
+        }
+
+        // Business collaboration functions
+        function openInviteInfluencerModal() {
+            alert('Invite Influencer Modal!\n\nThis allows you to:\n• Search and browse influencers\n• Send direct collaboration invites\n• Set campaign terms and budget\n• Choose content requirements\n\nSkip the application process!');
+        }
+
+        function viewBusinessLiveTracking(collabId) {
+            alert(`Business Live Analytics for ${collabId}!\n\n📊 Real-time Campaign Performance:\n• Views: 2,847 (+127 last hour)\n• Engagement: 8.2% (+0.3% trend)\n• Est. Revenue: $2,400 (+$180 today)\n• ROI: 200% and growing\n• Audience: 85% target demographic\n\n🔄 Updates every 10 seconds\n💡 Peak engagement: 2-4 PM`);
+        }
+
+        function downloadInterimReport(collabId) {
+            alert(`Downloading interim report for ${collabId}!\n\n📋 Report includes:\n• Current performance metrics\n• ROI analysis to date\n• Audience insights\n• Engagement trends\n• Recommendations for optimization\n\nPerfect for stakeholder updates!`);
+        }
+
+        function endBusinessCollaboration(collabId) {
+            if (confirm('End this collaboration?\n\nThis will:\n• Stop live tracking\n• Generate final report\n• Show rating form\n• Process final payment\n• Archive collaboration')) {
+                // Set the collaboration details for rating
+                currentCollabId = collabId;
+                document.getElementById('influencerName').textContent = collabId.includes('SA') ? 'Sarah Anderson' : 'Mike Johnson';
+                document.getElementById('campaignName').textContent = collabId.includes('SA') ? 'Fashion Week Coverage' : 'Tech Product Review';
+                
+                // Show rating modal
+                document.getElementById('ratingModal').style.display = 'block';
+            }
+        }
+
+        let currentCollabId = null;
+        let currentRating = 0;
+        let aspectRatings = {
+            communication: 0,
+            quality: 0,
+            timeliness: 0,
+            professionalism: 0
+        };
+
+        function setRating(rating) {
+            currentRating = rating;
+            const stars = document.querySelectorAll('.star-rating .star');
+            const ratingTexts = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+            
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.style.color = '#fbbf24';
+                } else {
+                    star.style.color = '#d1d5db';
+                }
+            });
+            
+            document.getElementById('ratingText').textContent = ratingTexts[rating];
+        }
+
+        function setAspectRating(aspect, rating) {
+            aspectRatings[aspect] = rating;
+            const aspectStars = document.querySelector(`[data-aspect="${aspect}"]`).querySelectorAll('span');
+            
+            aspectStars.forEach((star, index) => {
+                if (index < rating) {
+                    star.style.color = '#fbbf24';
+                } else {
+                    star.style.color = '#d1d5db';
+                }
+            });
+        }
+
+        function closeRatingModal() {
+            document.getElementById('ratingModal').style.display = 'none';
+            // Reset form
+            currentRating = 0;
+            aspectRatings = { communication: 0, quality: 0, timeliness: 0, professionalism: 0 };
+            document.getElementById('reviewText').value = '';
+            document.getElementById('recommendInfluencer').checked = false;
+            
+            // Reset star colors
+            document.querySelectorAll('.star, .aspect-rating span').forEach(star => {
+                star.style.color = '#d1d5db';
+            });
+            document.getElementById('ratingText').textContent = 'Click stars to rate';
+        }
+
+        function submitRating() {
+            if (currentRating === 0) {
+                alert('Please provide an overall rating');
+                return;
+            }
+            
+            const reviewText = document.getElementById('reviewText').value;
+            const recommend = document.getElementById('recommendInfluencer').checked;
+            
+            // Simulate submitting rating
+            alert(`Rating submitted for ${currentCollabId}!\n\n⭐ Overall Rating: ${currentRating}/5\n📝 Review: "${reviewText}"\n👍 Recommended: ${recommend ? 'Yes' : 'No'}\n\n✅ Final report generated\n💳 Payment processed\n📊 Collaboration completed\n🔄 Moved to history\n\nThis rating will appear on the influencer's profile!`);
+            
+            closeRatingModal();
+        }
+
+        // Add CSS for aspect rating stars
+        document.addEventListener('DOMContentLoaded', function() {
+            const style = document.createElement('style');
+            style.textContent = `
+                .aspect-rating span {
+                    font-size: 1rem;
+                    color: #d1d5db;
+                    cursor: pointer;
+                    transition: color 0.2s;
+                }
+                .aspect-rating span:hover {
+                    color: #fbbf24 !important;
+                }
+                .star:hover {
+                    color: #fbbf24 !important;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        // Campaign Form Submission
+        document.addEventListener('DOMContentLoaded', function() {
+            // Platform selection
+            document.querySelectorAll('.platform-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if (e.target.type !== 'checkbox') {
+                        const checkbox = this.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                    }
+                    this.classList.toggle('selected', this.querySelector('input[type="checkbox"]').checked);
+                    this.style.borderColor = this.querySelector('input[type="checkbox"]').checked ? '#1e3a8a' : '#e5e7eb';
+                    this.style.backgroundColor = this.querySelector('input[type="checkbox"]').checked ? '#f0f9ff' : 'white';
+                });
+            });
+
+            // Form submission
+            document.getElementById('campaignForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate platforms
+                const selectedPlatforms = document.querySelectorAll('input[name="platforms"]:checked');
+                if (selectedPlatforms.length === 0) {
+                    alert('Please select at least one platform');
+                    return;
+                }
+
+                // Simulate posting campaign
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                
+                submitBtn.innerHTML = '⏳ Posting...';
+                submitBtn.disabled = true;
+
+                setTimeout(() => {
+                    // Show success message
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Auto close after 2 seconds
+                    setTimeout(() => {
+                        closeCampaignModal();
+                    }, 2000);
+                }, 1500);
+            });
+
+            // Close modal on outside click
+            document.getElementById('campaignModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCampaignModal();
+                }
+            });
+        });
+
+        function messageInfluencer(influencerId) {
+            alert(`Opening message thread with ${influencerId}!\n\n💬 Direct messaging allows:\n• Clarify requirements\n• Check on progress\n• Provide feedback\n• Schedule calls\n• Share additional assets`);
+        }
+
+        function viewCollabDetails(collabId) {
+            alert(`Collaboration details for ${collabId}!\n\n📋 Full details:\n• Original campaign brief\n• Agreed terms and timeline\n• Content requirements\n• Payment schedule\n• Deliverables checklist\n• Communication history`);
+        }
+
+        function extendDeadline(collabId) {
+            const extension = prompt('How many days to extend the deadline?', '3');
+            if (extension) {
+                alert(`Deadline extended by ${extension} days for ${collabId}!\n\n📅 New deadline: ${new Date(Date.now() + extension * 24 * 60 * 60 * 1000).toLocaleDateString()}\n✉️ Influencer has been notified\n📋 Terms updated automatically`);
+            }
+        }
+
+        function viewBusinessFullReport(campaignId) {
+            alert(`Complete campaign report for ${campaignId}!\n\n📊 Full Analytics Dashboard:\n• Total reach: 42.1K unique viewers\n• Revenue generated: $2,400\n• Customer acquisition: 89 new customers\n• Brand awareness lift: +23%\n• Engagement quality score: 8.7/10\n• Influencer performance: 5/5 stars\n\n💡 Recommendations for future campaigns included`);
+        }
+
+        function rehireInfluencer(campaignId) {
+            alert(`Collaborate again with this influencer!\n\n🔄 Quick re-hire options:\n• Create similar campaign\n• Invite to new campaign\n• Add to preferred influencers\n• Schedule consultation call\n\nPrevious collaboration: ${campaignId}\nPerformance: Excellent`);
+        }
+
+        function shareTestimonial(campaignId) {
+            alert(`Share testimonial for ${campaignId}!\n\n💬 Testimonial options:\n• LinkedIn recommendation\n• Public review on profile\n• Case study permission\n• Portfolio feature rights\n• Reference for future clients\n\nHelp this influencer grow their business!`);
+        }
+
+        function recommendInfluencer(campaignId) {
+            alert(`Recommend this influencer!\n\n👥 Recommendation options:\n• Share with business network\n• Post on LinkedIn\n• Add to influencer directory\n• Refer to other campaigns\n• Write public testimonial\n\nGreat influencers deserve recognition!`);
+        }
+
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                if (this.textContent.includes('Previous')) {
+                    document.querySelector('.campaigns-content').innerHTML = `
+                        <div class="campaign-item">
+                            <div class="campaign-header">
+                                <div>
+                                    <div class="campaign-title">Summer Tech Launch Campaign</div>
+                                    <div class="campaign-meta">Completed 2 months ago • Technology</div>
+                                </div>
+                                <div class="campaign-status status-completed">Completed</div>
+                            </div>
+                            <div class="campaign-description">
+                                Successfully launched our new smartphone with 8 tech influencers creating unboxing and review content.
+                            </div>
+                            <div class="campaign-stats">
+                                <div class="campaign-stat"><strong>8</strong> influencers collaborated</div>
+                                <div class="campaign-stat"><strong>2.4M</strong> total reach</div>
+                                <div class="campaign-stat"><strong>156K</strong> engagements</div>
+                                <div class="campaign-stat"><strong>4.2x</strong> ROI achieved</div>
+                            </div>
+                            <div class="campaign-actions">
+                                <button class="btn-small btn-primary" onclick="viewCampaignReport('Summer Tech Launch')">View Full Report</button>
+                                <button class="btn-small btn-outline">Duplicate Campaign</button>
+                            </div>
+                        </div>
+                        <div class="campaign-item">
+                            <div class="campaign-header">
+                                <div>
+                                    <div class="campaign-title">Holiday Fashion Collection</div>
+                                    <div class="campaign-meta">Completed 4 months ago • Fashion</div>
+                                </div>
+                                <div class="campaign-status status-completed">Completed</div>
+                            </div>
+                            <div class="campaign-description">
+                                Holiday season campaign featuring winter fashion line with lifestyle and fashion influencers.
+                            </div>
+                            <div class="campaign-stats">
+                                <div class="campaign-stat"><strong>12</strong> influencers collaborated</div>
+                                <div class="campaign-stat"><strong>1.8M</strong> total reach</div>
+                                <div class="campaign-stat"><strong>89K</strong> engagements</div>
+                                <div class="campaign-stat"><strong>3.1x</strong> ROI achieved</div>
+                            </div>
+                            <div class="campaign-actions">
+                                <button class="btn-small btn-primary" onclick="viewCampaignReport('Holiday Fashion')">View Full Report</button>
+                                <button class="btn-small btn-outline">Duplicate Campaign</button>
+                            </div>
+                        </div>
+                        <div class="campaign-item">
+                            <div class="campaign-header">
+                                <div>
+                                    <div class="campaign-title">Product Review Series</div>
+                                    <div class="campaign-meta">Completed 6 months ago • Technology</div>
+                                </div>
+                                <div class="campaign-status status-completed">Completed</div>
+                            </div>
+                            <div class="campaign-description">
+                                Comprehensive review series for our software suite with business and tech content creators.
+                            </div>
+                            <div class="campaign-stats">
+                                <div class="campaign-stat"><strong>5</strong> influencers collaborated</div>
+                                <div class="campaign-stat"><strong>950K</strong> total reach</div>
+                                <div class="campaign-stat"><strong>67K</strong> engagements</div>
+                                <div class="campaign-stat"><strong>5.8x</strong> ROI achieved</div>
+                            </div>
+                            <div class="campaign-actions">
+                                <button class="btn-small btn-primary" onclick="viewCampaignReport('Product Review')">View Full Report</button>
+                                <button class="btn-small btn-outline">Duplicate Campaign</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    document.querySelector('.campaigns-content').innerHTML = `
+                        <div class="campaign-item">
+                            <div class="campaign-header">
+                                <div>
+                                    <div class="campaign-title">AI Software Demo Campaign</div>
+                                    <div class="campaign-meta">Posted 1 week ago • Technology</div>
+                                </div>
+                                <div class="campaign-status status-active">Active</div>
+                            </div>
+                            <div class="campaign-description">
+                                Looking for tech influencers to create demo videos showcasing our new AI-powered business software.
+                            </div>
+                            <div class="campaign-stats">
+                                <div class="campaign-stat"><strong>15</strong> applications received</div>
+                                <div class="campaign-stat"><strong>$3,500</strong> budget allocated</div>
+                                <div class="campaign-stat"><strong>YouTube</strong> primary platform</div>
+                                <div class="campaign-stat"><strong>2 weeks</strong> remaining</div>
+                            </div>
+                            <div class="campaign-actions">
+                                <button class="btn-small btn-primary" onclick="manageCampaign('AI Software Demo')">Manage Campaign</button>
+                                <button class="btn-small btn-secondary">View Applications</button>
+                                <button class="btn-small btn-outline">Edit Campaign</button>
+                            </div>
+                        </div>
+                        <div class="campaign-item">
+                            <div class="campaign-header">
+                                <div>
+                                    <div class="campaign-title">Business Productivity Tools Review</div>
+                                    <div class="campaign-meta">Posted 3 days ago • Technology</div>
+                                </div>
+                                <div class="campaign-status status-active">Active</div>
+                            </div>
+                            <div class="campaign-description">
+                                Seeking business influencers to review and demonstrate our productivity suite for entrepreneurs and small businesses.
+                            </div>
+                            <div class="campaign-stats">
+                                <div class="campaign-stat"><strong>8</strong> applications received</div>
+                                <div class="campaign-stat"><strong>$2,200</strong> budget allocated</div>
+                                <div class="campaign-stat"><strong>LinkedIn</strong> primary platform</div>
+                                <div class="campaign-stat"><strong>10 days</strong> remaining</div>
+                            </div>
+                            <div class="campaign-actions">
+                                <button class="btn-small btn-primary" onclick="manageCampaign('Productivity Tools')">Manage Campaign</button>
+                                <button class="btn-small btn-secondary">View Applications</button>
+                                <button class="btn-small btn-outline">Edit Campaign</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        });
+
+        // Quick action handlers
+        document.querySelectorAll('.quick-action').forEach(action => {
+            action.addEventListener('click', function() {
+                if (this.onclick) return; // Skip if already has onclick handler
+                const label = this.querySelector('.quick-action-label').textContent;
+                alert(`${label} functionality coming soon!`);
+            });
+        });
+
+        // Influencer action handlers
+        document.querySelectorAll('.btn-small').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.textContent;
+                const card = this.closest('.influencer-card');
+                const name = card.querySelector('h3').textContent.split(' ✓')[0];
+                
+                if (action === 'View Profile') {
+                    alert(`Viewing ${name}'s Profile\n\nThis will show:\n• Complete portfolio\n• Past campaign results\n• Audience demographics\n• Content samples\n• Reviews & ratings`);
+                } else if (action === 'Message') {
+                    alert(`Opening chat with ${name}\n\nDiscuss:\n• Campaign ideas\n• Collaboration terms\n• Timeline & deliverables\n• Pricing & expectations`);
+                } else if (action === 'Invite') {
+                    alert(`Inviting ${name} to a campaign\n\nYou can:\n• Send to active campaigns\n• Create custom invitation\n• Set collaboration terms\n• Schedule discussion`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

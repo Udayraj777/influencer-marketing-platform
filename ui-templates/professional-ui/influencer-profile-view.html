@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Influencer Profile - Upsaleit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #334155;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .profile-main {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-title {
+            font-size: 1.25rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .profile-location {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .profile-bio {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1e3a8a;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            border-color: #1e3a8a;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        /* Main Content Area */
+        .content-main {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .section-content {
+            padding: 1.5rem 2rem;
+        }
+
+        /* Platform Stats */
+        .platform-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .platform-item {
+            text-align: center;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .platform-item:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+        .platform-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .platform-name {
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 0.25rem;
+        }
+
+        .platform-followers {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Portfolio Gallery */
+        .portfolio-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .portfolio-item {
+            aspect-ratio: 1;
+            background: #f1f5f9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Previous Work */
+        .work-item {
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+
+        .work-item:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+        .work-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .work-title {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.25rem;
+        }
+
+        .work-brand {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .work-metrics {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .work-description {
+            color: #4b5563;
+            margin-bottom: 1rem;
+        }
+
+        .work-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .result-item {
+            text-align: center;
+        }
+
+        .result-value {
+            font-weight: bold;
+            color: #10b981;
+            font-size: 1.125rem;
+        }
+
+        .result-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .sidebar-title {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .contact-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .contact-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .contact-value {
+            color: #1e3a8a;
+            font-weight: 500;
+        }
+
+        .availability {
+            background: #dcfce7;
+            color: #166534;
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .rates-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .rate-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .rate-type {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .rate-price {
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .modal-body {
+            padding: 0 2rem 2rem;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #1e3a8a;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .profile-main {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-name {
+                font-size: 2rem;
+            }
+
+            .portfolio-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .platform-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">Upsaleit</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#campaigns">My Jobs</a></li>
+                    <li><a href="#influencers">Find Talent</a></li>
+                    <li><a href="#messages">Messages</a></li>
+                    <li><a href="#analytics">Analytics</a></li>
+                </ul>
+            </nav>
+            <a href="#dashboard" class="back-btn">← Back to Dashboard</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Profile Header -->
+        <section class="profile-header">
+            <div class="profile-main">
+                <div class="profile-avatar">SA</div>
+                <div class="profile-info">
+                    <h1 class="profile-name">Sarah Anderson</h1>
+                    <p class="profile-title">Fashion & Beauty Content Creator</p>
+                    <div class="profile-location">
+                        <span>📍</span>
+                        <span>New York, United States</span>
+                    </div>
+                    <p class="profile-bio">
+                        Passionate fashion and beauty content creator with 5+ years of experience. 
+                        I specialize in authentic product reviews, styling tutorials, and brand storytelling 
+                        that resonates with young professional women. My audience values quality, 
+                        sustainability, and authenticity in beauty and fashion choices.
+                    </p>
+                    <div class="profile-tags">
+                        <span class="tag">Fashion</span>
+                        <span class="tag">Beauty</span>
+                        <span class="tag">Lifestyle</span>
+                        <span class="tag">Sustainable Fashion</span>
+                        <span class="tag">Product Reviews</span>
+                        <span class="tag">Tutorials</span>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn-primary" onclick="connectWithInfluencer()">💬 Connect</button>
+                        <button class="btn btn-success" onclick="sendInvite()">📤 Send Invite</button>
+                        <button class="btn btn-secondary" onclick="saveInfluencer()">⭐ Save</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">125K</div>
+                    <div class="stat-label">Total Followers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">7.2%</div>
+                    <div class="stat-label">Avg Engagement</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">23</div>
+                    <div class="stat-label">Completed Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">4.9/5</div>
+                    <div class="stat-label">Business Rating</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Main Content -->
+            <div class="content-main">
+                <!-- Platform Presence -->
+                <section class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Platform Presence</h2>
+                    </div>
+                    <div class="section-content">
+                        <div class="platform-stats">
+                            <div class="platform-item">
+                                <div class="platform-icon">📸</div>
+                                <div class="platform-name">Instagram</div>
+                                <div class="platform-followers">85K followers</div>
+                            </div>
+                            <div class="platform-item">
+                                <div class="platform-icon">🎵</div>
+                                <div class="platform-name">TikTok</div>
+                                <div class="platform-followers">40K followers</div>
+                            </div>
+                            <div class="platform-item">
+                                <div class="platform-icon">📺</div>
+                                <div class="platform-name">YouTube</div>
+                                <div class="platform-followers">15K subscribers</div>
+                            </div>
+                            <div class="platform-item">
+                                <div class="platform-icon">🐦</div>
+                                <div class="platform-name">Twitter</div>
+                                <div class="platform-followers">12K followers</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Portfolio -->
+                <section class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Portfolio Highlights</h2>
+                    </div>
+                    <div class="section-content">
+                        <div class="portfolio-gallery">
+                            <div class="portfolio-item" onclick="viewPortfolioItem(1)">📸</div>
+                            <div class="portfolio-item" onclick="viewPortfolioItem(2)">🎬</div>
+                            <div class="portfolio-item" onclick="viewPortfolioItem(3)">📱</div>
+                            <div class="portfolio-item" onclick="viewPortfolioItem(4)">💄</div>
+                            <div class="portfolio-item" onclick="viewPortfolioItem(5)">👗</div>
+                            <div class="portfolio-item" onclick="viewPortfolioItem(6)">✨</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Previous Work -->
+                <section class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Previous Collaborations</h2>
+                    </div>
+                    <div class="section-content">
+                        <div class="work-item">
+                            <div class="work-header">
+                                <div>
+                                    <div class="work-title">Summer Collection Launch</div>
+                                    <div class="work-brand">GlowUp Beauty • June 2024</div>
+                                </div>
+                                <div class="work-metrics">
+                                    <span>Instagram</span>
+                                    <span>•</span>
+                                    <span>3 Posts</span>
+                                </div>
+                            </div>
+                            <p class="work-description">
+                                Created authentic content showcasing the new summer makeup collection with 
+                                step-by-step tutorials and styling tips for different occasions.
+                            </p>
+                            <div class="work-results">
+                                <div class="result-item">
+                                    <div class="result-value">42.1K</div>
+                                    <div class="result-label">Reach</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-value">4,750</div>
+                                    <div class="result-label">Engagements</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-value">11.3%</div>
+                                    <div class="result-label">Engagement Rate</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-value">280</div>
+                                    <div class="result-label">Clicks</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="work-item">
+                            <div class="work-header">
+                                <div>
+                                    <div class="work-title">Sustainable Fashion Week</div>
+                                    <div class="work-brand">EcoWear • May 2024</div>
+                                </div>
+                                <div class="work-metrics">
+                                    <span>Instagram + TikTok</span>
+                                    <span>•</span>
+                                    <span>5 Posts</span>
+                                </div>
+                            </div>
+                            <p class="work-description">
+                                Multi-platform campaign promoting sustainable fashion choices with behind-the-scenes 
+                                content from eco-friendly fashion week events.
+                            </p>
+                            <div class="work-results">
+                                <div class="result-item">
+                                    <div class="result-value">68.5K</div>
+                                    <div class="result-label">Reach</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-value">7,890</div>
+                                    <div class="result-label">Engagements</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-value">11.5%</div>
+                                    <div class="result-label">Engagement Rate</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-value">450</div>
+                                    <div class="result-label">Clicks</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="work-item">
+                            <div class="work-header">
+                                <div>
+                                    <div class="work-title">Holiday Beauty Looks</div>
+                                    <div class="work-brand">Luxe Cosmetics • December 2023</div>
+                                </div>
+                                <div class="work-metrics">
+                                    <span>YouTube + Instagram</span>
+                                    <span>•</span>
+                                    <span>4 Videos</span>
+                                </div>
+                            </div>
+                            <p class="work-description">
+                                Holiday-themed beauty content featuring party makeup looks and gift guides 
+                                with product recommendations and tutorials.
+                            </p>
+                            <div class="work-results">
+                                <div class="result-item">
+                                    <div class="result-value">95.2K</div>
+                                    <div class="result-label">Reach</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-value">12,450</div>
+                                    <div class="result-label">Engagements</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-value">13.1%</div>
+                                    <div class="result-label">Engagement Rate</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-value">680</div>
+                                    <div class="result-label">Clicks</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Business Reviews & Ratings -->
+                <section class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Business Reviews</h2>
+                    </div>
+                    <div class="section-content">
+                        <!-- Overall Rating Summary -->
+                        <div style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: center;">
+                            <div style="font-size: 3rem; font-weight: bold; color: #1e3a8a; margin-bottom: 0.5rem;">4.9</div>
+                            <div style="display: flex; justify-content: center; gap: 0.25rem; margin-bottom: 0.5rem;">
+                                <span style="color: #fbbf24; font-size: 1.5rem;">⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <div style="color: #6b7280; font-size: 0.875rem;">Based on 23 collaborations</div>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1rem; text-align: center;">
+                                <div>
+                                    <div style="font-weight: bold; color: #1e3a8a;">4.8</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">Communication</div>
+                                </div>
+                                <div>
+                                    <div style="font-weight: bold; color: #1e3a8a;">5.0</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">Content Quality</div>
+                                </div>
+                                <div>
+                                    <div style="font-weight: bold; color: #1e3a8a;">4.9</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">Timeliness</div>
+                                </div>
+                                <div>
+                                    <div style="font-weight: bold; color: #1e3a8a;">4.7</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">Professionalism</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Reviews -->
+                        <div class="review-item" style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; background: white;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                                <div>
+                                    <div style="font-weight: bold; color: #1e3a8a; margin-bottom: 0.25rem;">GlowCosmetics</div>
+                                    <div style="color: #6b7280; font-size: 0.875rem;">Summer Beauty Collection • 2 weeks ago</div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                                    <span style="font-weight: bold; color: #1e3a8a;">5.0</span>
+                                </div>
+                            </div>
+                            <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem;">
+                                "Sarah exceeded our expectations! Her content was authentic, visually stunning, and perfectly aligned with our brand. 
+                                She delivered everything on time and was incredibly professional throughout the collaboration. 
+                                The campaign generated excellent engagement and we saw a significant boost in sales. Highly recommended!"
+                            </p>
+                            <div style="display: flex; justify-content: between; align-items: center;">
+                                <span style="background: #dcfce7; color: #16a34a; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">✓ Recommended</span>
+                                <div style="margin-left: auto; color: #6b7280; font-size: 0.875rem;">Campaign Performance: 42.1K views, 11.3% engagement</div>
+                            </div>
+                        </div>
+
+                        <div class="review-item" style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; background: white;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                                <div>
+                                    <div style="font-weight: bold; color: #1e3a8a; margin-bottom: 0.25rem;">TechReviews</div>
+                                    <div style="color: #6b7280; font-size: 0.875rem;">Tech Product Unboxing • 1 month ago</div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                                    <span style="font-weight: bold; color: #1e3a8a;">4.8</span>
+                                </div>
+                            </div>
+                            <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem;">
+                                "Great collaboration with Sarah! She created high-quality unboxing content that really showcased our product features well. 
+                                Her audience engagement was impressive and we got valuable feedback through her video. 
+                                Communication was smooth and she met all deadlines. Would definitely work with her again."
+                            </p>
+                            <div style="display: flex; justify-content: between; align-items: center;">
+                                <span style="background: #dcfce7; color: #16a34a; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">✓ Recommended</span>
+                                <div style="margin-left: auto; color: #6b7280; font-size: 0.875rem;">Campaign Performance: 28.5K views, 10.1% engagement</div>
+                            </div>
+                        </div>
+
+                        <div class="review-item" style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; background: white;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                                <div>
+                                    <div style="font-weight: bold; color: #1e3a8a; margin-bottom: 0.25rem;">EcoWear</div>
+                                    <div style="color: #6b7280; font-size: 0.875rem;">Sustainable Fashion Week • 6 weeks ago</div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                                    <span style="font-weight: bold; color: #1e3a8a;">4.9</span>
+                                </div>
+                            </div>
+                            <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem;">
+                                "Sarah's passion for sustainable fashion really shone through in her content. She understood our brand values perfectly 
+                                and created authentic posts that resonated with her audience. The collaboration was seamless from start to finish. 
+                                Her professionalism and creativity made this campaign a huge success."
+                            </p>
+                            <div style="display: flex; justify-content: between; align-items: center;">
+                                <span style="background: #dcfce7; color: #16a34a; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">✓ Recommended</span>
+                                <div style="margin-left: auto; color: #6b7280; font-size: 0.875rem;">Campaign Performance: 68.5K views, 11.5% engagement</div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 1.5rem;">
+                            <button style="color: #3b82f6; background: none; border: 1px solid #e2e8f0; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 500;">View All Reviews (23)</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Contact Information -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Contact Information</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span class="contact-label">Response Time</span>
+                            <span class="contact-value">Within 2 hours</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Time Zone</span>
+                            <span class="contact-value">EST (UTC-5)</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Languages</span>
+                            <span class="contact-value">English, Spanish</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Collaboration Style</span>
+                            <span class="contact-value">Professional</span>
+                        </div>
+                    </div>
+                    <div class="availability">
+                        ✅ Available for New Projects
+                    </div>
+                </div>
+
+                <!-- Rates -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Collaboration Rates</h3>
+                    <div class="rates-list">
+                        <div class="rate-item">
+                            <span class="rate-type">Instagram Post</span>
+                            <span class="rate-price">$800 - $1,200</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-type">Instagram Story</span>
+                            <span class="rate-price">$300 - $500</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-type">Instagram Reel</span>
+                            <span class="rate-price">$1,000 - $1,500</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-type">TikTok Video</span>
+                            <span class="rate-price">$600 - $900</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-type">YouTube Video</span>
+                            <span class="rate-price">$2,000 - $3,500</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-type">Package Deal</span>
+                            <span class="rate-price">Negotiable</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audience Demographics -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Audience Demographics</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span class="contact-label">Primary Age</span>
+                            <span class="contact-value">25-34 (45%)</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Secondary Age</span>
+                            <span class="contact-value">18-24 (35%)</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Gender Split</span>
+                            <span class="contact-value">85% Female</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Top Location</span>
+                            <span class="contact-value">United States</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Interests</span>
+                            <span class="contact-value">Fashion, Beauty, Lifestyle</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Send Invite Modal -->
+    <div class="modal" id="inviteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Send Collaboration Invite</h3>
+                <button class="close-btn" onclick="closeModal('inviteModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Campaign Title</label>
+                    <input type="text" class="form-input" placeholder="Summer Beauty Collection">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Budget Offer</label>
+                    <input type="text" class="form-input" placeholder="$1,200">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-textarea" placeholder="Hi Sarah! We'd love to collaborate with you on our summer campaign..."></textarea>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn btn-primary" onclick="confirmInvite()">📤 Send Invite</button>
+                    <button class="btn btn-secondary" onclick="closeModal('inviteModal')">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Invite Sent! 🎉</h3>
+                <button class="close-btn" onclick="closeModal('successModal')">&times;</button>
+            </div>
+            <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
+                Your collaboration invite has been sent to Sarah Anderson. She'll see it in her dashboard.
+            </p>
+            <div class="profile-actions">
+                <button class="btn btn-primary" onclick="closeModal('successModal')">Great!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Connect with Influencer
+        function connectWithInfluencer() {
+            alert('Opening chat with Sarah Anderson...');
+            // This would redirect to chat interface
+        }
+
+        // Send Invite
+        function sendInvite() {
+            document.getElementById('inviteModal').style.display = 'block';
+        }
+
+        // Confirm Invite
+        function confirmInvite() {
+            closeModal('inviteModal');
+            setTimeout(() => {
+                document.getElementById('successModal').style.display = 'block';
+            }, 300);
+        }
+
+        // Close Modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Save influencer
+        function saveInfluencer() {
+            alert('Sarah Anderson has been saved to your favorites!');
+        }
+
+        // View portfolio item
+        function viewPortfolioItem(itemId) {
+            alert(`Viewing portfolio item ${itemId}. This would open a lightbox with the full content.`);
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile - Upsaleit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #334155;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Company Card */
+        .company-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+        }
+
+        .company-header {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .company-info {
+            flex: 1;
+        }
+
+        .company-name {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .company-industry {
+            color: #6b7280;
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .company-location {
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .company-description {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .company-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Action Button */
+        .action-section {
+            text-align: center;
+            padding: 1.5rem 0;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1e3a8a;
+            border: 2px solid #e2e8f0;
+            margin-left: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            border-color: #1e3a8a;
+            transform: translateY(-1px);
+        }
+
+        /* Recent Campaigns */
+        .campaigns-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .campaigns-list {
+            padding: 1.5rem 2rem;
+        }
+
+        .campaign-item {
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+
+        .campaign-item:hover {
+            border-color: #3b82f6;
+            transform: translateY(-1px);
+        }
+
+        .campaign-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .campaign-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .campaign-title {
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 0.25rem;
+        }
+
+        .campaign-date {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .campaign-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-active {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .badge-completed {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .campaign-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .campaign-details {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 90%;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .modal-message {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .company-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .company-name {
+                font-size: 1.5rem;
+            }
+
+            .company-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .campaign-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .campaign-details {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">Upsaleit</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#jobs">Jobs</a></li>
+                    <li><a href="#applications">Applications</a></li>
+                    <li><a href="#messages">Messages</a></li>
+                </ul>
+            </nav>
+            <a href="#dashboard" class="back-btn">← Back to Dashboard</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Company Profile Card -->
+        <section class="company-card">
+            <div class="company-header">
+                <div class="company-logo">GC</div>
+                <div class="company-info">
+                    <h1 class="company-name">GlowCosmetics</h1>
+                    <p class="company-industry">Beauty & Cosmetics</p>
+                    <div class="company-location">
+                        <span>📍</span>
+                        <span>Los Angeles, California</span>
+                    </div>
+                    <p class="company-description">
+                        Premium beauty brand focused on clean, sustainable cosmetics for the modern woman. 
+                        We create high-quality makeup and skincare products that enhance natural beauty 
+                        while being environmentally conscious.
+                    </p>
+                </div>
+            </div>
+
+            <div class="company-stats">
+                <div class="stat-item">
+                    <div class="stat-value">15</div>
+                    <div class="stat-label">Active Campaigns</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">85+</div>
+                    <div class="stat-label">Collaborations</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">4.8/5</div>
+                    <div class="stat-label">Rating</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">2018</div>
+                    <div class="stat-label">Founded</div>
+                </div>
+            </div>
+
+            <div class="action-section">
+                <button class="btn btn-primary" onclick="expressInterest()">💫 Express Interest</button>
+                <button class="btn btn-secondary" onclick="saveCompany()">⭐ Save Company</button>
+            </div>
+        </section>
+
+        <!-- Recent Campaigns -->
+        <section class="campaigns-section">
+            <div class="section-header">
+                <h2 class="section-title">Recent Campaigns</h2>
+            </div>
+            <div class="campaigns-list">
+                <div class="campaign-item">
+                    <div class="campaign-header">
+                        <div>
+                            <div class="campaign-title">Summer Beauty Collection</div>
+                            <div class="campaign-date">Posted 2 days ago</div>
+                        </div>
+                        <span class="campaign-badge badge-active">Active</span>
+                    </div>
+                    <p class="campaign-description">
+                        Looking for beauty influencers to showcase our new summer makeup collection with tutorials and styling tips.
+                    </p>
+                    <div class="campaign-details">
+                        <span>💰 $800 - $1,200</span>
+                        <span>📸 Instagram</span>
+                        <span>📅 July 15, 2024</span>
+                    </div>
+                </div>
+
+                <div class="campaign-item">
+                    <div class="campaign-header">
+                        <div>
+                            <div class="campaign-title">Clean Beauty Challenge</div>
+                            <div class="campaign-date">Posted 1 week ago</div>
+                        </div>
+                        <span class="campaign-badge badge-active">Active</span>
+                    </div>
+                    <p class="campaign-description">
+                        30-day clean beauty challenge featuring our organic skincare line with daily content creation.
+                    </p>
+                    <div class="campaign-details">
+                        <span>💰 $1,500 - $2,000</span>
+                        <span>📸 Instagram + TikTok</span>
+                        <span>📅 August 1, 2024</span>
+                    </div>
+                </div>
+
+                <div class="campaign-item">
+                    <div class="campaign-header">
+                        <div>
+                            <div class="campaign-title">Holiday Glam Collection</div>
+                            <div class="campaign-date">Completed in June 2024</div>
+                        </div>
+                        <span class="campaign-badge badge-completed">Completed</span>
+                    </div>
+                    <p class="campaign-description">
+                        Holiday-themed beauty campaign featuring party makeup looks and gift guide content.
+                    </p>
+                    <div class="campaign-details">
+                        <span>💰 $2,000 - $3,500</span>
+                        <span>📺 YouTube + Instagram</span>
+                        <span>✅ Successful campaign</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Express Interest Modal -->
+    <div class="modal" id="interestModal">
+        <div class="modal-content">
+            <h3 class="modal-title">Express Interest</h3>
+            <p class="modal-message">
+                This will let GlowCosmetics know you're interested in collaborating with them. 
+                They'll be able to reach out to you directly if they're interested in working together.
+            </p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="confirmInterest()">✨ Send Interest</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <h3 class="modal-title">Interest Sent! 🎉</h3>
+            <p class="modal-message">
+                Your interest has been sent to GlowCosmetics. They'll be notified and can reach out to you if they'd like to collaborate.
+            </p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="closeModal()">Great!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Express Interest
+        function expressInterest() {
+            document.getElementById('interestModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Confirm Interest
+        function confirmInterest() {
+            closeModal();
+            setTimeout(() => {
+                document.getElementById('successModal').classList.add('show');
+            }, 300);
+        }
+
+        // Save Company
+        function saveCompany() {
+            alert('GlowCosmetics has been saved to your favorites!');
+        }
+
+        // Close Modal
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.classList.remove('show');
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on outside click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Influencer Onboarding - Step 3: Content & Audience</title>
+    <title>Influencer Onboarding - Content & Audience | Upsale-it</title>
     <style>
         * {
             margin: 0;
@@ -13,964 +13,582 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            line-height: 1.6;
+            color: #334155;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 20px;
         }
 
-        /* Header */
-        header {
-            background: #1e3a8a;
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 30px;
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-decoration: none;
-        }
-
-        .header-nav {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .header-nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .header-nav a:hover {
-            color: #93c5fd;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 0;
-        }
-
-        .onboarding-container {
-            background: white;
-            padding: 3rem;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 700px;
-            border: 1px solid #e5e7eb;
-        }
-
-        .onboarding-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .onboarding-title {
+            color: #1e3a8a;
             font-size: 2rem;
             font-weight: 700;
-            color: #1e3a8a;
-            margin-bottom: 0.5rem;
+            margin-bottom: 10px;
         }
 
-        .onboarding-subtitle {
+        .subtitle {
             color: #6b7280;
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
         }
 
-        /* Progress Indicator */
-        .progress-indicator {
-            margin-bottom: 2rem;
+        .progress-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .progress-steps {
+        .progress-bar {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .progress-step {
-            flex: 1;
-            text-align: center;
+            align-items: center;
+            margin-bottom: 20px;
             position: relative;
         }
 
-        .progress-step::before {
-            content: '';
-            position: absolute;
-            top: 15px;
-            left: 50%;
-            right: -50%;
-            height: 2px;
-            background: #e5e7eb;
-            z-index: 1;
-        }
-
-        .progress-step:last-child::before {
-            display: none;
-        }
-
-        .progress-step.active::before,
-        .progress-step.completed::before {
-            background: #1e3a8a;
-        }
-
-        .progress-step-number {
-            width: 30px;
-            height: 30px;
+        .progress-step {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: #e5e7eb;
-            color: #6b7280;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin: 0 auto 0.5rem;
+            font-weight: 600;
+            font-size: 14px;
             position: relative;
             z-index: 2;
         }
 
-        .progress-step.active .progress-step-number {
+        .progress-step.active {
             background: #1e3a8a;
             color: white;
         }
 
-        .progress-step.completed .progress-step-number {
+        .progress-step.completed {
             background: #10b981;
             color: white;
         }
 
-        .progress-step-label {
-            font-size: 0.85rem;
+        .progress-step.inactive {
+            background: #e2e8f0;
             color: #6b7280;
-            font-weight: 500;
         }
 
-        .progress-step.active .progress-step-label {
-            color: #1e3a8a;
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 40px;
+            right: 40px;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 1;
         }
 
-        /* Form Sections */
-        .form-section {
-            margin-bottom: 2.5rem;
+        .progress-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 66.66%;
+            background: #10b981;
         }
 
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #1e3a8a;
-            margin-bottom: 1rem;
+        .progress-labels {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            justify-content: space-between;
+            margin-top: 10px;
         }
 
-        .section-icon {
-            font-size: 1.5rem;
-        }
-
-        /* Niche Selection */
-        .niche-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .niche-card {
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: white;
-        }
-
-        .niche-card:hover {
-            border-color: #1e3a8a;
-            transform: translateY(-2px);
-        }
-
-        .niche-card.selected {
-            border-color: #1e3a8a;
-            background: #f0f9ff;
-        }
-
-        .niche-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .niche-name {
-            font-weight: 600;
-            color: #374151;
-            font-size: 0.9rem;
-        }
-
-        .niche-card.selected .niche-name {
-            color: #1e3a8a;
-        }
-
-        /* Demographics */
-        .demographics-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .demographic-group {
-            background: #f8fafc;
-            border-radius: 10px;
-            padding: 1.5rem;
-            border: 1px solid #e5e7eb;
-        }
-
-        .demographic-title {
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-        }
-
-        .age-ranges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .age-range {
-            background: white;
-            border: 2px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .age-range:hover {
-            border-color: #1e3a8a;
-        }
-
-        .age-range.selected {
-            border-color: #1e3a8a;
-            background: #f0f9ff;
-            color: #1e3a8a;
-        }
-
-        .gender-options {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .gender-option {
-            flex: 1;
-            background: white;
-            border: 2px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 0.75rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-
-        .gender-option:hover {
-            border-color: #1e3a8a;
-        }
-
-        .gender-option.selected {
-            border-color: #1e3a8a;
-            background: #f0f9ff;
-            color: #1e3a8a;
-        }
-
-        /* Content Style */
-        .content-styles {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .content-style {
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: white;
-        }
-
-        .content-style:hover {
-            border-color: #1e3a8a;
-        }
-
-        .content-style.selected {
-            border-color: #1e3a8a;
-            background: #f0f9ff;
-        }
-
-        .content-style-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .content-style-name {
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 0.5rem;
-        }
-
-        .content-style.selected .content-style-name {
-            color: #1e3a8a;
-        }
-
-        .content-style-description {
+        .progress-label {
+            font-size: 12px;
             color: #6b7280;
-            font-size: 0.85rem;
-            line-height: 1.4;
+            text-align: center;
+            width: 80px;
         }
 
-        /* Form Styles */
+        .progress-label.active {
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .progress-label.completed {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            color: #1e3a8a;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .form-description {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 25px;
         }
 
-        .form-label {
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 8px;
             font-weight: 600;
             color: #374151;
         }
 
-        .form-input {
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
             width: 100%;
-            padding: 0.875rem 1rem;
-            border: 2px solid #e5e7eb;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
             border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
             background: white;
         }
 
-        .form-input:focus {
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
             outline: none;
             border-color: #1e3a8a;
             box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
         }
 
-        .form-input::placeholder {
-            color: #9ca3af;
-        }
-
-        .form-row {
+        .checkbox-group {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
         }
 
-        .engagement-info {
-            background: #f0f9ff;
-            border: 1px solid #bae6fd;
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
             border-radius: 8px;
-            padding: 1rem;
-            margin-top: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .engagement-info h4 {
+        .checkbox-item:hover {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked + label {
             color: #1e3a8a;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            font-weight: 600;
         }
 
-        .engagement-info p {
-            color: #6b7280;
-            font-size: 0.85rem;
-            line-height: 1.4;
+        .checkbox-item.checked {
+            border-color: #1e3a8a;
+            background: #f8fafc;
         }
 
-        /* Buttons */
+        .section-title {
+            font-size: 1.2rem;
+            color: #1e3a8a;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+
         .btn {
-            padding: 1rem 2rem;
+            padding: 12px 30px;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
             text-align: center;
-            min-width: 120px;
         }
 
         .btn-primary {
-            background: #f59e0b;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #d97706;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: #1e3a8a;
-            border: 2px solid #1e3a8a;
-        }
-
-        .btn-secondary:hover {
             background: #1e3a8a;
             color: white;
         }
 
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .btn-primary:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
         }
 
-        .form-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 2rem;
-            gap: 1rem;
-        }
-
-        /* Footer */
-        footer {
-            background: #374151;
+        .btn-secondary {
+            background: #6b7280;
             color: white;
-            padding: 2rem 0;
-            margin-top: auto;
         }
 
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+        .btn-secondary:hover {
+            background: #4b5563;
         }
 
-        .footer-links {
-            display: flex;
-            gap: 2rem;
+        .help-text {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 5px;
         }
 
-        .footer-links a {
-            color: #d1d5db;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: #f59e0b;
-        }
-
-        .footer-text {
-            color: #9ca3af;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive Design */
         @media (max-width: 768px) {
-            .main-content {
-                padding: 2rem 0;
+            .container {
+                padding: 15px;
             }
 
-            .onboarding-container {
-                padding: 2rem;
-                margin: 0 1rem;
-            }
-
-            .onboarding-title {
-                font-size: 1.75rem;
-            }
-
-            .header-nav {
-                display: none;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .footer-links {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
-
-            .progress-steps {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .progress-step::before {
-                display: none;
-            }
-
-            .demographics-grid {
-                grid-template-columns: 1fr;
+            .form-container {
+                padding: 25px;
             }
 
             .form-row {
-                grid-template-columns: 1fr;
+                flex-direction: column;
+                gap: 0;
             }
 
-            .niche-grid {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            .form-title {
+                font-size: 1.75rem;
+            }
+
+            .progress-labels {
+                font-size: 10px;
+            }
+
+            .progress-label {
+                width: 60px;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <a href="#" class="logo">ConnectSphere</a>
-                <nav class="header-nav">
-                    <a href="../landing-professional.html">Home</a>
-                    <a href="#features">Features</a>
-                    <a href="#about">About</a>
-                    <a href="#contact">Contact</a>
-                </nav>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Upsale-it</div>
+            <div class="subtitle">Best Influencer Marketing Solutions</div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-line"></div>
+                <div class="progress-step completed">✓</div>
+                <div class="progress-step completed">✓</div>
+                <div class="progress-step active">3</div>
+                <div class="progress-step inactive">4</div>
+            </div>
+            <div class="progress-labels">
+                <div class="progress-label completed">Basic Info</div>
+                <div class="progress-label completed">Social Media</div>
+                <div class="progress-label active">Content & Audience</div>
+                <div class="progress-label">Finalize</div>
             </div>
         </div>
-    </header>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <div class="onboarding-container">
-                <div class="onboarding-header">
-                    <h1 class="onboarding-title">Content & Audience</h1>
-                    <p class="onboarding-subtitle">Help us understand your content style and audience</p>
-                </div>
-
-                <!-- Progress Indicator -->
-                <div class="progress-indicator">
-                    <div class="progress-steps">
-                        <div class="progress-step completed">
-                            <div class="progress-step-number">✓</div>
-                            <div class="progress-step-label">Basic Info</div>
-                        </div>
-                        <div class="progress-step completed">
-                            <div class="progress-step-number">✓</div>
-                            <div class="progress-step-label">Social Media</div>
-                        </div>
-                        <div class="progress-step active">
-                            <div class="progress-step-number">3</div>
-                            <div class="progress-step-label">Content & Audience</div>
-                        </div>
-                        <div class="progress-step">
-                            <div class="progress-step-number">4</div>
-                            <div class="progress-step-label">Preferences</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Content & Audience Form -->
-                <form id="onboardingForm">
-                    <!-- Content Niche Section -->
-                    <div class="form-section">
-                        <h3 class="section-title">
-                            <span class="section-icon">🎯</span>
-                            Content Niche (Select up to 3)
-                        </h3>
-                        <div class="niche-grid">
-                            <div class="niche-card" data-niche="fashion">
-                                <span class="niche-icon">👗</span>
-                                <div class="niche-name">Fashion</div>
-                            </div>
-                            <div class="niche-card" data-niche="beauty">
-                                <span class="niche-icon">💄</span>
-                                <div class="niche-name">Beauty</div>
-                            </div>
-                            <div class="niche-card" data-niche="tech">
-                                <span class="niche-icon">📱</span>
-                                <div class="niche-name">Tech</div>
-                            </div>
-                            <div class="niche-card" data-niche="food">
-                                <span class="niche-icon">🍕</span>
-                                <div class="niche-name">Food</div>
-                            </div>
-                            <div class="niche-card" data-niche="travel">
-                                <span class="niche-icon">✈️</span>
-                                <div class="niche-name">Travel</div>
-                            </div>
-                            <div class="niche-card" data-niche="fitness">
-                                <span class="niche-icon">💪</span>
-                                <div class="niche-name">Fitness</div>
-                            </div>
-                            <div class="niche-card" data-niche="lifestyle">
-                                <span class="niche-icon">🌟</span>
-                                <div class="niche-name">Lifestyle</div>
-                            </div>
-                            <div class="niche-card" data-niche="gaming">
-                                <span class="niche-icon">🎮</span>
-                                <div class="niche-name">Gaming</div>
-                            </div>
-                            <div class="niche-card" data-niche="music">
-                                <span class="niche-icon">🎵</span>
-                                <div class="niche-name">Music</div>
-                            </div>
-                            <div class="niche-card" data-niche="home">
-                                <span class="niche-icon">🏠</span>
-                                <div class="niche-name">Home & Decor</div>
-                            </div>
-                            <div class="niche-card" data-niche="pets">
-                                <span class="niche-icon">🐾</span>
-                                <div class="niche-name">Pets</div>
-                            </div>
-                            <div class="niche-card" data-niche="business">
-                                <span class="niche-icon">💼</span>
-                                <div class="niche-name">Business</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Audience Demographics Section -->
-                    <div class="form-section">
-                        <h3 class="section-title">
-                            <span class="section-icon">👥</span>
-                            Audience Demographics
-                        </h3>
-                        <div class="demographics-grid">
-                            <div class="demographic-group">
-                                <div class="demographic-title">Primary Age Range</div>
-                                <div class="age-ranges">
-                                    <div class="age-range" data-age="13-17">13-17</div>
-                                    <div class="age-range" data-age="18-24">18-24</div>
-                                    <div class="age-range" data-age="25-34">25-34</div>
-                                    <div class="age-range" data-age="35-44">35-44</div>
-                                    <div class="age-range" data-age="45-54">45-54</div>
-                                    <div class="age-range" data-age="55+">55+</div>
-                                </div>
-                            </div>
-                            <div class="demographic-group">
-                                <div class="demographic-title">Gender Distribution</div>
-                                <div class="gender-options">
-                                    <div class="gender-option" data-gender="female">Female Majority</div>
-                                    <div class="gender-option" data-gender="male">Male Majority</div>
-                                    <div class="gender-option" data-gender="mixed">Mixed</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Content Style Section -->
-                    <div class="form-section">
-                        <h3 class="section-title">
-                            <span class="section-icon">🎨</span>
-                            Content Style (Select up to 2)
-                        </h3>
-                        <div class="content-styles">
-                            <div class="content-style" data-style="educational">
-                                <span class="content-style-icon">📚</span>
-                                <div class="content-style-name">Educational</div>
-                                <div class="content-style-description">Informative content that teaches or explains</div>
-                            </div>
-                            <div class="content-style" data-style="entertainment">
-                                <span class="content-style-icon">🎭</span>
-                                <div class="content-style-name">Entertainment</div>
-                                <div class="content-style-description">Fun, engaging content that entertains</div>
-                            </div>
-                            <div class="content-style" data-style="inspirational">
-                                <span class="content-style-icon">✨</span>
-                                <div class="content-style-name">Inspirational</div>
-                                <div class="content-style-description">Motivational and uplifting content</div>
-                            </div>
-                            <div class="content-style" data-style="authentic">
-                                <span class="content-style-icon">🌱</span>
-                                <div class="content-style-name">Authentic</div>
-                                <div class="content-style-description">Real, behind-the-scenes content</div>
-                            </div>
-                            <div class="content-style" data-style="product-focused">
-                                <span class="content-style-icon">📦</span>
-                                <div class="content-style-name">Product-Focused</div>
-                                <div class="content-style-description">Reviews, unboxings, and demonstrations</div>
-                            </div>
-                            <div class="content-style" data-style="storytelling">
-                                <span class="content-style-icon">📖</span>
-                                <div class="content-style-name">Storytelling</div>
-                                <div class="content-style-description">Narrative-driven content</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Engagement Information Section -->
-                    <div class="form-section">
-                        <h3 class="section-title">
-                            <span class="section-icon">📊</span>
-                            Engagement Information
-                        </h3>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="avgLikes" class="form-label">Average Likes per Post</label>
-                                <input type="number" id="avgLikes" class="form-input" placeholder="5,000">
-                            </div>
-                            <div class="form-group">
-                                <label for="avgComments" class="form-label">Average Comments per Post</label>
-                                <input type="number" id="avgComments" class="form-input" placeholder="250">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="postFrequency" class="form-label">Posting Frequency</label>
-                                <select id="postFrequency" class="form-input">
-                                    <option value="">Select frequency</option>
-                                    <option value="daily">Daily</option>
-                                    <option value="few-times-week">Few times per week</option>
-                                    <option value="weekly">Weekly</option>
-                                    <option value="bi-weekly">Bi-weekly</option>
-                                    <option value="monthly">Monthly</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="bestPostTime" class="form-label">Best Posting Time</label>
-                                <select id="bestPostTime" class="form-input">
-                                    <option value="">Select time</option>
-                                    <option value="morning">Morning (6-12 PM)</option>
-                                    <option value="afternoon">Afternoon (12-6 PM)</option>
-                                    <option value="evening">Evening (6-10 PM)</option>
-                                    <option value="night">Night (10 PM-6 AM)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="engagement-info">
-                            <h4>💡 Pro Tip</h4>
-                            <p>Brands look for consistent engagement rates and authentic audience interaction. Be honest about your metrics - quality partnerships are built on trust!</p>
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
-                        <button type="submit" class="btn btn-primary">Next Step</button>
-                    </div>
-                </form>
+        <div class="form-container">
+            <div class="form-header">
+                <h1 class="form-title">Content & Audience</h1>
+                <p class="form-description">Tell us about your content and audience to help brands find the perfect match</p>
             </div>
-        </div>
-    </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-text">
-                    © 2024 ConnectSphere. Professional influencer marketing platform.
+            <form id="contentAudienceForm">
+                <div class="section-title">Content Categories</div>
+                
+                <div class="form-group">
+                    <label>Primary Content Categories *</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lifestyle" name="contentCategories" value="lifestyle">
+                            <label for="lifestyle">Lifestyle</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fashion" name="contentCategories" value="fashion">
+                            <label for="fashion">Fashion </label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fashion" name="contentCategories" value="fashion">
+                            <label for="fashion">Beauty</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fitness" name="contentCategories" value="fitness">
+                            <label for="fitness">Health & Fitness</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="food" name="contentCategories" value="food">
+                            <label for="food">Food & Cooking</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="travel" name="contentCategories" value="travel">
+                            <label for="travel">Travel</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="technology" name="contentCategories" value="technology">
+                            <label for="technology">Technology</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="entertainment" name="contentCategories" value="entertainment">
+                            <label for="entertainment">Entertainment</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="parenting" name="contentCategories" value="parenting">
+                            <label for="parenting">Parenting</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="business" name="contentCategories" value="business">
+                            <label for="business">Business & Finance</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="education" name="contentCategories" value="education">
+                            <label for="education">Education</label>
+                        </div>
+                    </div>
                 </div>
-                <div class="footer-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Security</a>
-                    <a href="#">Support</a>
+
+                <div class="section-title">Audience Demographics</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="primaryAgeRange">Primary Audience Age Range *</label>
+                        <select id="primaryAgeRange" name="primaryAgeRange" required>
+                            <option value="">Select age range</option>
+                            <option value="13-17">13-17 (Gen Z)</option>
+                            <option value="18-24">18-24 (Gen Z)</option>
+                            <option value="25-34">25-34 (Millennials)</option>
+                            <option value="35-44">35-44 (Millennials)</option>
+                            <option value="45-54">45-54 (Gen X)</option>
+                            <option value="55-64">55-64 (Baby Boomers)</option>
+  
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="genderSplit">Gender Distribution</label>
+                        <select id="genderSplit" name="genderSplit">
+                            <option value="">No preference</option>
+                            <option value="female-majority">Primarily Female (60%+)</option>
+                            <option value="male-majority">Primarily Male (60%+)</option>
+                            <option value="balanced">Balanced</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="primaryLocation">Primary Audience Location *</label>
+                        <select id="primaryLocation" name="primaryLocation" required>
+                            <option value="">Select primary location</option>
+                            
+                            <option value="us">Russia</option>
+                            <option value="us">China</option>
+                            <option value="us">India</option>
+                            <option value="us">United States</option>
+                            <option value="canada">Canada</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="australia">Australia</option>
+                            <option value="germany">Germany</option>
+                            <option value="france">France</option>
+                            <option value="global">Global/International</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="engagementRate">Average Engagement Rate *</label>
+                        <select id="engagementRate" name="engagementRate" required>
+                            <option value="">Select engagement rate</option>
+                            <option value="1-2"> 1-10% </option>
+                            <option value="2-4">10-50%</option>
+                            <option value="4-6">50-80%</option>
+                            <option value="6-8">80-90%</option>
+                            <option value="8+">90%+</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-title">Content Style & Posting</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contentStyle">Content Style *</label>
+                        <select id="contentStyle" name="contentStyle" required>
+                            <option value="">Select content style</option>
+                            <option value="educational">Educational/Informative</option>
+                            <option value="entertaining">Entertaining/Fun</option>
+                            <option value="inspirational">Inspirational/Motivational</option>
+                            <option value="authentic">Authentic/Behind-the-scenes</option>
+                            <option value="professional">Professional/Business</option>
+                            <option value="casual">Casual/Relatable</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postingFrequency">Posting Frequency *</label>
+                        <select id="postingFrequency" name="postingFrequency" required>
+                            <option value="">Select frequency</option>
+                            <option value="daily">Daily</option>
+                            <option value="few-times-week">Few times per week</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="bi-weekly">Bi-weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button type="button" class="btn btn-secondary" onclick="previousStep()">
+                        ← Back to Social Media
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">
+                        Continue to Finalize →
+                    </button>
+                </div>
+            </form>
         </div>
-    </footer>
+    </div>
 
     <script>
-        // Niche selection functionality
-        document.querySelectorAll('.niche-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const selectedNiches = document.querySelectorAll('.niche-card.selected');
-                
-                if (this.classList.contains('selected')) {
-                    this.classList.remove('selected');
-                } else if (selectedNiches.length < 3) {
-                    this.classList.add('selected');
-                } else {
-                    alert('You can select up to 3 content niches');
-                }
-            });
-        });
-
-        // Age range selection
-        document.querySelectorAll('.age-range').forEach(range => {
-            range.addEventListener('click', function() {
-                document.querySelectorAll('.age-range').forEach(r => r.classList.remove('selected'));
-                this.classList.add('selected');
-            });
-        });
-
-        // Gender selection
-        document.querySelectorAll('.gender-option').forEach(option => {
-            option.addEventListener('click', function() {
-                document.querySelectorAll('.gender-option').forEach(o => o.classList.remove('selected'));
-                this.classList.add('selected');
-            });
-        });
-
-        // Content style selection
-        document.querySelectorAll('.content-style').forEach(style => {
-            style.addEventListener('click', function() {
-                const selectedStyles = document.querySelectorAll('.content-style.selected');
-                
-                if (this.classList.contains('selected')) {
-                    this.classList.remove('selected');
-                } else if (selectedStyles.length < 2) {
-                    this.classList.add('selected');
-                } else {
-                    alert('You can select up to 2 content styles');
-                }
-            });
-        });
-
-        // Go back to previous step
-        function goBack() {
+        function previousStep() {
             window.location.href = 'influencer-onboarding-step2.html';
         }
 
-        // Form submission
-        document.getElementById('onboardingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Collect selected niches
-            const selectedNiches = Array.from(document.querySelectorAll('.niche-card.selected'))
-                .map(card => card.dataset.niche);
-            
-            // Collect selected age range
-            const selectedAgeRange = document.querySelector('.age-range.selected')?.dataset.age;
-            
-            // Collect selected gender
-            const selectedGender = document.querySelector('.gender-option.selected')?.dataset.gender;
-            
-            // Collect selected content styles
-            const selectedStyles = Array.from(document.querySelectorAll('.content-style.selected'))
-                .map(style => style.dataset.style);
-            
-            // Collect engagement data
-            const engagementData = {
-                avgLikes: document.getElementById('avgLikes').value,
-                avgComments: document.getElementById('avgComments').value,
-                postFrequency: document.getElementById('postFrequency').value,
-                bestPostTime: document.getElementById('bestPostTime').value
-            };
-            
-            // Validation
-            if (selectedNiches.length === 0) {
-                alert('Please select at least one content niche');
+        function nextStep() {
+            const contentCategories = document.querySelectorAll('input[name="contentCategories"]:checked');
+            const primaryAgeRange = document.getElementById('primaryAgeRange').value;
+            const primaryLocation = document.getElementById('primaryLocation').value;
+            const engagementRate = document.getElementById('engagementRate').value;
+            const contentStyle = document.getElementById('contentStyle').value;
+            const postingFrequency = document.getElementById('postingFrequency').value;
+
+            if (contentCategories.length === 0) {
+                alert('Please select at least one content category');
                 return;
             }
-            
-            if (!selectedAgeRange) {
-                alert('Please select a primary age range for your audience');
+
+            if (!primaryAgeRange || !primaryLocation || !engagementRate || !contentStyle || !postingFrequency) {
+                alert('Please fill in all required fields (marked with *)');
                 return;
             }
+
+            // Store form data
+            const form = document.getElementById('contentAudienceForm');
+            const formData = new FormData(form);
+            const data = {};
             
-            if (!selectedGender) {
-                alert('Please select the gender distribution of your audience');
-                return;
+            // Handle regular form fields
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
             }
-            
-            if (selectedStyles.length === 0) {
-                alert('Please select at least one content style');
-                return;
-            }
-            
-            // Store form data in localStorage
-            localStorage.setItem('onboarding_step3', JSON.stringify({
-                niches: selectedNiches,
-                ageRange: selectedAgeRange,
-                gender: selectedGender,
-                contentStyles: selectedStyles,
-                engagement: engagementData
-            }));
-            
-            // Navigate to step 4
+
+            // Get existing data and merge
+            const existingData = JSON.parse(localStorage.getItem('influencerOnboarding') || '{}');
+            const mergedData = { ...existingData, ...data };
+            localStorage.setItem('influencerOnboarding', JSON.stringify(mergedData));
+
+            // Navigate to next step
             window.location.href = 'influencer-onboarding-step4.html';
+        }
+
+        // Handle checkbox styling
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const checkboxItem = this.closest('.checkbox-item');
+                if (this.checked) {
+                    checkboxItem.classList.add('checked');
+                } else {
+                    checkboxItem.classList.remove('checked');
+                }
+            });
         });
 
-        // Load previous data if available
+        // Load existing data if available
         window.addEventListener('load', function() {
-            const savedData = localStorage.getItem('onboarding_step3');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                
-                // Restore niche selections
-                if (data.niches) {
-                    data.niches.forEach(niche => {
-                        const card = document.querySelector(`[data-niche="${niche}"]`);
-                        if (card) card.classList.add('selected');
-                    });
-                }
-                
-                // Restore age range selection
-                if (data.ageRange) {
-                    const ageRange = document.querySelector(`[data-age="${data.ageRange}"]`);
-                    if (ageRange) ageRange.classList.add('selected');
-                }
-                
-                // Restore gender selection
-                if (data.gender) {
-                    const gender = document.querySelector(`[data-gender="${data.gender}"]`);
-                    if (gender) gender.classList.add('selected');
-                }
-                
-                // Restore content style selections
-                if (data.contentStyles) {
-                    data.contentStyles.forEach(style => {
-                        const styleCard = document.querySelector(`[data-style="${style}"]`);
-                        if (styleCard) styleCard.classList.add('selected');
-                    });
-                }
-                
-                // Restore engagement data
-                if (data.engagement) {
-                    document.getElementById('avgLikes').value = data.engagement.avgLikes || '';
-                    document.getElementById('avgComments').value = data.engagement.avgComments || '';
-                    document.getElementById('postFrequency').value = data.engagement.postFrequency || '';
-                    document.getElementById('bestPostTime').value = data.engagement.bestPostTime || '';
-                }
-            }
-        });
-
-        // Format number inputs
-        document.querySelectorAll('input[type="number"]').forEach(input => {
-            input.addEventListener('input', function() {
-                let value = this.value.replace(/,/g, '');
-                if (value && !isNaN(value)) {
-                    this.value = parseInt(value).toLocaleString();
+            const existingData = JSON.parse(localStorage.getItem('influencerOnboarding') || '{}');
+            
+            // Populate form fields
+            Object.keys(existingData).forEach(key => {
+                const field = document.getElementById(key);
+                if (field) {
+                    if (field.type === 'checkbox') {
+                        const values = Array.isArray(existingData[key]) ? existingData[key] : [existingData[key]];
+                        values.forEach(value => {
+                            const checkbox = document.querySelector(`input[name="${key}"][value="${value}"]`);
+                            if (checkbox) {
+                                checkbox.checked = true;
+                                checkbox.closest('.checkbox-item').classList.add('checked');
+                            }
+                        });
+                    } else {
+                        field.value = existingData[key];
+                    }
                 }
             });
         });
