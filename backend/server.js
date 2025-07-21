@@ -3,6 +3,9 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
+import profileRoutes from './routes/profile.js';
+import businessProfileRoutes from './routes/businessProfile.js';
+import campaignRoutes from './routes/campaigns.js';
 
 // Load environment variables
 dotenv.config();
@@ -42,6 +45,9 @@ app.get('/health', (req, res) => {
 
 // API routes
 app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/profile', businessProfileRoutes);
+app.use('/api/campaigns', campaignRoutes);
 
 app.get('/api/test', (req, res) => {
   res.json({ message: 'API is working!' });

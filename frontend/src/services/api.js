@@ -89,14 +89,37 @@ class ApiService {
 
   // Profile methods
   async createInfluencerProfile(profileData) {
-    return this.request('/influencer-profiles', {
+    return this.request('/profile/influencer', {
       method: 'POST',
       body: JSON.stringify(profileData),
     });
   }
 
+  async getInfluencerProfile() {
+    return this.request('/profile/influencer');
+  }
+
   async updateInfluencerProfile(profileData) {
-    return this.request('/influencer-profiles/me', {
+    return this.request('/profile/influencer', {
+      method: 'PUT',
+      body: JSON.stringify(profileData),
+    });
+  }
+
+  // Business Profile methods
+  async createBusinessProfile(profileData) {
+    return this.request('/profile/business', {
+      method: 'POST',
+      body: JSON.stringify(profileData),
+    });
+  }
+
+  async getBusinessProfile() {
+    return this.request('/profile/business');
+  }
+
+  async updateBusinessProfile(profileData) {
+    return this.request('/profile/business', {
       method: 'PUT',
       body: JSON.stringify(profileData),
     });
@@ -109,19 +132,6 @@ class ApiService {
     });
   }
 
-  async createBusinessProfile(profileData) {
-    return this.request('/business-profiles', {
-      method: 'POST',
-      body: JSON.stringify(profileData),
-    });
-  }
-
-  async updateBusinessProfile(profileData) {
-    return this.request('/business-profiles/me', {
-      method: 'PUT',
-      body: JSON.stringify(profileData),
-    });
-  }
 
   async updateBusinessOnboardingStep(step, data) {
     return this.request(`/business-profiles/onboarding/${step}`, {
@@ -144,13 +154,20 @@ class ApiService {
   }
 
   async getBusinessCampaigns() {
-    return this.request('/campaigns/business/my-campaigns');
+    return this.request('/campaigns/my-campaigns');
   }
 
   async applyToCampaign(campaignId, applicationData) {
     return this.request(`/campaigns/${campaignId}/apply`, {
       method: 'POST',
       body: JSON.stringify(applicationData),
+    });
+  }
+
+  async sendDirectInvite(campaignId, inviteData) {
+    return this.request(`/campaigns/${campaignId}/invite`, {
+      method: 'POST',
+      body: JSON.stringify(inviteData),
     });
   }
 

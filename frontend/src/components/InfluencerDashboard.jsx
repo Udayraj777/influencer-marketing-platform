@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import apiService from '../services/api';
 import Header from './dashboard/Header';
 import ProfileHeader from './dashboard/ProfileHeader';
 import CollabHub from './dashboard/CollabHub';
@@ -13,11 +14,30 @@ import { DashboardProvider } from '../contexts/DashboardContext';
 const InfluencerDashboard = () => {
   const [currentSection, setCurrentSection] = useState('dashboard');
   const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
+  const [error, setError] = useState('');
   
   useEffect(() => {
-    // Simulate initial data loading
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
+    const fetchProfileData = async () => {
+      try {
+        setLoading(true);
+        const result = await apiService.getInfluencerProfile();
+        
+        if (result.success) {
+          setProfile(result.profile);
+          console.log('✅ Profile loaded:', result.profile);
+        } else {
+          setError('Failed to load profile data');
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        setError('Failed to load profile data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfileData();
   }, []);
 
   const handleSectionChange = useCallback((section) => {
@@ -41,7 +61,7 @@ const InfluencerDashboard = () => {
         <Header currentSection={currentSection} onSectionChange={handleSectionChange} />
         
         <main className="max-w-7xl mx-auto px-4 py-8">
-          <ProfileHeader />
+          <ProfileHeader profile={profile} />
           
           {currentSection === 'dashboard' && (
             <div className="space-y-8">

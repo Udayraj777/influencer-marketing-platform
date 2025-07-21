@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 import apiService from '../services/api';
 
 // Initial state
@@ -110,10 +110,14 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadStoredAuth = () => {
       try {
-        const token = localStorage.getItem('token');
+        console.log('🔄 AuthContext: Loading stored authentication...');
+        const token = localStorage.getItem('authToken');
         const user = localStorage.getItem('user');
+        console.log('🔐 AuthContext: Found token:', !!token);
+        console.log('👤 AuthContext: Found user:', !!user);
 
         if (token && user) {
+          console.log('✅ AuthContext: Restoring authentication');
           dispatch({
             type: AUTH_ACTIONS.LOGIN_SUCCESS,
             payload: {
@@ -122,11 +126,12 @@ export const AuthProvider = ({ children }) => {
             }
           });
         } else {
+          console.log('❌ AuthContext: No stored authentication found');
           dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false });
         }
       } catch (error) {
-        console.error('Error loading stored auth:', error);
-        localStorage.removeItem('token');
+        console.error('💥 AuthContext: Error loading stored auth:', error);
+        localStorage.removeItem('authToken');
         localStorage.removeItem('user');
         dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false });
       }
@@ -152,19 +157,24 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: AUTH_ACTIONS.LOGIN_START });
 
     try {
+      console.log('🔐 AuthContext: Starting login for:', email);
       const data = await apiService.login({ email, password });
+      console.log('📥 AuthContext: Login response:', data);
 
-      // Store in localStorage
-      localStorage.setItem('token', data.token);
+      // Store in localStorage using the same key as API service
+      localStorage.setItem('authToken', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
+      console.log('💾 AuthContext: Stored login token and user in localStorage');
 
       dispatch({
         type: AUTH_ACTIONS.LOGIN_SUCCESS,
         payload: data
       });
 
+      console.log('✅ AuthContext: Login successful, user authenticated');
       return { success: true };
     } catch (error) {
+      console.error('❌ AuthContext: Login failed:', error);
       dispatch({
         type: AUTH_ACTIONS.LOGIN_FAILURE,
         payload: error.message
@@ -178,19 +188,24 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: AUTH_ACTIONS.REGISTER_START });
 
     try {
+      console.log('📝 AuthContext: Starting registration...');
       const data = await apiService.register(userData);
+      console.log('📥 AuthContext: Registration response:', data);
 
-      // Store in localStorage
-      localStorage.setItem('token', data.token);
+      // Store in localStorage using the same key as API service
+      localStorage.setItem('authToken', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
+      console.log('💾 AuthContext: Stored token and user in localStorage');
 
       dispatch({
         type: AUTH_ACTIONS.REGISTER_SUCCESS,
         payload: data
       });
 
+      console.log('✅ AuthContext: Registration successful, user authenticated');
       return { success: true };
     } catch (error) {
+      console.error('❌ AuthContext: Registration failed:', error);
       dispatch({
         type: AUTH_ACTIONS.REGISTER_FAILURE,
         payload: error.message
@@ -210,7 +225,7 @@ export const AuthProvider = ({ children }) => {
       console.error('Logout API error:', error);
     } finally {
       // Clear local storage
-      localStorage.removeItem('token');
+      localStorage.removeItem('authToken');
       localStorage.removeItem('user');
       
       dispatch({ type: AUTH_ACTIONS.LOGOUT });
@@ -223,7 +238,7 @@ export const AuthProvider = ({ children }) => {
       const data = await apiService.refreshToken();
 
       // Update stored token
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('authToken', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
       dispatch({
@@ -260,9 +275,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Clear error function
-  const clearError = () => {
+  const clearError = useCallback(() => {
     dispatch({ type: AUTH_ACTIONS.CLEAR_ERROR });
-  };
+  }, []);
 
   // Get authenticated headers for API calls
   const getAuthHeaders = () => {

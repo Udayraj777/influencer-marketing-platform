@@ -6,95 +6,9 @@ const ApplicationsSection = () => {
   const [activeTab, setActiveTab] = useState('applied');
 
   const mockApplications = {
-    applied: [
-      {
-        id: 'app_001',
-        title: 'Tech Product Review Campaign',
-        company: 'TechCorp Inc.',
-        appliedDate: '2 days ago',
-        budget: 1500,
-        status: 'pending',
-        statusText: 'Pending',
-        description: 'Waiting for brand response • You\'re in the top 5 candidates • Expected response: 3 days'
-      },
-      {
-        id: 'app_002',
-        title: 'Holiday Lifestyle Campaign',
-        company: 'LifeStyle Hub',
-        appliedDate: '4 days ago',
-        budget: 950,
-        status: 'under-review',
-        statusText: 'Under Review',
-        description: 'Brand is reviewing applications • 12 total applicants • Interview may be required'
-      },
-      {
-        id: 'app_003',
-        title: 'Fitness Equipment Review',
-        company: 'FitLife Gear',
-        appliedDate: '3 days ago',
-        budget: 750,
-        status: 'rejected',
-        statusText: 'Not Selected',
-        description: 'Brand chose other candidates • Feedback: Great portfolio, looking for fitness-focused creators next time'
-      }
-    ],
-    progress: [
-      {
-        id: 'prog_001',
-        title: 'Fashion Week Coverage',
-        company: 'Fashion Nova',
-        startDate: '3 days ago',
-        budget: 1800,
-        status: 'in-progress',
-        statusText: 'In Progress',
-        description: 'Content creation deadline: 5 days remaining • Phase 2 of 3'
-      },
-      {
-        id: 'prog_002',
-        title: 'Eco-Friendly Product Launch',
-        company: 'GreenLife Co.',
-        startDate: '1 week ago',
-        budget: 1200,
-        status: 'in-progress',
-        statusText: 'In Progress',
-        description: 'Final review stage • Awaiting brand approval on submitted content'
-      }
-    ],
-    completed: [
-      {
-        id: 'comp_001',
-        title: 'Summer Fitness Challenge',
-        company: 'FitLife',
-        completedDate: '2 weeks ago',
-        earned: 850,
-        status: 'completed',
-        statusText: 'Completed',
-        performance: '15.2K reach, 1,240 engagements',
-        rating: 5
-      },
-      {
-        id: 'comp_002',
-        title: 'Tech Product Unboxing',
-        company: 'TechReviews',
-        completedDate: '1 month ago',
-        earned: 1200,
-        status: 'completed',
-        statusText: 'Completed',
-        performance: '28.5K reach, 2,890 engagements',
-        rating: 4.8
-      },
-      {
-        id: 'comp_003',
-        title: 'Beauty Product Review Series',
-        company: 'GlowUp Beauty',
-        completedDate: '6 weeks ago',
-        earned: 2100,
-        status: 'completed',
-        statusText: 'Completed',
-        performance: '42.1K reach, 4,750 engagements',
-        rating: 5
-      }
-    ]
+    applied: [],
+    progress: [],
+    completed: []
   };
 
   useEffect(() => {

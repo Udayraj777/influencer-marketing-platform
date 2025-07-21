@@ -3,9 +3,13 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const Login = () => {
+  console.log('🏁 Login component mounted');
+  
   const navigate = useNavigate();
   const location = useLocation();
   const { login, isLoading, error, clearError, isAuthenticated, user } = useAuth();
+  
+  console.log('🔗 useAuth hook result:', { login: !!login, isLoading, error, isAuthenticated, user });
 
   const [formData, setFormData] = useState({
     email: '',
@@ -16,19 +20,24 @@ const Login = () => {
   const [validationErrors, setValidationErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
-  // Redirect if already authenticated
+  // Check if already authenticated (only once on mount)
   useEffect(() => {
-    if (isAuthenticated && user) {
-      const from = location.state?.from?.pathname || 
-                  (user.role === 'business' ? '/business/dashboard' : '/influencer/dashboard');
-      navigate(from, { replace: true });
+    console.log('🧭 Login component: Initial auth check on mount');
+    console.log('🔐 isAuthenticated:', isAuthenticated);
+    console.log('👤 user:', user);
+    console.log('🔄 isLoading:', isLoading);
+    
+    // Only redirect if already authenticated when component first mounts
+    if (!isLoading && isAuthenticated && user) {
+      console.log('✅ Already authenticated, redirecting to dashboard');
+      window.location.href = '/dashboard'; // Force page navigation instead of React navigate
     }
-  }, [isAuthenticated, user, navigate, location.state]);
+  }, []); // Empty dependency array - only run once on mount
 
   // Clear errors when component mounts or email changes
   useEffect(() => {
     clearError();
-  }, [formData.email, clearError]);
+  }, [formData.email]); // Removed clearError from dependencies to prevent infinite loop
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -59,8 +68,8 @@ const Login = () => {
     // Password validation
     if (!formData.password) {
       errors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      errors.password = 'Password must be at least 8 characters';
+    } else if (formData.password.length < 6) {
+      errors.password = 'Password must be at least 6 characters';
     }
 
     setValidationErrors(errors);
@@ -69,17 +78,32 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    console.log('🔥 FORM SUBMITTED - START OF FUNCTION');
+    console.log('📝 Form data:', formData);
 
     if (!validateForm()) {
+      console.log('❌ Form validation failed');
       return;
     }
 
-    const result = await login(formData.email, formData.password);
+    console.log('✅ Form validation passed');
+    console.log('🚀 Login component: Attempting login...');
+    
+    try {
+      const result = await login(formData.email, formData.password);
+      console.log('📤 Login component: Login result:', result);
 
-    if (result.success) {
-      // Navigation will be handled by the useEffect above
+      if (result.success) {
+        console.log('✅ Login component: Login successful, redirecting to dashboard...');
+        // Force direct navigation to dashboard
+        window.location.href = '/dashboard';
+      } else {
+        console.error('❌ Login component: Login failed:', result);
+      }
+    } catch (error) {
+      console.error('💥 Login component: Unexpected error:', error);
     }
-    // Error handling is managed by the AuthContext and displayed in the UI
   };
 
   const getFieldClasses = (fieldName) => {
@@ -220,6 +244,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={isLoading}
+                onClick={() => console.log('🖱️ Sign In button clicked!')}
                 className={`w-full py-4 rounded-lg text-lg font-semibold transition-all ${
                   isLoading
                     ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
@@ -234,6 +259,19 @@ const Login = () => {
                 ) : (
                   'Sign In'
                 )}
+              </button>
+
+              {/* Debug button to manually navigate to dashboard */}
+              <button
+                type="button"
+                onClick={() => {
+                  console.log('🧪 Manual navigation test');
+                  console.log('🔐 Current auth state:', { isAuthenticated, user });
+                  navigate('/dashboard');
+                }}
+                className="w-full py-2 mt-2 bg-blue-600 text-white rounded-lg text-sm"
+              >
+                Debug: Go to Dashboard
               </button>
             </form>
 

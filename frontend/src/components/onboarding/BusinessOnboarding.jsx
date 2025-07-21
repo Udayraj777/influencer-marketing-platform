@@ -385,8 +385,12 @@ const Step4GoalsSetup = ({ formData, handleInputChange }) => (
 );
 
 const BusinessOnboarding = () => {
+  console.log('🏢 BusinessOnboarding component loading...');
+  
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     // Step 1 - Company Info
     companyName: '',
@@ -473,27 +477,64 @@ const BusinessOnboarding = () => {
   const completeOnboarding = async () => {
     try {
       setLoading(true);
+      setError('');
       
-      // Submit profile data to backend via step-by-step updates
-      for (let step = 1; step <= 4; step++) {
-        const stepData = getBusinessStepData(step);
-        if (Object.keys(stepData).length > 0) {
-          await apiService.updateBusinessOnboardingStep(step, stepData);
-        }
+      console.log('🚀 Starting business onboarding completion...');
+      console.log('Form data:', formData);
+      console.log('🔐 Auth token:', localStorage.getItem('authToken'));
+      console.log('👤 Current user:', JSON.parse(localStorage.getItem('user') || '{}'));
+      
+      // Submit all profile data to backend
+      const profileData = {
+        companyName: formData.companyName,
+        companyDescription: formData.description,
+        companyLogo: null, // Skip file upload for now
+        industry: formData.industry,
+        companySize: formData.companySize,
+        website: formData.website,
+        contactInfo: {
+          email: '', // Will be filled from user data
+          phone: '',
+          address: ''
+        },
+        targetAudience: {
+          ageRange: formData.ageRange,
+          gender: formData.gender,
+          incomeLevel: formData.incomeLevel,
+          markets: formData.markets,
+          interests: formData.interests
+        },
+        campaignPreferences: {
+          budget: formData.budget,
+          platforms: formData.platforms,
+          contentRequirements: formData.contentRequirements,
+          industryCompliance: formData.industryCompliance
+        },
+        additionalNotes: formData.additionalNotes
+      };
+
+      console.log('📊 Profile data to send:', profileData);
+      
+      const result = await apiService.createBusinessProfile(profileData);
+      console.log('📥 API response:', result);
+      
+      if (result.success) {
+        console.log('✅ Business profile created:', result.profile);
+        
+        // Store the completed onboarding data
+        localStorage.setItem('businessProfile', JSON.stringify(result.profile));
+        localStorage.removeItem('pendingRegistration'); // Clean up temporary data
+        
+        // Redirect to dashboard
+        console.log('🧭 Navigating to dashboard...');
+        navigate('/dashboard', { replace: true });
+      } else {
+        console.error('❌ Profile creation failed:', result);
+        setError(result.message || 'Failed to save profile. Please try again.');
       }
-      
-      console.log('Business onboarding completed:', formData);
-      
-      // Store the completed onboarding data
-      localStorage.setItem('businessProfile', JSON.stringify(formData));
-      localStorage.setItem('userData', JSON.stringify({ role: 'business', ...formData }));
-      localStorage.removeItem('pendingRegistration'); // Clean up temporary data
-      
-      // Redirect to dashboard
-      navigate('/dashboard');
     } catch (error) {
-      console.error('Onboarding completion error:', error);
-      setError('Failed to complete onboarding. Please try again.');
+      console.error('💥 Business onboarding completion error:', error);
+      setError(`Failed to complete onboarding: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -560,12 +601,18 @@ const BusinessOnboarding = () => {
 
         {renderStep()}
 
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mt-6">
+            {error}
+          </div>
+        )}
+
         <div className="flex justify-between mt-8">
           <button
             onClick={prevStep}
-            disabled={currentStep === 1}
+            disabled={currentStep === 1 || loading}
             className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
-              currentStep === 1
+              currentStep === 1 || loading
                 ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 : 'bg-gray-600 text-white hover:bg-gray-700'
             }`}
@@ -574,9 +621,10 @@ const BusinessOnboarding = () => {
           </button>
           <button
             onClick={nextStep}
-            className="px-6 py-3 bg-blue-800 text-white rounded-lg font-semibold hover:bg-blue-900 transition-colors"
+            disabled={loading}
+            className="px-6 py-3 bg-blue-800 text-white rounded-lg font-semibold hover:bg-blue-900 transition-colors disabled:bg-blue-400"
           >
-            {currentStep === 4 ? 'Complete Setup' : 'Next'}
+            {loading ? 'Processing...' : (currentStep === 4 ? 'Complete Setup' : 'Next')}
           </button>
         </div>
       </div>

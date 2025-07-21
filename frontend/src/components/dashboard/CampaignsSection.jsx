@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDashboard } from '../../contexts/DashboardContext';
+import apiService from '../../services/api';
 
 const CampaignsSection = () => {
   const { campaigns, actions } = useDashboard();
@@ -10,54 +11,27 @@ const CampaignsSection = () => {
     deadline: 'all'
   });
 
-  // Mock campaigns data
-  const mockCampaigns = [
-    {
-      id: 'camp_001',
-      title: 'Summer Beauty Collection Campaign',
-      company: 'GlowCosmetics',
-      verified: true,
-      description: 'Looking for beauty influencers to showcase our new summer makeup collection. Create authentic content featuring our latest products with tutorials and styling tips.',
-      budget: 1200,
-      platform: 'Instagram',
-      deadline: '2 weeks',
-      applicants: 15,
-      tags: ['Beauty', 'Tutorial', 'Summer Collection'],
-      badge: { type: 'new', label: 'New' },
-      category: 'Fashion & Beauty'
-    },
-    {
-      id: 'camp_002',
-      title: 'Sustainable Fashion Brand Partnership',
-      company: 'EcoWear',
-      verified: true,
-      description: 'Partner with us to promote sustainable fashion choices. Looking for fashion influencers who align with eco-friendly values and sustainable living.',
-      budget: 1800,
-      platform: 'Instagram',
-      deadline: '3 weeks',
-      applicants: 8,
-      tags: ['Sustainable', 'Fashion', 'Eco-friendly'],
-      badge: { type: 'featured', label: 'Featured' },
-      category: 'Fashion & Beauty'
-    },
-    {
-      id: 'camp_003',
-      title: 'Lifestyle Brand Ambassador Program',
-      company: 'LifeStyle Co.',
-      verified: true,
-      description: 'Join our brand ambassador program for long-term collaboration. Create lifestyle content showcasing our products in daily routines and special occasions.',
-      budget: 950,
-      platform: 'TikTok',
-      deadline: '5 days',
-      applicants: 22,
-      tags: ['Lifestyle', 'Ambassador', 'Long-term'],
-      badge: { type: 'urgent', label: 'Urgent' },
-      category: 'Lifestyle'
-    }
-  ];
-
+  // Fetch real campaigns from API
   useEffect(() => {
-    actions.setCampaigns(mockCampaigns);
+    const fetchCampaigns = async () => {
+      try {
+        console.log('🔍 Fetching campaigns from API...');
+        const result = await apiService.getCampaigns();
+        
+        if (result.success) {
+          console.log('✅ Campaigns loaded:', result.campaigns.length);
+          actions.setCampaigns(result.campaigns);
+        } else {
+          console.log('❌ No campaigns found');
+          actions.setCampaigns([]);
+        }
+      } catch (error) {
+        console.error('❌ Error fetching campaigns:', error);
+        actions.setCampaigns([]);
+      }
+    };
+
+    fetchCampaigns();
   }, [actions]);
 
   const filteredCampaigns = useMemo(() => {
@@ -246,9 +220,9 @@ const CampaignsSection = () => {
 
         {filteredCampaigns.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4 opacity-50">🔍</div>
-            <h3 className="text-xl font-bold text-blue-900 mb-2">No campaigns found</h3>
-            <p className="text-gray-600">Try adjusting your filters to see more campaigns.</p>
+            <div className="text-6xl mb-4 opacity-50">📢</div>
+            <h3 className="text-xl font-bold text-blue-900 mb-2">No campaigns available yet</h3>
+            <p className="text-gray-600">Campaigns will appear here when businesses post them. Check back soon!</p>
           </div>
         )}
       </div>

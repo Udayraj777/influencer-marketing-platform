@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDashboard } from '../../contexts/DashboardContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Header = ({ currentSection, onSectionChange }) => {
   const { user, stats } = useDashboard();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
+  };
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: '📊' },
@@ -49,6 +58,14 @@ const Header = ({ currentSection, onSectionChange }) => {
 
           {/* Header Actions */}
           <div className="flex items-center space-x-4">
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+            >
+              Logout
+            </button>
+
             {/* Notifications */}
             <div className="relative">
               <button

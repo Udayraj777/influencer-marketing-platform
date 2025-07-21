@@ -4,28 +4,7 @@ import { useDashboard } from '../../contexts/DashboardContext';
 const InvitationsSection = () => {
   const { invitations, actions } = useDashboard();
 
-  const mockInvitations = [
-    {
-      id: 'inv_001',
-      title: 'Summer Beauty Collection Campaign',
-      company: 'GlowCosmetics',
-      campaign: 'Summer Beauty Collection Launch',
-      budget: 1200,
-      message: 'Hi Sarah! We\'d love to collaborate with you on our summer campaign. Your beauty content perfectly aligns with our brand values and aesthetic.',
-      type: 'collaboration',
-      receivedDate: '2 days ago'
-    },
-    {
-      id: 'inv_002',
-      title: 'Tech Product Review Partnership',
-      company: 'TechCorp Inc.',
-      campaign: 'Latest Smartphone Review',
-      budget: 1500,
-      message: 'We noticed your tech content and would like to partner with you for our latest smartphone launch. Your audience engagement is impressive!',
-      type: 'collaboration',
-      receivedDate: '1 day ago'
-    }
-  ];
+  const mockInvitations = [];
 
   useEffect(() => {
     actions.setInvitations(mockInvitations);

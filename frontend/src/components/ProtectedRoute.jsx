@@ -102,9 +102,8 @@ const ProtectedRoute = ({
 
   // If user is authenticated and trying to access public auth pages (login/register)
   if (!requireAuth && isAuthenticated) {
-    // Redirect to appropriate dashboard based on role
-    const dashboardPath = user?.role === 'business' ? '/business/dashboard' : '/influencer/dashboard';
-    return <Navigate to={dashboardPath} replace />;
+    // Redirect to dashboard
+    return <Navigate to="/dashboard" replace />;
   }
 
   // All checks passed, render the children

@@ -18,9 +18,9 @@ const LandingPage = () => {
             <li><a href="#contact" className="text-white font-medium hover:text-blue-300 transition-colors">Contact</a></li>
           </ul>
           
-          <a href="#" className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-md font-semibold transition-colors">
+          <Link to="/login" className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-md font-semibold transition-colors">
             Login
-          </a>
+          </Link>
         </nav>
       </header>
 

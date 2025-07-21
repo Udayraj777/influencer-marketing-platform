@@ -69,6 +69,10 @@ const Register = () => {
       const result = await register(registrationData);
       
       if (result.success) {
+        console.log('✅ Registration successful');
+        console.log('🔐 Auth token after registration:', localStorage.getItem('authToken'));
+        console.log('👤 User data after registration:', localStorage.getItem('user'));
+        
         // Store additional data for onboarding
         localStorage.setItem('pendingRegistration', JSON.stringify(registrationData));
         

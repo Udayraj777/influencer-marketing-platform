@@ -557,6 +557,16 @@ const Step4FinalSetup = ({ formData, handleInputChange }) => (
 const InfluencerOnboarding = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  
+  // Debug authentication state on component mount
+  useEffect(() => {
+    console.log('🎯 Onboarding started');
+    console.log('🔐 Auth token in onboarding:', localStorage.getItem('authToken'));
+    console.log('👤 User data in onboarding:', localStorage.getItem('user'));
+  }, []);
+  
   const [formData, setFormData] = useState({
     // Step 1 - Basic Info
     fullName: '',
@@ -657,27 +667,48 @@ const InfluencerOnboarding = () => {
   const completeOnboarding = async () => {
     try {
       setLoading(true);
+      setError('');
       
-      // Submit profile data to backend via step-by-step updates
-      for (let step = 1; step <= 4; step++) {
-        const stepData = getStepData(step);
-        if (Object.keys(stepData).length > 0) {
-          await apiService.updateInfluencerOnboardingStep(step, stepData);
-        }
+      console.log('🚀 Starting onboarding completion...');
+      console.log('Form data:', formData);
+      
+      // Submit all profile data to backend
+      const profileData = {
+        ...formData,
+        // Skip profilePicture File object for now - will implement file upload later
+        profilePicture: null,
+        followerCount: formData.followerCount ? parseInt(formData.followerCount) : 0,
+        engagementRate: formData.engagementRate ? parseFloat(formData.engagementRate) : 0,
+        instagramPrice: formData.instagramPrice ? parseFloat(formData.instagramPrice) : 0,
+        tiktokPrice: formData.tiktokPrice ? parseFloat(formData.tiktokPrice) : 0,
+        storyPrice: formData.storyPrice ? parseFloat(formData.storyPrice) : 0,
+        youtubePrice: formData.youtubePrice ? parseFloat(formData.youtubePrice) : 0
+      };
+
+      console.log('📊 Profile data to send:', profileData);
+      
+      const result = await apiService.createInfluencerProfile(profileData);
+      console.log('📥 API response:', result);
+      
+      if (result.success) {
+        console.log('✅ Influencer profile created:', result.profile);
+        console.log('🔐 Current auth token:', localStorage.getItem('authToken'));
+        console.log('👤 Current user:', localStorage.getItem('user'));
+        
+        // Store the completed onboarding data
+        localStorage.setItem('influencerProfile', JSON.stringify(result.profile));
+        localStorage.removeItem('pendingRegistration'); // Clean up temporary data
+        
+        // Redirect to dashboard
+        console.log('🧭 Navigating to dashboard...');
+        navigate('/dashboard', { replace: true });
+      } else {
+        console.error('❌ Profile creation failed:', result);
+        setError(result.message || 'Failed to save profile. Please try again.');
       }
-      
-      console.log('Influencer onboarding completed:', formData);
-      
-      // Store the completed onboarding data
-      localStorage.setItem('influencerProfile', JSON.stringify(formData));
-      localStorage.setItem('userData', JSON.stringify({ role: 'influencer', ...formData }));
-      localStorage.removeItem('pendingRegistration'); // Clean up temporary data
-      
-      // Redirect to dashboard
-      navigate('/dashboard');
     } catch (error) {
-      console.error('Onboarding completion error:', error);
-      setError('Failed to complete onboarding. Please try again.');
+      console.error('💥 Onboarding completion error:', error);
+      setError(`Failed to complete onboarding: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -755,6 +786,12 @@ const InfluencerOnboarding = () => {
 
         <ProgressIndicator currentStep={currentStep} />
 
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {error}
+          </div>
+        )}
+
         {renderStep()}
 
         <div className="flex justify-between mt-8">
@@ -771,9 +808,10 @@ const InfluencerOnboarding = () => {
           </button>
           <button
             onClick={nextStep}
-            className="px-6 py-3 bg-blue-800 text-white rounded-lg font-semibold hover:bg-blue-900 transition-colors"
+            disabled={loading}
+            className="px-6 py-3 bg-blue-800 text-white rounded-lg font-semibold hover:bg-blue-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {currentStep === 4 ? 'Complete Setup' : 'Next'}
+            {loading ? 'Processing...' : (currentStep === 4 ? 'Complete Setup' : 'Next')}
           </button>
         </div>
       </div>
