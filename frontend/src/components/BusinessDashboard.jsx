@@ -1,19 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import apiService from '../services/api';
 
 const BusinessDashboard = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [currentSection, setCurrentSection] = useState('dashboard');
   const [influencers, setInfluencers] = useState([]);
   const [campaigns, setCampaigns] = useState([]);
+  const [businessProfile, setBusinessProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showCampaignModal, setShowCampaignModal] = useState(false);
+  
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
+        console.log('🏢 Fetching business dashboard data...');
+        
+        // Fetch business profile
+        try {
+          const profileData = await apiService.getBusinessProfile();
+          console.log('✅ Business profile loaded:', profileData);
+          setBusinessProfile(profileData.profile);
+        } catch (error) {
+          console.error('❌ Error fetching business profile:', error);
+        }
         
         // Fetch recommended influencers from backend
         try {
@@ -93,11 +115,23 @@ const BusinessDashboard = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-5 5v-5z"/>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4h16c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                 </svg>
-                <span className="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                <span className="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
               </button>
-              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                <span className="text-sm font-semibold">B</span>
+              <div className="flex items-center space-x-3">
+                <div className="text-right">
+                  <p className="text-sm font-semibold">{businessProfile?.companyName || user?.name || 'Business User'}</p>
+                  <p className="text-xs opacity-75">{businessProfile?.industry || 'Business'}</p>
+                </div>
+                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                  <span className="text-sm font-semibold">{businessProfile?.companyName?.[0] || 'B'}</span>
+                </div>
               </div>
+              <button 
+                onClick={handleLogout}
+                className="px-3 py-1 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors text-sm font-medium"
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>
@@ -109,8 +143,35 @@ const BusinessDashboard = () => {
           <div className="space-y-8">
             {/* Welcome Section */}
             <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <h1 className="text-3xl font-bold text-blue-900 mb-2">Welcome to Your Business Dashboard</h1>
+              <h1 className="text-3xl font-bold text-blue-900 mb-2">
+                Welcome back, {businessProfile?.companyName || user?.name || 'Business User'}!
+              </h1>
               <p className="text-gray-600 text-lg">Discover and connect with authentic influencers to grow your brand</p>
+              
+              {businessProfile && (
+                <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                  <h3 className="font-semibold text-blue-900 mb-3">Company Profile</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p><strong>Industry:</strong> {businessProfile.industry}</p>
+                      <p><strong>Company Size:</strong> {businessProfile.companySize}</p>
+                    </div>
+                    <div>
+                      <p><strong>Budget Range:</strong> {businessProfile.campaignPreferences?.typicalBudget || 'Not specified'}</p>
+                      <p><strong>Platforms:</strong> {businessProfile.campaignPreferences?.preferredPlatforms?.join(', ') || 'Not specified'}</p>
+                    </div>
+                    <div>
+                      <p><strong>Website:</strong> {businessProfile.website ? (
+                        <a href={businessProfile.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                          {businessProfile.website}
+                        </a>
+                      ) : 'Not provided'}</p>
+                      <p><strong>Target Audience:</strong> {businessProfile.campaignPreferences?.targetAudience ? 
+                        JSON.parse(businessProfile.campaignPreferences.targetAudience).ageRange || 'Not specified' : 'Not specified'}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Stats Grid */}
@@ -119,7 +180,7 @@ const BusinessDashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Active Campaigns</p>
-                    <p className="text-3xl font-bold text-blue-600">0</p>
+                    <p className="text-3xl font-bold text-blue-600">{businessProfile?.stats?.activeCampaigns || 0}</p>
                   </div>
                   <div className="bg-blue-100 p-3 rounded-lg">
                     <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,7 +194,7 @@ const BusinessDashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Total Reach</p>
-                    <p className="text-3xl font-bold text-green-600">0</p>
+                    <p className="text-3xl font-bold text-green-600">{businessProfile?.stats?.totalInfluencersWorkedWith || 0}</p>
                   </div>
                   <div className="bg-green-100 p-3 rounded-lg">
                     <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,7 +209,7 @@ const BusinessDashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Pending Applications</p>
-                    <p className="text-3xl font-bold text-amber-600">0</p>
+                    <p className="text-3xl font-bold text-amber-600">{campaigns?.length || 0}</p>
                   </div>
                   <div className="bg-amber-100 p-3 rounded-lg">
                     <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,7 +223,7 @@ const BusinessDashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Total Investment</p>
-                    <p className="text-3xl font-bold text-purple-600">$0</p>
+                    <p className="text-3xl font-bold text-purple-600">${businessProfile?.stats?.totalSpent || 0}</p>
                   </div>
                   <div className="bg-purple-100 p-3 rounded-lg">
                     <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

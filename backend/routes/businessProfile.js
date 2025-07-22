@@ -70,14 +70,13 @@ router.post('/business', authenticate, async (req, res) => {
         { userId: req.user._id },
         {
           companyName,
-          companyDescription: companyDescription || '',
-          industry,
+          companyDescription: companyDescription || 'Business profile created through onboarding',
+          industry: industry === 'retail' ? 'fashion' : (industry === 'e-commerce' ? 'technology' : industry),
           companySize,
           website: website || '',
-          // Store form data in existing fields
-          headquarters: additionalNotes || '',
+          headquarters: 'Not specified',
           campaignPreferences: {
-            typicalBudget: campaignPreferences?.budget || '',
+            typicalBudget: campaignPreferences?.budget === 'under-1000' ? '500-2500' : (campaignPreferences?.budget === '1000-5000' ? '2500-10000' : '500-2500'),
             preferredPlatforms: campaignPreferences?.platforms || [],
             targetAudience: JSON.stringify(targetAudience || {}),
             campaignTypes: [],
@@ -91,13 +90,13 @@ router.post('/business', authenticate, async (req, res) => {
       profile = new BusinessProfile({
         userId: req.user._id,
         companyName,
-        companyDescription: companyDescription || '',
-        industry,
+        companyDescription: companyDescription || 'Business profile created through onboarding',
+        industry: industry === 'retail' ? 'fashion' : (industry === 'e-commerce' ? 'technology' : industry),
         companySize,
         website: website || '',
-        headquarters: additionalNotes || '',
+        headquarters: 'Not specified',
         campaignPreferences: {
-          typicalBudget: campaignPreferences?.budget || '',
+          typicalBudget: campaignPreferences?.budget === 'under-1000' ? '500-2500' : (campaignPreferences?.budget === '1000-5000' ? '2500-10000' : '500-2500'),
           preferredPlatforms: campaignPreferences?.platforms || [],
           targetAudience: JSON.stringify(targetAudience || {}),
           campaignTypes: [],
