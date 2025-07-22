@@ -174,7 +174,7 @@ class ApiService {
   // Matching methods
   async getInfluencerMatches(filters = {}) {
     const params = new URLSearchParams(filters);
-    return this.request(`/matching/influencers?${params}`);
+    return this.request(`/campaigns/influencer-matches?${params}`);
   }
 
   async getBusinessMatches(filters = {}) {

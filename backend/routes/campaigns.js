@@ -45,16 +45,45 @@ router.post('/', authenticate, async (req, res) => {
     const {
       title,
       description,
-      campaignType,
-      category,
-      platforms,
-      requirements,
-      budget,
-      timeline,
-      contentGuidelines,
+      budget: budgetRange,
+      platform,
+      categories,
       deliverables,
-      maxInfluencers
+      timeline,
+      companyName,
+      companyIndustry
     } = req.body;
+    
+    console.log('📥 Received campaign data:', {
+      title,
+      description,
+      budgetRange,
+      platform,
+      categories,
+      deliverables,
+      timeline
+    });
+    
+    // Map frontend data to backend schema
+    const budgetAmount = budgetRange === '500-1000' ? 750 : 
+                        budgetRange === '1000-2500' ? 1750 : 
+                        budgetRange === '2500-5000' ? 3750 : 
+                        budgetRange === '5000-10000' ? 7500 : 
+                        budgetRange === '10000+' ? 15000 : 1000;
+    
+    // Map frontend categories to backend enum values
+    const categoryMapping = {
+      'Fashion': 'Fashion & Beauty',
+      'Beauty': 'Fashion & Beauty', 
+      'Lifestyle': 'Lifestyle',
+      'Fitness': 'Fitness & Health',
+      'Food': 'Food & Beverage',
+      'Tech': 'Technology',
+      'Travel': 'Travel',
+      'Gaming': 'Gaming'
+    };
+    
+    const mappedCategory = categoryMapping[categories?.[0]] || 'Other';
 
     // Create new campaign
     const campaign = new Campaign({
@@ -62,15 +91,34 @@ router.post('/', authenticate, async (req, res) => {
       businessProfileId: businessProfile._id,
       title,
       description,
-      campaignType,
-      category,
-      platforms,
-      requirements: requirements || {},
-      budget,
-      timeline,
-      contentGuidelines: contentGuidelines || {},
+      campaignType: 'sponsored-post', // Valid enum value
+      category: mappedCategory, // Use mapped category
+      platforms: [platform.toLowerCase()], // Convert to lowercase for enum
+      requirements: {
+        minFollowers: 1000,
+        minEngagement: 2.0,
+        targetAudience: {
+          ageRange: ['18-35'],
+          interests: categories || []
+        }
+      },
+      budget: {
+        total: budgetAmount,
+        perInfluencer: Math.floor(budgetAmount / 5) // Assume 5 influencers
+      },
+      timeline: {
+        campaignStart: timeline?.startDate ? new Date(timeline.startDate) : new Date(),
+        campaignEnd: timeline?.endDate ? new Date(timeline.endDate) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+        applicationDeadline: timeline?.startDate ? new Date(new Date(timeline.startDate).getTime() - 7 * 24 * 60 * 60 * 1000) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days before start or 7 days from now
+        contentDeadline: timeline?.endDate ? new Date(timeline.endDate) : new Date(Date.now() + 21 * 24 * 60 * 60 * 1000) // 21 days from now
+      },
+      contentGuidelines: {
+        style: 'authentic',
+        mustInclude: deliverables || [],
+        restrictions: []
+      },
       deliverables: deliverables || [],
-      maxInfluencers: maxInfluencers || 10,
+      maxInfluencers: 5,
       status: 'active' // Automatically activate campaign
     });
 
@@ -279,5 +327,30 @@ function getBadge(campaign) {
   if (daysLeft <= 7) return { type: 'new', label: 'New' };
   return { type: 'normal', label: '' };
 }
+
+// Get influencer matches for business (for discovery)
+router.get('/influencer-matches', authenticate, async (req, res) => {
+  try {
+    if (req.user.role !== 'business') {
+      return res.status(403).json({ success: false, message: 'Only businesses can access this endpoint' });
+    }
+
+    // For now, return empty array since we don't have influencer matching logic yet
+    console.log('🔍 Business requesting influencer matches...');
+    
+    res.json({
+      success: true,
+      influencers: [] // Empty for now until we implement matching logic
+    });
+
+  } catch (error) {
+    console.error('Error fetching influencer matches:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch influencer matches', 
+      error: error.message 
+    });
+  }
+});
 
 export default router;

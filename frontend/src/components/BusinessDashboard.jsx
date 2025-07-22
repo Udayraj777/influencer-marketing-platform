@@ -12,6 +12,100 @@ const BusinessDashboard = () => {
   const [businessProfile, setBusinessProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showCampaignModal, setShowCampaignModal] = useState(false);
+  const [campaignForm, setCampaignForm] = useState({
+    title: '',
+    description: '',
+    budgetRange: '',
+    platform: '',
+    categories: [],
+    deliverables: [],
+    startDate: '',
+    endDate: ''
+  });
+  const [submittingCampaign, setSubmittingCampaign] = useState(false);
+  
+  const handleCampaignFormChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    
+    if (type === 'checkbox') {
+      if (name === 'categories' || name === 'deliverables') {
+        setCampaignForm(prev => ({
+          ...prev,
+          [name]: checked 
+            ? [...prev[name], value]
+            : prev[name].filter(item => item !== value)
+        }));
+      }
+    } else {
+      setCampaignForm(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+  };
+  
+  const handleCreateCampaign = async (e) => {
+    e.preventDefault();
+    
+    if (!businessProfile) {
+      alert('Please complete your business profile first');
+      return;
+    }
+    
+    setSubmittingCampaign(true);
+    
+    try {
+      const campaignData = {
+        title: campaignForm.title,
+        description: campaignForm.description,
+        budget: campaignForm.budgetRange,
+        platform: campaignForm.platform,
+        categories: campaignForm.categories,
+        deliverables: campaignForm.deliverables,
+        timeline: {
+          startDate: campaignForm.startDate,
+          endDate: campaignForm.endDate
+        },
+        companyName: businessProfile.companyName,
+        companyIndustry: businessProfile.industry
+      };
+      
+      console.log('🚀 Creating campaign:', campaignData);
+      
+      const result = await apiService.createCampaign(campaignData);
+      
+      if (result.success) {
+        console.log('✅ Campaign created successfully:', result.campaign);
+        alert('Campaign created successfully!');
+        
+        // Reset form and close modal
+        setCampaignForm({
+          title: '',
+          description: '',
+          budgetRange: '',
+          platform: '',
+          categories: [],
+          deliverables: [],
+          startDate: '',
+          endDate: ''
+        });
+        setShowCampaignModal(false);
+        
+        // Refresh campaigns list
+        const campaignsData = await apiService.getBusinessCampaigns();
+        setCampaigns(campaignsData.campaigns || []);
+        
+      } else {
+        console.error('❌ Campaign creation failed:', result);
+        alert('Failed to create campaign: ' + (result.message || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('💥 Campaign creation error:', error);
+      alert('Failed to create campaign: ' + error.message);
+    } finally {
+      setSubmittingCampaign(false);
+    }
+  };
   
   const handleLogout = async () => {
     try {
@@ -144,7 +238,7 @@ const BusinessDashboard = () => {
             {/* Welcome Section */}
             <div className="bg-white rounded-2xl p-8 shadow-lg">
               <h1 className="text-3xl font-bold text-blue-900 mb-2">
-                Welcome back, {businessProfile?.companyName || user?.name || 'Business User'}!
+                Welcome, {businessProfile?.companyName || user?.name || 'Business User'}!
               </h1>
               <p className="text-gray-600 text-lg">Discover and connect with authentic influencers to grow your brand</p>
               
@@ -409,13 +503,80 @@ const BusinessDashboard = () => {
                 Create Campaign
               </button>
             </div>
-            <div className="text-center text-gray-500 py-12">
-              <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-              </svg>
-              <p className="text-lg font-medium">No campaigns yet</p>
-              <p>Create your first campaign to start connecting with influencers</p>
-            </div>
+            
+            {campaigns && campaigns.length > 0 ? (
+              <div className="space-y-6">
+                {campaigns.map((campaign) => (
+                  <div key={campaign._id} className="bg-gray-50 rounded-xl p-6 border border-gray-200 hover:shadow-md transition-all">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h3 className="text-xl font-bold text-blue-900 mb-1">{campaign.title}</h3>
+                        <p className="text-gray-600 text-sm">
+                          {campaign.category} • {campaign.platforms?.join(', ') || 'Multiple Platforms'}
+                        </p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          campaign.status === 'active' ? 'bg-green-100 text-green-700' :
+                          campaign.status === 'draft' ? 'bg-gray-100 text-gray-700' :
+                          campaign.status === 'completed' ? 'bg-blue-100 text-blue-700' :
+                          'bg-yellow-100 text-yellow-700'
+                        }`}>
+                          {campaign.status}
+                        </span>
+                      </div>
+                    </div>
+
+                    <p className="text-gray-700 text-sm mb-4 leading-relaxed">{campaign.description}</p>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 p-4 bg-white rounded-lg">
+                      <div className="text-center">
+                        <div className="font-bold text-blue-900">${campaign.budget?.total?.toLocaleString() || 'N/A'}</div>
+                        <div className="text-xs text-gray-600">Total Budget</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="font-bold text-blue-900">${campaign.budget?.perInfluencer?.toLocaleString() || 'N/A'}</div>
+                        <div className="text-xs text-gray-600">Per Influencer</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="font-bold text-blue-900">{campaign.applicationsCount || 0}</div>
+                        <div className="text-xs text-gray-600">Applications</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="font-bold text-blue-900">{campaign.maxInfluencers || 'N/A'}</div>
+                        <div className="text-xs text-gray-600">Max Influencers</div>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <div className="text-sm text-gray-600">
+                        <span>Created: {new Date(campaign.createdAt).toLocaleDateString()}</span>
+                        {campaign.timeline?.campaignStart && (
+                          <span className="ml-4">Starts: {new Date(campaign.timeline.campaignStart).toLocaleDateString()}</span>
+                        )}
+                      </div>
+                      
+                      <div className="flex space-x-3">
+                        <button className="px-4 py-2 text-blue-600 border border-blue-300 rounded-lg hover:bg-blue-50 transition-colors text-sm font-medium">
+                          View Applications
+                        </button>
+                        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                          Edit Campaign
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center text-gray-500 py-12">
+                <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                <p className="text-lg font-medium">No campaigns yet</p>
+                <p>Create your first campaign to start connecting with influencers</p>
+              </div>
+            )}
           </div>
         )}
 
@@ -435,45 +596,67 @@ const BusinessDashboard = () => {
                 </button>
               </div>
 
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleCreateCampaign}>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Campaign Title</label>
                   <input 
                     type="text" 
+                    name="title"
+                    value={campaignForm.title}
+                    onChange={handleCampaignFormChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter campaign title"
+                    required
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
                   <textarea 
+                    name="description"
+                    value={campaignForm.description}
+                    onChange={handleCampaignFormChange}
                     rows="4"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Describe your campaign goals and requirements"
+                    required
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Budget Range</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                      <option>$500 - $1,000</option>
-                      <option>$1,000 - $2,500</option>
-                      <option>$2,500 - $5,000</option>
-                      <option>$5,000 - $10,000</option>
-                      <option>$10,000+</option>
+                    <select 
+                      name="budgetRange"
+                      value={campaignForm.budgetRange}
+                      onChange={handleCampaignFormChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      required
+                    >
+                      <option value="">Select budget range</option>
+                      <option value="500-1000">$500 - $1,000</option>
+                      <option value="1000-2500">$1,000 - $2,500</option>
+                      <option value="2500-5000">$2,500 - $5,000</option>
+                      <option value="5000-10000">$5,000 - $10,000</option>
+                      <option value="10000+">$10,000+</option>
                     </select>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Platform</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                      <option>Instagram</option>
-                      <option>TikTok</option>
-                      <option>YouTube</option>
-                      <option>Twitter</option>
-                      <option>Multiple Platforms</option>
+                    <select 
+                      name="platform"
+                      value={campaignForm.platform}
+                      onChange={handleCampaignFormChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      required
+                    >
+                      <option value="">Select platform</option>
+                      <option value="Instagram">Instagram</option>
+                      <option value="TikTok">TikTok</option>
+                      <option value="YouTube">YouTube</option>
+                      <option value="Twitter">Twitter</option>
+                      <option value="Multiple">Multiple Platforms</option>
                     </select>
                   </div>
                 </div>
@@ -483,7 +666,14 @@ const BusinessDashboard = () => {
                   <div className="flex flex-wrap gap-3">
                     {['Fashion', 'Beauty', 'Lifestyle', 'Fitness', 'Food', 'Tech', 'Travel', 'Gaming'].map((category) => (
                       <label key={category} className="flex items-center">
-                        <input type="checkbox" className="mr-2" />
+                        <input 
+                          type="checkbox" 
+                          name="categories"
+                          value={category}
+                          checked={campaignForm.categories.includes(category)}
+                          onChange={handleCampaignFormChange}
+                          className="mr-2" 
+                        />
                         <span className="text-sm">{category}</span>
                       </label>
                     ))}
@@ -493,22 +683,19 @@ const BusinessDashboard = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Deliverables</label>
                   <div className="space-y-2">
-                    <label className="flex items-center">
-                      <input type="checkbox" className="mr-2" />
-                      <span className="text-sm">Instagram Post</span>
-                    </label>
-                    <label className="flex items-center">
-                      <input type="checkbox" className="mr-2" />
-                      <span className="text-sm">Instagram Story</span>
-                    </label>
-                    <label className="flex items-center">
-                      <input type="checkbox" className="mr-2" />
-                      <span className="text-sm">Video Content</span>
-                    </label>
-                    <label className="flex items-center">
-                      <input type="checkbox" className="mr-2" />
-                      <span className="text-sm">Product Review</span>
-                    </label>
+                    {['Instagram Post', 'Instagram Story', 'Video Content', 'Product Review'].map((deliverable) => (
+                      <label key={deliverable} className="flex items-center">
+                        <input 
+                          type="checkbox" 
+                          name="deliverables"
+                          value={deliverable}
+                          checked={campaignForm.deliverables.includes(deliverable)}
+                          onChange={handleCampaignFormChange}
+                          className="mr-2" 
+                        />
+                        <span className="text-sm">{deliverable}</span>
+                      </label>
+                    ))}
                   </div>
                 </div>
 
@@ -517,13 +704,21 @@ const BusinessDashboard = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input 
                       type="date" 
+                      name="startDate"
+                      value={campaignForm.startDate}
+                      onChange={handleCampaignFormChange}
                       className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Start Date"
+                      required
                     />
                     <input 
                       type="date" 
+                      name="endDate"
+                      value={campaignForm.endDate}
+                      onChange={handleCampaignFormChange}
                       className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="End Date"
+                      required
                     />
                   </div>
                 </div>
@@ -538,9 +733,10 @@ const BusinessDashboard = () => {
                   </button>
                   <button 
                     type="submit"
-                    className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    disabled={submittingCampaign}
+                    className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:bg-blue-400 disabled:cursor-not-allowed"
                   >
-                    Create Campaign
+                    {submittingCampaign ? 'Creating Campaign...' : 'Create Campaign'}
                   </button>
                 </div>
               </form>

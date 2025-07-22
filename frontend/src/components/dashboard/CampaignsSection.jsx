@@ -32,7 +32,7 @@ const CampaignsSection = () => {
     };
 
     fetchCampaigns();
-  }, [actions]);
+  }, [actions.setCampaigns]); // Proper dependency - now memoized so won't cause loops
 
   const filteredCampaigns = useMemo(() => {
     return campaigns.filter(campaign => {

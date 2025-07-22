@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useReducer, useCallback } from 'react';
+import React, { createContext, useContext, useReducer, useCallback, useMemo } from 'react';
+import { useAuth } from './AuthContext';
 
 // Action types
 const DASHBOARD_ACTIONS = {
@@ -21,14 +22,14 @@ const DASHBOARD_ACTIONS = {
 const initialState = {
   user: {
     id: 'user_001',
-    name: 'Sarah Anderson',
-    avatar: 'SA',
-    bio: 'Fashion & Beauty Content Creator',
-    platforms: ['Instagram', 'TikTok'],
-    followers: '125K',
-    engagement: '7.2%',
-    location: 'New York, USA',
-    completionRate: 85
+    name: 'Influencer User',
+    avatar: 'IU',
+    bio: 'Content Creator',
+    platforms: [],
+    followers: '0',
+    engagement: '0%',
+    location: 'Unknown',
+    completionRate: 0
   },
   campaigns: [],
   applications: [],
@@ -48,39 +49,58 @@ const initialState = {
     activeCampaigns: 2,
     totalEarnings: 4250,
     profileViews: 847,
-    newInvitations: 4
+    newInvitations: 3,
+    pendingApplications: 5
   },
-  loading: false,
+  isLoading: false,
   error: null
 };
 
-// Reducer
+// Reducer function
 const dashboardReducer = (state, action) => {
   switch (action.type) {
     case DASHBOARD_ACTIONS.SET_USER_DATA:
-      return { ...state, user: { ...state.user, ...action.payload } };
-      
+      return {
+        ...state,
+        user: { ...state.user, ...action.payload }
+      };
+
     case DASHBOARD_ACTIONS.SET_CAMPAIGNS:
-      return { ...state, campaigns: action.payload };
-      
+      return {
+        ...state,
+        campaigns: action.payload
+      };
+
     case DASHBOARD_ACTIONS.SET_APPLICATIONS:
-      return { ...state, applications: action.payload };
-      
+      return {
+        ...state,
+        applications: action.payload
+      };
+
     case DASHBOARD_ACTIONS.SET_INVITATIONS:
-      return { ...state, invitations: action.payload };
-      
+      return {
+        ...state,
+        invitations: action.payload
+      };
+
     case DASHBOARD_ACTIONS.SET_COLLABORATIONS:
-      return { ...state, collaborations: { ...state.collaborations, ...action.payload } };
-      
+      return {
+        ...state,
+        collaborations: { ...state.collaborations, ...action.payload }
+      };
+
     case DASHBOARD_ACTIONS.SET_STATS:
-      return { ...state, stats: { ...state.stats, ...action.payload } };
-      
+      return {
+        ...state,
+        stats: { ...state.stats, ...action.payload }
+      };
+
     case DASHBOARD_ACTIONS.ADD_APPLICATION:
       return {
         ...state,
         applications: [...state.applications, action.payload]
       };
-      
+
     case DASHBOARD_ACTIONS.UPDATE_APPLICATION:
       return {
         ...state,
@@ -88,32 +108,39 @@ const dashboardReducer = (state, action) => {
           app.id === action.payload.id ? { ...app, ...action.payload } : app
         )
       };
-      
+
     case DASHBOARD_ACTIONS.ACCEPT_INVITATION:
       return {
         ...state,
-        invitations: state.invitations.filter(inv => inv.id !== action.payload.id),
-        collaborations: {
-          ...state.collaborations,
-          active: [...state.collaborations.active, action.payload]
-        }
+        invitations: state.invitations.map(inv =>
+          inv.id === action.payload.id ? { ...inv, status: 'accepted' } : inv
+        )
       };
-      
+
     case DASHBOARD_ACTIONS.DECLINE_INVITATION:
       return {
         ...state,
         invitations: state.invitations.filter(inv => inv.id !== action.payload)
       };
-      
+
     case DASHBOARD_ACTIONS.SET_LOADING:
-      return { ...state, loading: action.payload };
-      
+      return {
+        ...state,
+        isLoading: action.payload
+      };
+
     case DASHBOARD_ACTIONS.SET_ERROR:
-      return { ...state, error: action.payload };
-      
+      return {
+        ...state,
+        error: action.payload
+      };
+
     case DASHBOARD_ACTIONS.CLEAR_ERROR:
-      return { ...state, error: null };
-      
+      return {
+        ...state,
+        error: null
+      };
+
     default:
       return state;
   }
@@ -126,60 +153,75 @@ const DashboardContext = createContext();
 export const DashboardProvider = ({ children }) => {
   const [state, dispatch] = useReducer(dashboardReducer, initialState);
 
-  // Action creators
-  const actions = {
-    setUserData: useCallback((userData) => {
-      dispatch({ type: DASHBOARD_ACTIONS.SET_USER_DATA, payload: userData });
-    }, []),
+  // Action creators - define each function with useCallback at top level
+  const setUserData = useCallback((userData) => {
+    dispatch({ type: DASHBOARD_ACTIONS.SET_USER_DATA, payload: userData });
+  }, []);
 
-    setCampaigns: useCallback((campaigns) => {
-      dispatch({ type: DASHBOARD_ACTIONS.SET_CAMPAIGNS, payload: campaigns });
-    }, []),
+  const setCampaigns = useCallback((campaigns) => {
+    dispatch({ type: DASHBOARD_ACTIONS.SET_CAMPAIGNS, payload: campaigns });
+  }, []);
 
-    setApplications: useCallback((applications) => {
-      dispatch({ type: DASHBOARD_ACTIONS.SET_APPLICATIONS, payload: applications });
-    }, []),
+  const setApplications = useCallback((applications) => {
+    dispatch({ type: DASHBOARD_ACTIONS.SET_APPLICATIONS, payload: applications });
+  }, []);
 
-    setInvitations: useCallback((invitations) => {
-      dispatch({ type: DASHBOARD_ACTIONS.SET_INVITATIONS, payload: invitations });
-    }, []),
+  const setInvitations = useCallback((invitations) => {
+    dispatch({ type: DASHBOARD_ACTIONS.SET_INVITATIONS, payload: invitations });
+  }, []);
 
-    setCollaborations: useCallback((collaborations) => {
-      dispatch({ type: DASHBOARD_ACTIONS.SET_COLLABORATIONS, payload: collaborations });
-    }, []),
+  const setCollaborations = useCallback((collaborations) => {
+    dispatch({ type: DASHBOARD_ACTIONS.SET_COLLABORATIONS, payload: collaborations });
+  }, []);
 
-    setStats: useCallback((stats) => {
-      dispatch({ type: DASHBOARD_ACTIONS.SET_STATS, payload: stats });
-    }, []),
+  const setStats = useCallback((stats) => {
+    dispatch({ type: DASHBOARD_ACTIONS.SET_STATS, payload: stats });
+  }, []);
 
-    addApplication: useCallback((application) => {
-      dispatch({ type: DASHBOARD_ACTIONS.ADD_APPLICATION, payload: application });
-    }, []),
+  const addApplication = useCallback((application) => {
+    dispatch({ type: DASHBOARD_ACTIONS.ADD_APPLICATION, payload: application });
+  }, []);
 
-    updateApplication: useCallback((applicationUpdate) => {
-      dispatch({ type: DASHBOARD_ACTIONS.UPDATE_APPLICATION, payload: applicationUpdate });
-    }, []),
+  const updateApplication = useCallback((applicationUpdate) => {
+    dispatch({ type: DASHBOARD_ACTIONS.UPDATE_APPLICATION, payload: applicationUpdate });
+  }, []);
 
-    acceptInvitation: useCallback((invitation) => {
-      dispatch({ type: DASHBOARD_ACTIONS.ACCEPT_INVITATION, payload: invitation });
-    }, []),
+  const acceptInvitation = useCallback((invitation) => {
+    dispatch({ type: DASHBOARD_ACTIONS.ACCEPT_INVITATION, payload: invitation });
+  }, []);
 
-    declineInvitation: useCallback((invitationId) => {
-      dispatch({ type: DASHBOARD_ACTIONS.DECLINE_INVITATION, payload: invitationId });
-    }, []),
+  const declineInvitation = useCallback((invitationId) => {
+    dispatch({ type: DASHBOARD_ACTIONS.DECLINE_INVITATION, payload: invitationId });
+  }, []);
 
-    setLoading: useCallback((loading) => {
-      dispatch({ type: DASHBOARD_ACTIONS.SET_LOADING, payload: loading });
-    }, []),
+  const setLoading = useCallback((loading) => {
+    dispatch({ type: DASHBOARD_ACTIONS.SET_LOADING, payload: loading });
+  }, []);
 
-    setError: useCallback((error) => {
-      dispatch({ type: DASHBOARD_ACTIONS.SET_ERROR, payload: error });
-    }, []),
+  const setError = useCallback((error) => {
+    dispatch({ type: DASHBOARD_ACTIONS.SET_ERROR, payload: error });
+  }, []);
 
-    clearError: useCallback(() => {
-      dispatch({ type: DASHBOARD_ACTIONS.CLEAR_ERROR });
-    }, [])
-  };
+  const clearError = useCallback(() => {
+    dispatch({ type: DASHBOARD_ACTIONS.CLEAR_ERROR });
+  }, []);
+
+  // Memoize the actions object to prevent infinite re-renders
+  const actions = useMemo(() => ({
+    setUserData,
+    setCampaigns,
+    setApplications,
+    setInvitations,
+    setCollaborations,
+    setStats,
+    addApplication,
+    updateApplication,
+    acceptInvitation,
+    declineInvitation,
+    setLoading,
+    setError,
+    clearError
+  }), [setUserData, setCampaigns, setApplications, setInvitations, setCollaborations, setStats, addApplication, updateApplication, acceptInvitation, declineInvitation, setLoading, setError, clearError]);
 
   const value = {
     ...state,
@@ -201,5 +243,3 @@ export const useDashboard = () => {
   }
   return context;
 };
-
-export default DashboardContext;
