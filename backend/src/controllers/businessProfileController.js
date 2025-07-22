@@ -539,38 +539,44 @@ export const getRecommendedInfluencers = async (req, res, next) => {
     const matchingCriteria = businessProfile.preferences.matching.matchingCriteria;
     const targetAudience = businessProfile.targetAudience;
 
-    // Build filter based on business preferences
-    const filter = {
-      isActive: true,
-      'availability.status': 'available'
-    };
+    // First, get all influencers
+    const filter = {};
+    
+    // Add optional filters if specified in query params
+    const { filterByPreferences } = req.query;
+    
+    if (filterByPreferences === 'true') {
+      // Apply business preferences as filters
+      filter.isActive = true;
+      filter['availability.status'] = 'available';
 
-    if (matchingCriteria.verifiedOnly) {
-      filter['verificationStatus.isVerified'] = true;
-    }
+      if (matchingCriteria.verifiedOnly) {
+        filter['verificationStatus.isVerified'] = true;
+      }
 
-    if (matchingCriteria.minFollowers) {
-      filter['stats.totalFollowers'] = { $gte: matchingCriteria.minFollowers };
-    }
+      if (matchingCriteria.minFollowers) {
+        filter['stats.totalFollowers'] = { $gte: matchingCriteria.minFollowers };
+      }
 
-    if (matchingCriteria.maxFollowers) {
-      filter['stats.totalFollowers'] = { ...filter['stats.totalFollowers'], $lte: matchingCriteria.maxFollowers };
-    }
+      if (matchingCriteria.maxFollowers) {
+        filter['stats.totalFollowers'] = { ...filter['stats.totalFollowers'], $lte: matchingCriteria.maxFollowers };
+      }
 
-    if (matchingCriteria.minEngagementRate) {
-      filter['stats.averageEngagementRate'] = { $gte: matchingCriteria.minEngagementRate };
-    }
+      if (matchingCriteria.minEngagementRate) {
+        filter['stats.averageEngagementRate'] = { $gte: matchingCriteria.minEngagementRate };
+      }
 
-    if (targetAudience.demographics.interests.length > 0) {
-      filter.niches = { $in: targetAudience.demographics.interests };
-    }
+      if (targetAudience.demographics.interests.length > 0) {
+        filter.niches = { $in: targetAudience.demographics.interests };
+      }
 
-    if (targetAudience.geography.countries.length > 0) {
-      filter['location.country'] = { $in: targetAudience.geography.countries };
-    }
+      if (targetAudience.geography.countries.length > 0) {
+        filter['location.country'] = { $in: targetAudience.geography.countries };
+      }
 
-    if (targetAudience.platforms.length > 0) {
-      filter['socialLinks.platform'] = { $in: targetAudience.platforms };
+      if (targetAudience.platforms.length > 0) {
+        filter['socialLinks.platform'] = { $in: targetAudience.platforms };
+      }
     }
 
     // Calculate pagination
@@ -580,14 +586,31 @@ export const getRecommendedInfluencers = async (req, res, next) => {
 
     // Execute query with scoring based on match
     const InfluencerProfile = (await import('../models/InfluencerProfile.js')).default;
+    
+    // Debug: Log all influencer profiles
+    console.log('Searching for influencers with filter:', JSON.stringify(filter, null, 2));
+    const allProfiles = await InfluencerProfile.find({}).populate('userId', 'name email');
+    console.log('All influencer profiles:', JSON.stringify(allProfiles, null, 2));
+    
+    // Find all users who are influencers first
+    const User = (await import('../models/User.js')).default;
+    const influencerUsers = await User.find({ role: 'influencer' });
+    console.log('Found influencer users:', JSON.stringify(influencerUsers, null, 2));
+
+    // Then find their profiles
     const [profiles, totalCount] = await Promise.all([
-      InfluencerProfile.find(filter)
+      InfluencerProfile.find({
+        userId: { $in: influencerUsers.map(u => u._id) }
+      })
         .populate('userId', 'name email')
         .sort({ 'stats.rating': -1, 'stats.totalFollowers': -1 })
         .skip(skip)
         .limit(pageSize),
       InfluencerProfile.countDocuments(filter)
     ]);
+    
+    // Debug: Log matched profiles
+    console.log('Matched profiles:', JSON.stringify(profiles, null, 2));
 
     res.status(200).json({
       success: true,

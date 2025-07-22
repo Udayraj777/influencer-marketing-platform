@@ -35,17 +35,27 @@ export const createProfile = async (req, res, next) => {
       });
     }
 
-    // Create new influencer profile
+    // Create new influencer profile with required fields
     const profile = new InfluencerProfile({
       userId,
+      isActive: true,
+      availability: { status: 'available' },
       ...req.body
     });
 
+    // Debug: Log profile before saving
+    console.log('Creating influencer profile:', JSON.stringify(profile, null, 2));
+
     await profile.save();
 
-    // Update user's profileId
-    await User.findByIdAndUpdate(userId, { profileId: profile._id });
+    // Update user's profileId and profileModel
+    await User.findByIdAndUpdate(userId, { 
+      profileId: profile._id,
+      profileModel: 'InfluencerProfile'
+    });
 
+    // Debug: Log created profile
+    console.log('Created influencer profile:', JSON.stringify(profile.toObject(), null, 2));
     logger.info(`Influencer profile created for user: ${req.user.email}`);
 
     res.status(201).json({
