@@ -142,6 +142,11 @@ router.post('/influencer', authenticate, async (req, res) => {
     }
 
     console.log('✅ Influencer profile saved:', profile.fullName);
+    console.log('📋 Profile data structure:', {
+      socialLinks: profile.socialLinks,
+      contentInfo: profile.contentInfo,
+      pricing: profile.pricing
+    });
 
     res.json({
       success: true,

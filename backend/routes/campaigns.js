@@ -302,6 +302,224 @@ router.post('/:campaignId/invite', authenticate, async (req, res) => {
   }
 });
 
+// Apply to campaign (Influencer)
+router.post('/:campaignId/apply', authenticate, async (req, res) => {
+  try {
+    if (req.user.role !== 'influencer') {
+      return res.status(403).json({ success: false, message: 'Only influencers can apply to campaigns' });
+    }
+
+    const { campaignId } = req.params;
+    const { proposedRate, message, portfolioLinks } = req.body;
+
+    // Find the campaign
+    const campaign = await Campaign.findById(campaignId);
+    if (!campaign) {
+      return res.status(404).json({ success: false, message: 'Campaign not found' });
+    }
+
+    // Check if campaign is still active
+    if (campaign.status !== 'active') {
+      return res.status(400).json({ success: false, message: 'Campaign is no longer active' });
+    }
+
+    // Find influencer profile
+    const influencerProfile = await InfluencerProfile.findOne({ userId: req.user._id });
+    if (!influencerProfile) {
+      return res.status(404).json({ success: false, message: 'Influencer profile not found' });
+    }
+
+    // Check if already applied
+    const existingApplication = campaign.applications.find(
+      app => app.influencerId.toString() === influencerProfile._id.toString()
+    );
+    if (existingApplication) {
+      return res.status(400).json({ success: false, message: 'You have already applied to this campaign' });
+    }
+
+    // Add application to campaign
+    campaign.applications.push({
+      influencerId: influencerProfile._id,
+      userId: req.user._id,
+      proposedRate: parseFloat(proposedRate) || 0,
+      message: message || '',
+      portfolioLinks: portfolioLinks || [],
+      status: 'pending'
+    });
+
+    // Update application count
+    campaign.applicationsCount = campaign.applications.length;
+
+    await campaign.save();
+
+    console.log('✅ Application submitted:', {
+      campaign: campaign.title,
+      influencer: influencerProfile.fullName,
+      proposedRate
+    });
+
+    res.json({
+      success: true,
+      message: 'Application submitted successfully',
+      application: {
+        campaignId: campaign._id,
+        campaignTitle: campaign.title,
+        status: 'pending',
+        appliedAt: new Date()
+      }
+    });
+
+  } catch (error) {
+    console.error('Apply to campaign error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to submit application', 
+      error: error.message 
+    });
+  }
+});
+
+// Get influencer's applied campaigns
+router.get('/my-applications', authenticate, async (req, res) => {
+  try {
+    if (req.user.role !== 'influencer') {
+      return res.status(403).json({ success: false, message: 'Only influencers can view applications' });
+    }
+
+    // Find influencer profile
+    const influencerProfile = await InfluencerProfile.findOne({ userId: req.user._id });
+    if (!influencerProfile) {
+      return res.status(404).json({ success: false, message: 'Influencer profile not found' });
+    }
+
+    // Find campaigns where this influencer has applied
+    const campaigns = await Campaign.find({
+      'applications.influencerId': influencerProfile._id
+    }).populate('businessId', 'name email')
+      .populate('businessProfileId', 'companyName industry')
+      .sort({ 'applications.appliedAt': -1 });
+
+    // Format the response with application details
+    const appliedCampaigns = campaigns.map(campaign => {
+      const application = campaign.applications.find(
+        app => app.influencerId.toString() === influencerProfile._id.toString()
+      );
+
+      return {
+        _id: campaign._id,
+        title: campaign.title,
+        description: campaign.description,
+        category: campaign.category,
+        platforms: campaign.platforms,
+        budget: campaign.budget,
+        timeline: campaign.timeline,
+        status: campaign.status,
+        business: {
+          name: campaign.businessProfileId?.companyName || campaign.businessId?.name,
+          industry: campaign.businessProfileId?.industry
+        },
+        application: {
+          status: application.status,
+          proposedRate: application.proposedRate,
+          message: application.message,
+          appliedAt: application.appliedAt,
+          reviewedAt: application.reviewedAt,
+          businessNotes: application.businessNotes
+        }
+      };
+    });
+
+    res.json({
+      success: true,
+      applications: appliedCampaigns,
+      total: appliedCampaigns.length
+    });
+
+  } catch (error) {
+    console.error('Get applications error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch applications', 
+      error: error.message 
+    });
+  }
+});
+
+// Get applications for a specific campaign (Business only)
+router.get('/:campaignId/applications', authenticate, async (req, res) => {
+  try {
+    if (req.user.role !== 'business') {
+      return res.status(403).json({ success: false, message: 'Only businesses can view campaign applications' });
+    }
+
+    const { campaignId } = req.params;
+    
+    // Find the campaign and verify ownership
+    const campaign = await Campaign.findOne({ 
+      _id: campaignId, 
+      businessId: req.user._id 
+    }).populate({
+      path: 'applications.influencerId',
+      populate: {
+        path: 'userId',
+        select: 'name email'
+      }
+    });
+
+    if (!campaign) {
+      return res.status(404).json({ success: false, message: 'Campaign not found or not authorized' });
+    }
+
+    // Format applications with influencer details
+    const formattedApplications = campaign.applications.map(application => ({
+      _id: application._id,
+      influencer: {
+        id: application.influencerId._id,
+        name: application.influencerId.fullName || application.influencerId.userId?.name || 'Unknown',
+        bio: application.influencerId.bio || 'No bio available',
+        platform: application.influencerId.socialLinks?.primaryPlatform || 'unknown',
+        followers: application.influencerId.socialLinks?.followerCount || 0,
+        niche: application.influencerId.socialLinks?.contentNiche || 'general',
+        engagement: application.influencerId.contentInfo?.engagementRate || 0,
+        location: application.influencerId.contentInfo?.primaryLocation || 'Unknown',
+        avatar: (application.influencerId.fullName || application.influencerId.userId?.name || 'U').charAt(0).toUpperCase(),
+        profilePicture: application.influencerId.profilePicture,
+        pricing: application.influencerId.pricing || {},
+        socialLinks: application.influencerId.socialLinks
+      },
+      application: {
+        proposedRate: application.proposedRate,
+        message: application.message,
+        portfolioLinks: application.portfolioLinks,
+        status: application.status,
+        appliedAt: application.appliedAt,
+        reviewedAt: application.reviewedAt,
+        businessNotes: application.businessNotes
+      }
+    }));
+
+    res.json({
+      success: true,
+      campaign: {
+        _id: campaign._id,
+        title: campaign.title,
+        description: campaign.description,
+        applicationsCount: campaign.applicationsCount
+      },
+      applications: formattedApplications,
+      total: formattedApplications.length
+    });
+
+  } catch (error) {
+    console.error('Get campaign applications error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch applications', 
+      error: error.message 
+    });
+  }
+});
+
 // Helper functions
 function calculateTimeLeft(deadline) {
   const now = new Date();
@@ -328,6 +546,40 @@ function getBadge(campaign) {
   return { type: 'normal', label: '' };
 }
 
+function calculateMatchScore(influencer) {
+  let score = 60; // Base score
+  
+  // Boost score based on follower count
+  if (influencer.socialLinks.followerCount > 100000) score += 20;
+  else if (influencer.socialLinks.followerCount > 50000) score += 15;
+  else if (influencer.socialLinks.followerCount > 10000) score += 10;
+  else if (influencer.socialLinks.followerCount > 1000) score += 5;
+  
+  // Boost score based on engagement rate
+  if (influencer.contentInfo.engagementRate > 5) score += 15;
+  else if (influencer.contentInfo.engagementRate > 3) score += 10;
+  else if (influencer.contentInfo.engagementRate > 1) score += 5;
+  
+  // Boost score based on completed campaigns
+  if (influencer.stats?.completedCampaigns > 10) score += 10;
+  else if (influencer.stats?.completedCampaigns > 5) score += 5;
+  
+  // Boost score based on average rating
+  if (influencer.stats?.averageRating >= 4.5) score += 10;
+  else if (influencer.stats?.averageRating >= 4) score += 5;
+  
+  return Math.min(score, 99); // Cap at 99%
+}
+
+function formatFollowerCount(count) {
+  if (count >= 1000000) {
+    return `${(count / 1000000).toFixed(1)}M`;
+  } else if (count >= 1000) {
+    return `${(count / 1000).toFixed(1)}K`;
+  }
+  return count.toString();
+}
+
 // Get influencer matches for business (for discovery)
 router.get('/influencer-matches', authenticate, async (req, res) => {
   try {
@@ -335,12 +587,101 @@ router.get('/influencer-matches', authenticate, async (req, res) => {
       return res.status(403).json({ success: false, message: 'Only businesses can access this endpoint' });
     }
 
-    // For now, return empty array since we don't have influencer matching logic yet
     console.log('🔍 Business requesting influencer matches...');
+    
+    // Get query parameters for filtering
+    const { 
+      category, 
+      platform, 
+      minFollowers, 
+      maxFollowers, 
+      location,
+      limit = 20 
+    } = req.query;
+
+    // Build filter object
+    let filter = { isActive: true };
+    
+    if (category) {
+      filter['socialLinks.contentNiche'] = category.toLowerCase();
+    }
+    
+    if (platform) {
+      filter['socialLinks.primaryPlatform'] = platform.toLowerCase();
+    }
+    
+    if (minFollowers || maxFollowers) {
+      filter['socialLinks.followerCount'] = {};
+      if (minFollowers) filter['socialLinks.followerCount'].$gte = parseInt(minFollowers);
+      if (maxFollowers) filter['socialLinks.followerCount'].$lte = parseInt(maxFollowers);
+    }
+    
+    if (location) {
+      filter['contentInfo.primaryLocation'] = { $regex: location, $options: 'i' };
+    }
+
+    // Fetch influencers from database
+    console.log('🔍 Filter being used:', filter);
+    const influencers = await InfluencerProfile.find(filter)
+      .populate('userId', 'name email')
+      .limit(parseInt(limit))
+      .sort({ 'socialLinks.followerCount': -1 });
+    
+    console.log(`📊 Found ${influencers.length} influencers in database`);
+    if (influencers.length > 0) {
+      console.log('🎯 Sample influencer data:', {
+        name: influencers[0].userId?.name,
+        niches: influencers[0].niches,
+        socialLinks: influencers[0].socialLinks,
+        stats: influencers[0].stats
+      });
+    }
+
+    // Format influencers for frontend
+    const formattedInfluencers = influencers.map(influencer => {
+      // Calculate match score based on various factors
+      const matchScore = calculateMatchScore(influencer);
+      
+      return {
+        id: influencer._id,
+        name: influencer.fullName || influencer.userId?.name || 'Unknown',
+        username: influencer.socialLinks?.primaryHandle ? `@${influencer.socialLinks.primaryHandle.replace(/^https?:\/\/[^\/]+\//, '').replace('@', '')}` : '@unknown',
+        platform: influencer.socialLinks?.primaryPlatform || 'unknown',
+        followers: formatFollowerCount(influencer.socialLinks?.followerCount || 0),
+        engagement: `${influencer.contentInfo?.engagementRate || 0}%`,
+        niche: influencer.socialLinks?.contentNiche || 'general',
+        niches: [influencer.socialLinks?.contentNiche || 'general'], // Convert single niche to array for consistency
+        location: influencer.contentInfo?.primaryLocation || 'Not specified',
+        avatar: (influencer.fullName || influencer.userId?.name || 'U').charAt(0).toUpperCase(),
+        verified: influencer.socialLinks?.followerCount > 10000 || false, // Simple verification based on followers
+        matchScore: matchScore,
+        bio: influencer.bio || 'No bio available',
+        website: influencer.socialLinks?.website,
+        profilePicture: influencer.profilePicture,
+        pricing: {
+          instagram: influencer.pricing?.instagramPrice || 0,
+          tiktok: influencer.pricing?.tiktokPrice || 0,
+          story: influencer.pricing?.storyPrice || 0,
+          youtube: influencer.pricing?.youtubePrice || 0
+        },
+        socialLinks: influencer.socialLinks ? [{
+          platform: influencer.socialLinks.primaryPlatform,
+          username: influencer.socialLinks.primaryHandle,
+          url: influencer.socialLinks.primaryHandle
+        }] : [],
+        stats: {
+          totalCampaigns: 0, // These would need to be calculated from actual campaign data
+          completedCampaigns: 0,
+          averageRating: 5.0,
+          totalEarnings: 0
+        }
+      };
+    });
     
     res.json({
       success: true,
-      influencers: [] // Empty for now until we implement matching logic
+      influencers: formattedInfluencers,
+      total: formattedInfluencers.length
     });
 
   } catch (error) {
@@ -348,6 +689,123 @@ router.get('/influencer-matches', authenticate, async (req, res) => {
     res.status(500).json({ 
       success: false, 
       message: 'Failed to fetch influencer matches', 
+      error: error.message 
+    });
+  }
+});
+
+// Get individual influencer profile for viewing
+router.get('/influencer-profile/:id', authenticate, async (req, res) => {
+  try {
+    if (req.user.role !== 'business') {
+      return res.status(403).json({ success: false, message: 'Only businesses can access this endpoint' });
+    }
+
+    const { id } = req.params;
+    
+    const influencer = await InfluencerProfile.findById(id)
+      .populate('userId', 'name email');
+    
+    if (!influencer) {
+      return res.status(404).json({ success: false, message: 'Influencer not found' });
+    }
+
+    // Format detailed influencer profile
+    const profileData = {
+      id: influencer._id,
+      name: influencer.fullName,
+      bio: influencer.bio,
+      profilePicture: influencer.profilePicture,
+      socialLinks: {
+        primaryPlatform: influencer.socialLinks.primaryPlatform,
+        primaryHandle: influencer.socialLinks.primaryHandle,
+        followerCount: influencer.socialLinks.followerCount,
+        contentNiche: influencer.socialLinks.contentNiche,
+        secondaryPlatform: influencer.socialLinks.secondaryPlatform,
+        secondaryHandle: influencer.socialLinks.secondaryHandle,
+        website: influencer.socialLinks.website
+      },
+      contentInfo: influencer.contentInfo,
+      pricing: influencer.pricing,
+      stats: {
+        totalCampaigns: influencer.stats?.totalCampaigns || 0,
+        completedCampaigns: influencer.stats?.completedCampaigns || 0,
+        averageRating: influencer.stats?.averageRating || 0,
+        totalEarnings: influencer.stats?.totalEarnings || 0
+      },
+      communications: influencer.communications,
+      additionalNotes: influencer.additionalNotes,
+      isActive: influencer.isActive,
+      createdAt: influencer.createdAt
+    };
+
+    res.json({
+      success: true,
+      profile: profileData
+    });
+
+  } catch (error) {
+    console.error('Error fetching influencer profile:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch influencer profile', 
+      error: error.message 
+    });
+  }
+});
+
+// Get direct invitations for influencer
+router.get('/my-invitations', authenticate, async (req, res) => {
+  try {
+    if (req.user.role !== 'influencer') {
+      return res.status(403).json({ success: false, message: 'Only influencers can view invitations' });
+    }
+
+    // Find influencer profile
+    const influencerProfile = await InfluencerProfile.findOne({ userId: req.user._id })
+      .populate({
+        path: 'directInvitations.businessId',
+        select: 'name email'
+      })
+      .populate({
+        path: 'directInvitations.campaignId',
+        populate: {
+          path: 'businessProfileId',
+          select: 'companyName industry'
+        }
+      });
+    
+    if (!influencerProfile) {
+      return res.status(404).json({ success: false, message: 'Influencer profile not found' });
+    }
+
+    // Format invitations for frontend
+    const formattedInvitations = influencerProfile.directInvitations
+      .filter(invite => invite.status === 'pending') // Only show pending invitations
+      .map(invite => ({
+        id: invite._id,
+        title: invite.campaignId?.title || 'Campaign Invitation',
+        company: invite.campaignId?.businessProfileId?.companyName || invite.businessId?.name || 'Unknown Company',
+        campaign: invite.campaignId?.title || 'Unknown Campaign',
+        budget: invite.campaignId?.budget?.perInfluencer || 0,
+        receivedDate: invite.invitedAt ? new Date(invite.invitedAt).toLocaleDateString() : 'Unknown',
+        message: `You have been invited to participate in ${invite.campaignId?.title || 'this campaign'}.`,
+        status: invite.status,
+        campaignId: invite.campaignId?._id,
+        businessId: invite.businessId?._id
+      }));
+
+    res.json({
+      success: true,
+      invitations: formattedInvitations,
+      total: formattedInvitations.length
+    });
+
+  } catch (error) {
+    console.error('Get invitations error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch invitations', 
       error: error.message 
     });
   }

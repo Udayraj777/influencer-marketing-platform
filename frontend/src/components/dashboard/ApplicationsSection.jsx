@@ -1,18 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useDashboard } from '../../contexts/DashboardContext';
+import apiService from '../../services/api';
 
 const ApplicationsSection = () => {
   const { applications, actions } = useDashboard();
   const [activeTab, setActiveTab] = useState('applied');
-
-  const mockApplications = {
-    applied: [],
-    progress: [],
-    completed: []
-  };
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    actions.setApplications(mockApplications);
+    const fetchApplications = async () => {
+      try {
+        setLoading(true);
+        console.log('🔍 Fetching applied campaigns...');
+        const result = await apiService.getMyApplications();
+        
+        if (result.success) {
+          console.log('✅ Applications loaded:', result.applications.length);
+          
+          // Organize applications by status
+          const organizedApplications = {
+            applied: result.applications.filter(app => app.application.status === 'pending'),
+            progress: result.applications.filter(app => app.application.status === 'accepted'),
+            completed: result.applications.filter(app => app.application.status === 'completed' || app.status === 'completed')
+          };
+          
+          actions.setApplications(organizedApplications);
+        } else {
+          console.log('❌ No applications found');
+          actions.setApplications({ applied: [], progress: [], completed: [] });
+        }
+      } catch (error) {
+        console.error('❌ Error fetching applications:', error);
+        actions.setApplications({ applied: [], progress: [], completed: [] });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchApplications();
   }, [actions]);
 
   const getStatusStyle = (status) => {
@@ -70,31 +95,45 @@ const ApplicationsSection = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString();
+  };
+
   const renderApplicationCard = (application, type) => (
     <div
-      key={application.id}
+      key={application._id}
       className="bg-gray-50 border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
     >
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-lg font-bold text-blue-900 mb-1">{application.title}</h3>
           <p className="text-gray-600 text-sm">
-            {type === 'applied' && `Applied ${application.appliedDate} • ${application.company}`}
-            {type === 'progress' && `Started ${application.startDate} • ${application.company}`}
-            {type === 'completed' && `Completed ${application.completedDate} • ${application.company}`}
-            {(type === 'applied' || type === 'progress') && ` • $${application.budget.toLocaleString()} budget`}
-            {type === 'completed' && ` • $${application.earned.toLocaleString()} earned`}
+            {type === 'applied' && `Applied ${formatDate(application.application?.appliedAt)} • ${application.business?.name}`}
+            {type === 'progress' && `Started ${formatDate(application.application?.reviewedAt)} • ${application.business?.name}`}
+            {type === 'completed' && `Completed ${formatDate(application.application?.reviewedAt)} • ${application.business?.name}`}
+            {application.budget && ` • $${application.budget.total?.toLocaleString() || 'TBD'} budget`}
           </p>
         </div>
-        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusStyle(application.status)}`}>
-          {application.statusText}
+        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusStyle(application.application?.status)}`}>
+          {application.application?.status === 'pending' ? 'Under Review' : 
+           application.application?.status === 'accepted' ? 'Accepted' :
+           application.application?.status === 'rejected' ? 'Rejected' : 
+           application.application?.status || 'Unknown'}
         </span>
       </div>
 
       <p className="text-gray-700 text-sm mb-4">
         {application.description}
-        {type === 'completed' && application.performance && (
-          <span className="block mt-1">Campaign performance: {application.performance} • Rating: {application.rating}/5 stars</span>
+        {application.application?.proposedRate && (
+          <span className="block mt-2 text-blue-600">
+            <strong>Your proposed rate:</strong> ${application.application.proposedRate}
+          </span>
+        )}
+        {application.application?.businessNotes && (
+          <span className="block mt-2 text-orange-600">
+            <strong>Business notes:</strong> {application.application.businessNotes}
+          </span>
         )}
       </p>
 
@@ -102,23 +141,18 @@ const ApplicationsSection = () => {
         {type === 'applied' && (
           <>
             <button
-              onClick={() => handleAction('view', application.id)}
+              onClick={() => handleAction('view', application._id)}
               className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
             >
               View Application
             </button>
-            <button
-              onClick={() => handleAction('edit', application.id)}
-              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
-            >
-              Edit Proposal
-            </button>
-            <button
-              onClick={() => handleAction('withdraw', application.id)}
-              className="px-4 py-2 bg-gray-600 text-white rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors"
-            >
-              Withdraw
-            </button>
+            {application.application?.message && (
+              <div className="px-4 py-2 bg-blue-50 rounded-lg text-sm">
+                <strong>Your message:</strong> {application.application.message.length > 100 ? 
+                  `${application.application.message.substring(0, 100)}...` : 
+                  application.application.message}
+              </div>
+            )}
           </>
         )}
 
@@ -172,9 +206,9 @@ const ApplicationsSection = () => {
   );
 
   const tabs = [
-    { id: 'applied', label: 'Applied', count: mockApplications.applied.length },
-    { id: 'progress', label: 'In Progress', count: mockApplications.progress.length },
-    { id: 'completed', label: 'Completed', count: mockApplications.completed.length }
+    { id: 'applied', label: 'Applied', count: applications.applied?.length || 0 },
+    { id: 'progress', label: 'In Progress', count: applications.progress?.length || 0 },
+    { id: 'completed', label: 'Completed', count: applications.completed?.length || 0 }
   ];
 
   return (
@@ -203,21 +237,41 @@ const ApplicationsSection = () => {
 
       {/* Tab Content */}
       <div className="p-6">
-        <div className="space-y-4">
-          {activeTab === 'applied' && mockApplications.applied.map(app => renderApplicationCard(app, 'applied'))}
-          {activeTab === 'progress' && mockApplications.progress.map(app => renderApplicationCard(app, 'progress'))}
-          {activeTab === 'completed' && mockApplications.completed.map(app => renderApplicationCard(app, 'completed'))}
-        </div>
-
-        {mockApplications[activeTab].length === 0 && (
+        {loading ? (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4 opacity-50">📋</div>
-            <h3 className="text-xl font-bold text-blue-900 mb-2">No applications yet</h3>
-            <p className="text-gray-600">
-              {activeTab === 'applied' && 'Start applying to campaigns to see them here.'}
-              {activeTab === 'progress' && 'Applications in progress will appear here.'}
-              {activeTab === 'completed' && 'Completed campaigns will be shown here.'}
-            </p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading your applications...</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {activeTab === 'applied' && applications.applied?.map(app => renderApplicationCard(app, 'applied'))}
+            {activeTab === 'progress' && applications.progress?.map(app => renderApplicationCard(app, 'progress'))}
+            {activeTab === 'completed' && applications.completed?.map(app => renderApplicationCard(app, 'completed'))}
+            
+            {/* Empty states */}
+            {activeTab === 'applied' && applications.applied?.length === 0 && (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4 opacity-50">📝</div>
+                <h3 className="text-xl font-bold text-blue-900 mb-2">No applications yet</h3>
+                <p className="text-gray-600">When you apply to campaigns, they'll appear here for tracking.</p>
+              </div>
+            )}
+            
+            {activeTab === 'progress' && applications.progress?.length === 0 && (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4 opacity-50">⏳</div>
+                <h3 className="text-xl font-bold text-blue-900 mb-2">No campaigns in progress</h3>
+                <p className="text-gray-600">Accepted campaigns will appear here for management.</p>
+              </div>
+            )}
+            
+            {activeTab === 'completed' && applications.completed?.length === 0 && (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4 opacity-50">✅</div>
+                <h3 className="text-xl font-bold text-blue-900 mb-2">No completed campaigns</h3>
+                <p className="text-gray-600">Finished campaigns will appear here with performance data.</p>
+              </div>
+            )}
           </div>
         )}
       </div>

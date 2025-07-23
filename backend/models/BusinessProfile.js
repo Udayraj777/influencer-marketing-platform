@@ -31,13 +31,13 @@ const businessProfileSchema = new mongoose.Schema({
     enum: [
       'technology', 'fashion', 'fitness', 'food', 'travel', 
       'finance', 'automotive', 'entertainment', 'beauty', 
-      'lifestyle', 'education', 'healthcare', 'other'
+      'lifestyle', 'education', 'healthcare', 'retail', 'other'
     ]
   },
   companySize: {
     type: String,
     required: true,
-    enum: ['1-10', '11-50', '51-200', '201-500', '501-1000', '1000+']
+    enum: ['1-10', '11-50', '51-100', '101-500', '500+']
   },
   website: {
     type: String,
@@ -61,7 +61,7 @@ const businessProfileSchema = new mongoose.Schema({
   campaignPreferences: {
     typicalBudget: {
       type: String,
-      enum: ['500-2500', '2500-10000', '10000-50000', '50000+']
+      enum: ['under-1000', '1000-5000', '5000-10000', '10000-25000', '25000-50000', '50000+']
     },
     preferredPlatforms: [String],
     targetAudience: String,

@@ -23,6 +23,15 @@ const BusinessDashboard = () => {
     endDate: ''
   });
   const [submittingCampaign, setSubmittingCampaign] = useState(false);
+  const [selectedInfluencer, setSelectedInfluencer] = useState(null);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [loadingProfile, setLoadingProfile] = useState(false);
+  const [loadingInfluencers, setLoadingInfluencers] = useState(false);
+  const [selectedNiche, setSelectedNiche] = useState('all');
+  const [filteredInfluencers, setFilteredInfluencers] = useState([]);
+  const [showApplicationsModal, setShowApplicationsModal] = useState(false);
+  const [selectedCampaignApplications, setSelectedCampaignApplications] = useState(null);
+  const [loadingApplications, setLoadingApplications] = useState(false);
   
   const handleCampaignFormChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -44,6 +53,110 @@ const BusinessDashboard = () => {
     }
   };
   
+  const handleViewProfile = async (influencerId) => {
+    try {
+      setLoadingProfile(true);
+      setShowProfileModal(true);
+      
+      const result = await apiService.getInfluencerProfileById(influencerId);
+      
+      if (result.success) {
+        setSelectedInfluencer(result.profile);
+      } else {
+        alert('Failed to load influencer profile');
+        setShowProfileModal(false);
+      }
+    } catch (error) {
+      console.error('Error loading profile:', error);
+      alert('Failed to load influencer profile');
+      setShowProfileModal(false);
+    } finally {
+      setLoadingProfile(false);
+    }
+  };
+
+  const handleConnect = (influencer) => {
+    if (influencer.socialLinks && influencer.socialLinks.length > 0) {
+      const primaryLink = influencer.socialLinks[0];
+      if (primaryLink.url) {
+        window.open(primaryLink.url, '_blank');
+      } else {
+        const platformUrls = {
+          instagram: `https://instagram.com/${primaryLink.username?.replace('@', '')}`,
+          tiktok: `https://tiktok.com/@${primaryLink.username?.replace('@', '')}`,
+          youtube: `https://youtube.com/@${primaryLink.username?.replace('@', '')}`,
+          twitter: `https://twitter.com/${primaryLink.username?.replace('@', '')}`
+        };
+        
+        const platformUrl = platformUrls[primaryLink.platform?.toLowerCase()];
+        if (platformUrl) {
+          window.open(platformUrl, '_blank');
+        } else {
+          alert('No contact information available for this influencer');
+        }
+      }
+    } else {
+      alert('No contact information available for this influencer');
+    }
+  };
+
+  const handleViewApplications = async (campaign) => {
+    try {
+      setLoadingApplications(true);
+      setShowApplicationsModal(true);
+      
+      const result = await apiService.getCampaignApplications(campaign._id);
+      
+      if (result.success) {
+        setSelectedCampaignApplications({
+          campaign: result.campaign,
+          applications: result.applications
+        });
+      } else {
+        alert('Failed to load campaign applications');
+        setShowApplicationsModal(false);
+      }
+    } catch (error) {
+      console.error('Error loading applications:', error);
+      alert('Failed to load campaign applications');
+      setShowApplicationsModal(false);
+    } finally {
+      setLoadingApplications(false);
+    }
+  };
+
+  const handleSendInvite = async (application) => {
+    try {
+      const campaignId = selectedCampaignApplications.campaign._id;
+      const influencerId = application.influencer.id; // This should be the MongoDB _id
+      
+      console.log('Sending invite with data:', {
+        campaignId,
+        influencerId,
+        applicationData: application
+      });
+      
+      const inviteData = {
+        influencerId: influencerId,
+        message: `You've been directly invited to join our campaign: ${selectedCampaignApplications.campaign.title}`,
+        proposedRate: application.application.proposedRate || 0
+      };
+
+      const result = await apiService.sendDirectInvite(campaignId, inviteData);
+      
+      console.log('Invite result:', result);
+      
+      if (result.success) {
+        alert('Direct invitation sent successfully! The influencer will see this in their Direct Invitations section.');
+      } else {
+        alert(result.message || 'Failed to send invitation');
+      }
+    } catch (error) {
+      console.error('Error sending invite:', error);
+      alert(`Failed to send invitation: ${error.message}`);
+    }
+  };
+
   const handleCreateCampaign = async (e) => {
     e.preventDefault();
     
@@ -134,7 +247,26 @@ const BusinessDashboard = () => {
         // Fetch recommended influencers from backend
         try {
           const influencersData = await apiService.getInfluencerMatches();
-          setInfluencers(influencersData.influencers || []);
+          console.log('🔍 Raw influencer data:', influencersData);
+          
+          const influencerList = influencersData.influencers?.map(influencer => ({
+            id: influencer.id,
+            name: influencer.name || 'Unknown',
+            username: influencer.username || 'Unknown',
+            avatar: influencer.avatar || 'U',
+            verified: influencer.verified || false,
+            platform: influencer.platform || 'Unknown',
+            followers: influencer.followers || '0',
+            engagement: influencer.engagement || '0%',
+            niche: influencer.niche || 'general',
+            niches: influencer.niches || [influencer.niche || 'general'], // Use niches array from backend
+            matchScore: influencer.matchScore || 75,
+            socialLinks: influencer.socialLinks || [],
+            bio: influencer.bio || 'No bio available'
+          })) || [];
+          
+          setInfluencers(influencerList);
+          setFilteredInfluencers(influencerList);
         } catch (error) {
           console.error('Error fetching influencers:', error);
           // Keep default empty array
@@ -158,6 +290,47 @@ const BusinessDashboard = () => {
 
     fetchDashboardData();
   }, []);
+
+  // Update filtered influencers when influencers data changes (for initial load only)
+  useEffect(() => {
+    if (selectedNiche === 'all') {
+      setFilteredInfluencers(influencers);
+    }
+  }, [influencers]);
+
+  const handleNicheFilter = async (niche) => {
+    setSelectedNiche(niche);
+    setLoadingInfluencers(true);
+    
+    try {
+      // Fetch filtered data from backend if niche is not 'all'
+      const filters = niche !== 'all' ? { category: niche } : {};
+      const influencersData = await apiService.getInfluencerMatches(filters);
+      console.log('🔍 Filtered influencer data:', influencersData);
+      
+      const influencerList = influencersData.influencers?.map(influencer => ({
+        id: influencer.id,
+        name: influencer.name || 'Unknown',
+        username: influencer.username || 'Unknown',
+        avatar: influencer.avatar || 'U',
+        verified: influencer.verified || false,
+        platform: influencer.platform || 'Unknown',
+        followers: influencer.followers || '0',
+        engagement: influencer.engagement || '0%',
+        niche: influencer.niche || 'general',
+        niches: influencer.niches || [influencer.niche || 'general'],
+        matchScore: influencer.matchScore || 75,
+        socialLinks: influencer.socialLinks || [],
+        bio: influencer.bio || 'No bio available'
+      })) || [];
+      
+      setFilteredInfluencers(influencerList);
+    } catch (error) {
+      console.error('Error fetching filtered influencers:', error);
+    } finally {
+      setLoadingInfluencers(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -368,7 +541,13 @@ const BusinessDashboard = () => {
           <div className="space-y-6">
             <div className="bg-white rounded-2xl p-8 shadow-lg">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-blue-900">Discover Influencers</h2>
+                <div>
+                  <h2 className="text-2xl font-bold text-blue-900">Discover Influencers</h2>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Showing {filteredInfluencers.length} of {influencers.length} influencers
+                    {selectedNiche !== 'all' && ` in ${selectedNiche}`}
+                  </p>
+                </div>
                 <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
                   Advanced Filters
                 </button>
@@ -376,57 +555,76 @@ const BusinessDashboard = () => {
               
               {/* Quick Filters */}
               <div className="flex flex-wrap gap-4 mb-8">
-                <button className="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg font-medium">All Categories</button>
-                <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">Fashion</button>
-                <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">Beauty</button>
-                <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">Lifestyle</button>
-                <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">Fitness</button>
-                <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">Food</button>
+                <button 
+                  onClick={() => handleNicheFilter('all')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    selectedNiche === 'all' 
+                      ? 'bg-blue-100 text-blue-800' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  All Categories
+                </button>
+                <button 
+                  onClick={() => handleNicheFilter('fashion')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    selectedNiche === 'fashion' 
+                      ? 'bg-blue-100 text-blue-800' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Fashion
+                </button>
+                <button 
+                  onClick={() => handleNicheFilter('beauty')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    selectedNiche === 'beauty' 
+                      ? 'bg-blue-100 text-blue-800' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Beauty
+                </button>
+                <button 
+                  onClick={() => handleNicheFilter('lifestyle')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    selectedNiche === 'lifestyle' 
+                      ? 'bg-blue-100 text-blue-800' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Lifestyle
+                </button>
+                <button 
+                  onClick={() => handleNicheFilter('fitness')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    selectedNiche === 'fitness' 
+                      ? 'bg-blue-100 text-blue-800' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Fitness
+                </button>
+                <button 
+                  onClick={() => handleNicheFilter('food')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    selectedNiche === 'food' 
+                      ? 'bg-blue-100 text-blue-800' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Food
+                </button>
               </div>
 
-              {/* Mock Influencer Cards */}
+              {/* Real Influencer Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[
-                  {
-                    id: 1,
-                    name: 'Sarah Chen',
-                    username: '@sarahbeauty',
-                    platform: 'Instagram',
-                    followers: '25.3K',
-                    engagement: '4.2%',
-                    niche: 'Beauty & Skincare',
-                    location: 'Los Angeles, CA',
-                    avatar: 'SC',
-                    verified: true,
-                    matchScore: 95
-                  },
-                  {
-                    id: 2,
-                    name: 'Alex Rodriguez',
-                    username: '@fitwithalex',
-                    platform: 'TikTok',
-                    followers: '42.1K',
-                    engagement: '6.8%',
-                    niche: 'Fitness & Wellness',
-                    location: 'Miami, FL',
-                    avatar: 'AR',
-                    verified: true,
-                    matchScore: 89
-                  },
-                  {
-                    id: 3,
-                    name: 'Emma Thompson',
-                    username: '@emmastyle',
-                    platform: 'Instagram',
-                    followers: '18.7K',
-                    engagement: '5.1%',
-                    niche: 'Fashion & Style',
-                    location: 'New York, NY',
-                    avatar: 'ET',
-                    verified: false,
-                    matchScore: 87
-                  }
-                ].map((influencer) => (
+                {loadingInfluencers ? (
+                  <div className="col-span-full text-center py-12">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Loading influencers...</p>
+                  </div>
+                ) : filteredInfluencers.length > 0 ? filteredInfluencers.map((influencer) => (
                   <div key={influencer.id} className="bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center space-x-3">
@@ -472,15 +670,33 @@ const BusinessDashboard = () => {
                     </div>
 
                     <div className="flex space-x-2">
-                      <button className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                      <button 
+                        onClick={() => handleConnect(influencer)}
+                        className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                      >
                         Connect
                       </button>
-                      <button className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors text-sm font-medium">
+                      <button 
+                        onClick={() => handleViewProfile(influencer.id)}
+                        className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors text-sm font-medium"
+                      >
                         View Profile
                       </button>
                     </div>
                   </div>
-                ))}
+                )) : (
+                  <div className="col-span-full text-center text-gray-500 py-12">
+                    <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    <p className="text-lg font-medium">
+                      {selectedNiche === 'all' ? 'No influencers found' : `No ${selectedNiche} influencers found`}
+                    </p>
+                    <p>
+                      {selectedNiche === 'all' ? 'Try adjusting your search filters' : 'Try selecting a different category or choose "All Categories"'}
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div className="text-center mt-8">
@@ -557,8 +773,11 @@ const BusinessDashboard = () => {
                       </div>
                       
                       <div className="flex space-x-3">
-                        <button className="px-4 py-2 text-blue-600 border border-blue-300 rounded-lg hover:bg-blue-50 transition-colors text-sm font-medium">
-                          View Applications
+                        <button 
+                          onClick={() => handleViewApplications(campaign)}
+                          className="px-4 py-2 text-blue-600 border border-blue-300 rounded-lg hover:bg-blue-50 transition-colors text-sm font-medium"
+                        >
+                          View Applications ({campaign.applicationsCount || 0})
                         </button>
                         <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
                           Edit Campaign
@@ -753,6 +972,333 @@ const BusinessDashboard = () => {
               </svg>
               <p className="text-lg font-medium">No messages yet</p>
               <p>Start conversations with influencers to see messages here</p>
+            </div>
+          </div>
+        )}
+
+        {/* Influencer Profile Modal */}
+        {showProfileModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style={{zIndex: 9999}}>
+            <div className="bg-white rounded-2xl p-8 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-bold text-blue-900">Influencer Profile</h3>
+                <button 
+                  onClick={() => {
+                    setShowProfileModal(false);
+                    setSelectedInfluencer(null);
+                  }}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+
+              {loadingProfile ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                  <p className="text-gray-600">Loading profile...</p>
+                </div>
+              ) : selectedInfluencer ? (
+                <div className="space-y-6">
+                  {/* Profile Header */}
+                  <div className="flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-6 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl">
+                    <div className="w-24 h-24 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold">
+                      {selectedInfluencer.name?.split(' ').map(n => n[0]).join('') || 'IN'}
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-2xl font-bold text-blue-900 mb-2">{selectedInfluencer.name}</h4>
+                      <p className="text-lg text-gray-600 mb-3">@{selectedInfluencer.socialLinks?.primaryHandle?.replace('@', '')}</p>
+                      <p className="text-gray-700 leading-relaxed">{selectedInfluencer.bio}</p>
+                      
+                      <div className="flex flex-wrap gap-2 mt-4">
+                        <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                          {selectedInfluencer.socialLinks?.primaryPlatform}
+                        </span>
+                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                          {(selectedInfluencer.socialLinks?.followerCount / 1000).toFixed(1)}K followers
+                        </span>
+                        {selectedInfluencer.contentInfo?.engagementRate && (
+                          <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                            {selectedInfluencer.contentInfo.engagementRate}% engagement
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-blue-50 p-4 rounded-lg text-center">
+                      <div className="text-2xl font-bold text-blue-600">{selectedInfluencer.stats?.totalCampaigns || 0}</div>
+                      <div className="text-sm text-gray-600">Total Campaigns</div>
+                    </div>
+                    <div className="bg-green-50 p-4 rounded-lg text-center">
+                      <div className="text-2xl font-bold text-green-600">{selectedInfluencer.stats?.completedCampaigns || 0}</div>
+                      <div className="text-sm text-gray-600">Completed</div>
+                    </div>
+                    <div className="bg-purple-50 p-4 rounded-lg text-center">
+                      <div className="text-2xl font-bold text-purple-600">{selectedInfluencer.stats?.averageRating?.toFixed(1) || 'N/A'}</div>
+                      <div className="text-sm text-gray-600">Avg Rating</div>
+                    </div>
+                    <div className="bg-amber-50 p-4 rounded-lg text-center">
+                      <div className="text-2xl font-bold text-amber-600">${selectedInfluencer.stats?.totalEarnings || 0}</div>
+                      <div className="text-sm text-gray-600">Total Earnings</div>
+                    </div>
+                  </div>
+
+                  {/* Content Info */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-gray-50 p-6 rounded-xl">
+                      <h5 className="text-lg font-semibold text-gray-900 mb-4">Content Information</h5>
+                      <div className="space-y-3">
+                        <div>
+                          <span className="text-sm font-medium text-gray-600">Categories:</span>
+                          <p className="text-gray-800">{selectedInfluencer.contentInfo?.categories?.join(', ') || 'Not specified'}</p>
+                        </div>
+                        <div>
+                          <span className="text-sm font-medium text-gray-600">Content Style:</span>
+                          <p className="text-gray-800">{selectedInfluencer.contentInfo?.contentStyle || 'Not specified'}</p>
+                        </div>
+                        <div>
+                          <span className="text-sm font-medium text-gray-600">Posting Frequency:</span>
+                          <p className="text-gray-800">{selectedInfluencer.contentInfo?.postingFrequency || 'Not specified'}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gray-50 p-6 rounded-xl">
+                      <h5 className="text-lg font-semibold text-gray-900 mb-4">Pricing</h5>
+                      <div className="space-y-3">
+                        {selectedInfluencer.pricing?.instagramPrice && (
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Instagram Post:</span>
+                            <span className="font-medium">${selectedInfluencer.pricing.instagramPrice}</span>
+                          </div>
+                        )}
+                        {selectedInfluencer.pricing?.tiktokPrice && (
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">TikTok Video:</span>
+                            <span className="font-medium">${selectedInfluencer.pricing.tiktokPrice}</span>
+                          </div>
+                        )}
+                        {selectedInfluencer.pricing?.storyPrice && (
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Instagram Story:</span>
+                            <span className="font-medium">${selectedInfluencer.pricing.storyPrice}</span>
+                          </div>
+                        )}
+                        {selectedInfluencer.pricing?.youtubePrice && (
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">YouTube Video:</span>
+                            <span className="font-medium">${selectedInfluencer.pricing.youtubePrice}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex space-x-4 pt-4">
+                    <button 
+                      onClick={() => handleConnect(selectedInfluencer)}
+                      className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    >
+                      Connect with Influencer
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setShowProfileModal(false);
+                        setSelectedInfluencer(null);
+                      }}
+                      className="flex-1 bg-gray-200 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-gray-500">Failed to load profile data</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Applications Modal */}
+        {showApplicationsModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
+            <div className="bg-white rounded-2xl p-8 max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <h3 className="text-2xl font-bold text-blue-900">Campaign Applications</h3>
+                  {selectedCampaignApplications?.campaign && (
+                    <p className="text-gray-600 mt-1">{selectedCampaignApplications.campaign.title}</p>
+                  )}
+                </div>
+                <button 
+                  onClick={() => {
+                    setShowApplicationsModal(false);
+                    setSelectedCampaignApplications(null);
+                  }}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+
+              {loadingApplications ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                  <p className="text-gray-600">Loading applications...</p>
+                </div>
+              ) : selectedCampaignApplications?.applications?.length > 0 ? (
+                <div className="space-y-6">
+                  {selectedCampaignApplications.applications.map((application) => (
+                    <div key={application._id} className="bg-gray-50 border border-gray-200 rounded-xl p-6">
+                      <div className="flex items-start space-x-4">
+                        {/* Influencer Avatar */}
+                        <div className="flex-shrink-0">
+                          {application.influencer.profilePicture ? (
+                            <img 
+                              src={application.influencer.profilePicture} 
+                              alt={application.influencer.name}
+                              className="w-16 h-16 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                              <span className="text-blue-600 text-xl font-bold">
+                                {application.influencer.avatar}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Application Details */}
+                        <div className="flex-1">
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <h4 className="text-lg font-bold text-blue-900">{application.influencer.name}</h4>
+                              <p className="text-gray-600 text-sm">
+                                {application.influencer.platform} • {application.influencer.followers.toLocaleString()} followers
+                              </p>
+                              <p className="text-gray-600 text-sm">
+                                {application.influencer.niche} • {application.influencer.location}
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-lg font-bold text-green-600">
+                                ${application.application.proposedRate || 'TBD'}
+                              </div>
+                              <div className="text-sm text-gray-600">Proposed Rate</div>
+                            </div>
+                          </div>
+
+                          {/* Bio and Message */}
+                          <div className="mb-4">
+                            <p className="text-gray-700 text-sm mb-2">
+                              <strong>Bio:</strong> {application.influencer.bio}
+                            </p>
+                            <p className="text-gray-700 text-sm">
+                              <strong>Application Message:</strong> {application.application.message}
+                            </p>
+                          </div>
+
+                          {/* Portfolio Links */}
+                          {application.application.portfolioLinks?.length > 0 && (
+                            <div className="mb-4">
+                              <p className="text-sm font-medium text-gray-700 mb-2">Portfolio Links:</p>
+                              <div className="flex flex-wrap gap-2">
+                                {application.application.portfolioLinks.map((link, index) => (
+                                  <a 
+                                    key={index} 
+                                    href={link} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 text-sm underline hover:text-blue-800"
+                                  >
+                                    Link {index + 1}
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Application Stats */}
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 p-3 bg-white rounded-lg">
+                            <div className="text-center">
+                              <div className="font-bold text-blue-900">{application.influencer.engagement}%</div>
+                              <div className="text-xs text-gray-600">Engagement</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-bold text-blue-900">{application.influencer.pricing?.instagram || 'N/A'}</div>
+                              <div className="text-xs text-gray-600">Instagram Rate</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-bold text-blue-900">
+                                {new Date(application.application.appliedAt).toLocaleDateString()}
+                              </div>
+                              <div className="text-xs text-gray-600">Applied</div>
+                            </div>
+                            <div className="text-center">
+                              <div className={`font-bold ${
+                                application.application.status === 'pending' ? 'text-yellow-600' :
+                                application.application.status === 'accepted' ? 'text-green-600' :
+                                application.application.status === 'rejected' ? 'text-red-600' : 'text-gray-600'
+                              }`}>
+                                {application.application.status.charAt(0).toUpperCase() + application.application.status.slice(1)}
+                              </div>
+                              <div className="text-xs text-gray-600">Status</div>
+                            </div>
+                          </div>
+
+                          {/* Action Buttons */}
+                          <div className="flex space-x-3">
+                            <button 
+                              onClick={() => handleViewProfile(application.influencer.id)}
+                              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                            >
+                              View Full Profile
+                            </button>
+                            <button 
+                              onClick={() => {
+                                // Create a compatible influencer object for the connect handler
+                                const influencerForConnect = {
+                                  socialLinks: [{
+                                    platform: application.influencer.platform,
+                                    username: `@${application.influencer.name}`,
+                                    url: application.influencer.socialLinks?.primaryHandle || null
+                                  }]
+                                };
+                                handleConnect(influencerForConnect);
+                              }}
+                              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+                            >
+                              Connect
+                            </button>
+                            <button 
+                              onClick={() => handleSendInvite(application)}
+                              className="px-4 py-2 border border-blue-300 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors text-sm font-medium"
+                            >
+                              Send Invite
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <div className="text-6xl mb-4 opacity-50">📝</div>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2">No applications yet</h3>
+                  <p className="text-gray-600">When influencers apply to this campaign, they'll appear here.</p>
+                </div>
+              )}
             </div>
           </div>
         )}

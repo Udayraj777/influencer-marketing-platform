@@ -171,10 +171,34 @@ class ApiService {
     });
   }
 
+  async getMyApplications() {
+    return this.request('/campaigns/my-applications');
+  }
+
+  async getCampaignApplications(campaignId) {
+    return this.request(`/campaigns/${campaignId}/applications`);
+  }
+
+  async getMyInvitations() {
+    return this.request('/campaigns/my-invitations');
+  }
+
   // Matching methods
   async getInfluencerMatches(filters = {}) {
-    const params = new URLSearchParams(filters);
+    const params = new URLSearchParams();
+    
+    // Add filters as query parameters
+    Object.keys(filters).forEach(key => {
+      if (filters[key]) {
+        params.append(key, filters[key]);
+      }
+    });
+    
     return this.request(`/campaigns/influencer-matches?${params}`);
+  }
+
+  async getInfluencerProfileById(influencerId) {
+    return this.request(`/campaigns/influencer-profile/${influencerId}`);
   }
 
   async getBusinessMatches(filters = {}) {

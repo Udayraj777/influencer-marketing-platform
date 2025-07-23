@@ -1,13 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useDashboard } from '../../contexts/DashboardContext';
+import apiService from '../../services/api';
 
 const InvitationsSection = () => {
   const { invitations, actions } = useDashboard();
-
-  const mockInvitations = [];
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    actions.setInvitations(mockInvitations);
+    const fetchInvitations = async () => {
+      try {
+        setLoading(true);
+        console.log('🔍 Fetching direct invitations...');
+        const result = await apiService.getMyInvitations();
+        
+        if (result.success) {
+          console.log('✅ Invitations loaded:', result.invitations.length);
+          actions.setInvitations(result.invitations);
+        } else {
+          console.log('❌ No invitations found');
+          actions.setInvitations([]);
+        }
+      } catch (error) {
+        console.error('❌ Error fetching invitations:', error);
+        actions.setInvitations([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInvitations();
   }, [actions]);
 
   const handleAcceptInvitation = (invitation) => {
@@ -49,7 +70,12 @@ const InvitationsSection = () => {
       </div>
 
       <div className="p-6">
-        {invitations.length > 0 ? (
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading your invitations...</p>
+          </div>
+        ) : invitations.length > 0 ? (
           <div className="space-y-6">
             {invitations.map((invitation) => (
               <div

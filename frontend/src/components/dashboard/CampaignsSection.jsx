@@ -10,6 +10,14 @@ const CampaignsSection = () => {
     platform: 'all',
     deadline: 'all'
   });
+  const [showApplicationModal, setShowApplicationModal] = useState(false);
+  const [selectedCampaign, setSelectedCampaign] = useState(null);
+  const [applicationData, setApplicationData] = useState({
+    proposedRate: '',
+    message: '',
+    portfolioLinks: []
+  });
+  const [submitting, setSubmitting] = useState(false);
 
   // Fetch real campaigns from API
   useEffect(() => {
@@ -61,7 +69,80 @@ const CampaignsSection = () => {
   };
 
   const handleApplyCampaign = (campaignId, campaignTitle) => {
-    alert(`Applying to: ${campaignTitle}\n\nThis will open the application form where you can:\n• Write a personalized proposal\n• Upload relevant portfolio samples\n• Set your collaboration terms\n• Submit your application`);
+    const campaign = campaigns.find(c => c.id === campaignId);
+    setSelectedCampaign(campaign);
+    setShowApplicationModal(true);
+    setApplicationData({
+      proposedRate: '',
+      message: '',
+      portfolioLinks: []
+    });
+  };
+
+  const handleSubmitApplication = async (e) => {
+    e.preventDefault();
+    
+    if (!selectedCampaign || !applicationData.message.trim()) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    setSubmitting(true);
+    
+    try {
+      const result = await apiService.applyToCampaign(selectedCampaign.id, {
+        proposedRate: parseFloat(applicationData.proposedRate) || 0,
+        message: applicationData.message,
+        portfolioLinks: applicationData.portfolioLinks.filter(link => link.trim())
+      });
+
+      if (result.success) {
+        alert('Application submitted successfully!');
+        setShowApplicationModal(false);
+        setSelectedCampaign(null);
+        // Refresh campaigns to update application count
+        const refreshResult = await apiService.getCampaigns();
+        if (refreshResult.success) {
+          actions.setCampaigns(refreshResult.campaigns);
+        }
+      } else {
+        alert(result.message || 'Failed to submit application');
+      }
+    } catch (error) {
+      console.error('Application error:', error);
+      alert(error.message || 'Failed to submit application');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleApplicationInputChange = (e) => {
+    const { name, value } = e.target;
+    setApplicationData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const addPortfolioLink = () => {
+    setApplicationData(prev => ({
+      ...prev,
+      portfolioLinks: [...prev.portfolioLinks, '']
+    }));
+  };
+
+  const updatePortfolioLink = (index, value) => {
+    setApplicationData(prev => ({
+      ...prev,
+      portfolioLinks: prev.portfolioLinks.map((link, i) => i === index ? value : link)
+    }));
+  };
+
+  const removePortfolioLink = (index) => {
+    setApplicationData(prev => ({
+      ...prev,
+      portfolioLinks: prev.portfolioLinks.filter((_, i) => i !== index)
+    }));
   };
 
   const handleViewDetails = (campaign) => {
@@ -226,6 +307,117 @@ const CampaignsSection = () => {
           </div>
         )}
       </div>
+
+      {/* Application Modal */}
+      {showApplicationModal && selectedCampaign && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-blue-900">Apply to Campaign</h3>
+              <button 
+                onClick={() => setShowApplicationModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+
+            {/* Campaign Info */}
+            <div className="bg-blue-50 rounded-lg p-4 mb-6">
+              <h4 className="font-bold text-blue-900 mb-2">{selectedCampaign.title}</h4>
+              <p className="text-blue-700 text-sm mb-2">{selectedCampaign.company}</p>
+              <div className="flex gap-4 text-sm">
+                <span><strong>Budget:</strong> ${selectedCampaign.budget?.toLocaleString()}</span>
+                <span><strong>Platform:</strong> {selectedCampaign.platform}</span>
+                <span><strong>Deadline:</strong> {selectedCampaign.deadline}</span>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmitApplication} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Proposed Rate (Optional)
+                </label>
+                <input
+                  type="number"
+                  name="proposedRate"
+                  value={applicationData.proposedRate}
+                  onChange={handleApplicationInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your proposed rate in USD"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Application Message *
+                </label>
+                <textarea
+                  name="message"
+                  value={applicationData.message}
+                  onChange={handleApplicationInputChange}
+                  rows="6"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Tell the business why you're perfect for this campaign. Include your experience, content style, and how you'll approach this collaboration..."
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Portfolio Links (Optional)
+                </label>
+                {applicationData.portfolioLinks.map((link, index) => (
+                  <div key={index} className="flex gap-2 mb-2">
+                    <input
+                      type="url"
+                      value={link}
+                      onChange={(e) => updatePortfolioLink(index, e.target.value)}
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="https://instagram.com/p/example or https://tiktok.com/@user/video"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removePortfolioLink(index)}
+                      className="px-4 py-2 text-red-600 border border-red-300 rounded-lg hover:bg-red-50"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addPortfolioLink}
+                  className="px-4 py-2 text-blue-600 border border-blue-300 rounded-lg hover:bg-blue-50"
+                >
+                  + Add Portfolio Link
+                </button>
+              </div>
+
+              <div className="flex space-x-4 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowApplicationModal(false)}
+                  className="flex-1 bg-gray-200 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors font-medium disabled:bg-green-400 disabled:cursor-not-allowed"
+                >
+                  {submitting ? 'Submitting...' : 'Submit Application'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
